@@ -1,0 +1,11 @@
+1. logged in 
+	a. Reccommended 
+	b. 
+		i. now playing
+		ii. popular
+		iii. top-rated
+		iv. upcoming
+
+
+2. not logged in
+	a. Combi of popular and top-rated

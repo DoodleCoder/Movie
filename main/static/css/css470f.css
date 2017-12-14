@@ -1,0 +1,36 @@
+@font-face {
+  font-family: 'Dosis';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Dosis Regular'), local('Dosis-Regular'), url(http://fonts.gstatic.com/s/dosis/v7/guC5lwT5Dw7anV_xfpCGqw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Dosis';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Dosis Medium'), local('Dosis-Medium'), url(http://fonts.gstatic.com/s/dosis/v7/obisuY-MenYRAFwd-r2NhfesZW2xOQ-xsNqO47m55DA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Dosis';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Dosis Bold'), local('Dosis-Bold'), url(http://fonts.gstatic.com/s/dosis/v7/Luunk03-uSz9LnB7oNEUuvesZW2xOQ-xsNqO47m55DA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Nunito Light'), local('Nunito-Light'), url(http://fonts.gstatic.com/s/nunito/v9/1TiHc9yag0wq3lDO9cw0vqCWcynf_cDxXwCLxiixG1c.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Nunito Regular'), local('Nunito-Regular'), url(http://fonts.gstatic.com/s/nunito/v9/kpI87QY2ce-mk2ZnKb-r0g.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Nunito SemiBold'), local('Nunito-SemiBold'), url(http://fonts.gstatic.com/s/nunito/v9/NcqjkPJTQZlJIFxZdZcTe6CWcynf_cDxXwCLxiixG1c.ttf) format('truetype');
+}
