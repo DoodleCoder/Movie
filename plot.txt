@@ -9,3 +9,13 @@
 
 2. not logged in
 	a. Combi of popular and top-rated
+
+
+
+Gaurav
+1. Carousel
+2. Movie Single
+
+Ria
+1. Movie List
+2. Login/Sign Up
