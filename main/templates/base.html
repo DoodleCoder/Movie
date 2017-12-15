@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <!--[if IE 7]>
 <html class="ie ie7 no-js" lang="en-US">
@@ -10,10 +9,9 @@
 <!--[if !(IE 7) | !(IE 8)  ]><!-->
 <html lang="en" class="no-js">
 
-<!-- Mirrored from haintheme.com/demo/html/bustter/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 19 Oct 2017 15:03:41 GMT -->
 <head>
 	<!-- Basic need -->
-	<title>Open Pediatrics</title>
+	<title>GR Movies</title>
 	<meta charset="UTF-8">
 	<meta name="description" content="">
 	<meta name="keywords" content="">
@@ -21,7 +19,7 @@
 	<link rel="profile" href="#">
 
     <!--Google Font-->
-    <link rel="stylesheet" href='../../../../fonts.googleapis.com/css470f.css?family=Dosis:400,700,500|Nunito:300,400,600' />
+    <link rel="stylesheet" href="{% static 'css/css470f.css?family=Dosis:400,700,500|Nunito:300,400,600' %}" />
 	<!-- Mobile specific meta -->
 	<meta name=viewport content="width=device-width, initial-scale=1">
 	<meta name="format-detection" content="telephone-no">
@@ -42,7 +40,7 @@
 </div>
 <!--end of preloading-->
 <!--login form popup-->
-<div class="login-wrapper" id="login-content">
+<!-- <div class="login-wrapper" id="login-content">
     <div class="login-content">
         <a href="#" class="close">x</a>
         <h3>Login</h3>
@@ -80,10 +78,10 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <!--end of login form popup-->
 <!--signup form popup-->
-<div class="login-wrapper"  id="signup-content">
+<!-- <div class="login-wrapper"  id="signup-content">
     <div class="login-content">
         <a href="#" class="close">x</a>
         <h3>sign up</h3>
@@ -119,7 +117,7 @@
         </form>
     </div>
 </div>
-<!--end of signup form popup-->
+ --><!--end of signup form popup-->
 
 <!-- BEGIN | Header -->
 <header class="ht-header">
@@ -135,7 +133,7 @@
 							<span></span>
 						</div>
 				    </div>
-				    <a href="index.html"><img class="logo" src="{% static 'images/logo1.png' %}" alt="" width="119" height="58"></a>
+				    <a href="/index/"><img class="logo" src="{% static 'images/logo1.png' %}" alt="" width="119" height="58"></a>
 			    </div>
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
@@ -143,31 +141,18 @@
 						<li class="hidden">
 							<a href="#page-top"></a>
 						</li>
-						<li class="dropdown first">
-							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
-							Home <i class="fa fa-angle-down" aria-hidden="true"></i>
+						<li class="">
+							<a href="/index/" class="btn btn-default" >
+							Home
 							</a>
-							<ul class="dropdown-menu level1">
-								<li><a href="index.html">Home 01</a></li>
-								<li><a href="homev2.html">Home 02</a></li>
-								<li><a href="homev3.html">Home 03</a></li>
-							</ul>
 						</li>
 						<li class="dropdown first">
 							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-							movies<i class="fa fa-angle-down" aria-hidden="true"></i>
+							List<i class="fa fa-angle-down" aria-hidden="true"></i>
 							</a>
 							<ul class="dropdown-menu level1">
-								<li class="dropdown">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown" >Movie grid<i class="ion-ios-arrow-forward"></i></a>
-									<ul class="dropdown-menu level2">
-										<li><a href="moviegrid.html">Movie grid</a></li>
-										<li><a href="moviegridfw.html">movie grid full width</a></li>
-									</ul>
-								</li>			
-								<li><a href="movielist.html">Movie list</a></li>
-								<li><a href="moviesingle.html">Movie single</a></li>
-								<li class="it-last"><a href="seriessingle.html">Series single</a></li>
+								<li><a href="/movielist/">Movie</a></li>
+								<li><a href="/tvlist/">TV</a></li>
 							</ul>
 						</li>
 						<li class="dropdown first">
@@ -204,39 +189,44 @@
 						</li>
 					</ul>
 					<ul class="nav navbar-nav flex-child-menu menu-right">
-						<li class="dropdown first">
-							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-							pages <i class="fa fa-angle-down" aria-hidden="true"></i>
-							</a>
-							<ul class="dropdown-menu level1">
-								<li><a href="landing.html">Landing</a></li>
-								<li><a href="404.html">404 Page</a></li>
-								<li class="it-last"><a href="comingsoon.html">Coming soon</a></li>
-							</ul>
+						<li class="">
+							<a href="/watchlist/" class="btn btn-default">Watchlist</a>
 						</li>                
-						<li><a href="#">Help</a></li>
-						<li class="loginLink"><a href="#">LOG In</a></li>
-						<li class="btn signupLink"><a href="#">sign up</a></li>
+						<li><a href="/seenlist/">Seen Before</a></li>
+						<li class="btn"><a href="/logout/">Logout</a></li>
 					</ul>
 				</div>
 			<!-- /.navbar-collapse -->
 	    </nav>
 	    
 	    <!-- top search form -->
-	    <div class="top-search">
-	    	<select>
-				<option value="united">TV show</option>
-				<option value="saab">Others</option>
+	    <!-- <div class="top-search">
+	    <form action="/search/" method="POST" class="form-control">
+	    	{% csrf_token %}
+	    	<select name="search-type">
+				<option value="tv">TV show</option>
+				<option value="movie">Movie</option>
 			</select>
-			<input type="text" placeholder="Search for a movie, TV Show or celebrity that you are looking for">
+			<input type="text" name="query" placeholder="Search for a Movie or TV Show that you are looking for">
+			<!-- <input type="submit">Submit -->
+	    <!--</form>
+	    </div> -->
+		<div class="top-search">
+		    <form action="/search/" method="POST" class="form-control">
+		    {% csrf_token %}
+		    	<select>
+					<option value="united">TV show</option>
+					<option value="saab">Others</option>
+				</select>
+				<input type="text" placeholder="Search for a movie, TV Show or celebrity that you are looking for">
+		    </form>
 	    </div>
 	</div>
 </header>
 <!-- END | Header -->
-
 {% block content %}
 {% endblock %}
-<!--end of latest new v1 section-->
+
 <!-- footer section-->
 <footer class="ht-footer">
 	<div class="container">
