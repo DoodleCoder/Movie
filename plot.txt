@@ -17,5 +17,3 @@ Gaurav
 2. Movie Single
 
 Ria
-1. Movie List
-2. Login/Sign Up
