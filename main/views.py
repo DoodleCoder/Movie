@@ -7,8 +7,8 @@ from django.core.cache import cache
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.csrf import csrf_exempt
 
-# Create your views here.
 
 api = '4a95b57fbcd4eea6c3e07a72ee861599'
 lang = 'en-US'
@@ -76,13 +76,13 @@ def base(request):
 
 def movielist(request):
 	if request.user.is_authenticated():		
-		popmovie = cache.get('popmovie')
-		if not popmovie:
+		popmovie = cache.get('popmovie')	#find in cache
+		if not popmovie:					#if not in cache, call api
 			popmovie= []
-			for i in range(1,11):
-				popurl = 'https://api.themoviedb.org/3/movie/popular?api_key='+api+'&language='+lang+'&page='+str(i)
-				response0 = urllib.urlopen(popurl)
-				pop = json.loads(response0.read())
+			for i in range(1,11):			#ignore this part
+				popurl = 'https://api.themoviedb.org/3/movie/popular?api_key='+api+'&language='+lang+'&page='+str(i) #develop the api
+				response0 = urllib.urlopen(popurl) 	#call the api
+				pop = json.loads(response0.read())	#
 				for i in pop['results']:
 					i['genres']=[]
 					for j in genre:
@@ -100,5 +100,40 @@ def movielist(request):
 	else:
 		return redirect('/login/')
 
+@csrf_exempt
 def search(request):
-	pass
+	if request.user.is_authenticated():
+		if request.method == 'POST':
+			query = request.POST['query']
+			t = request.POST['search-type']
+			print(query,  t)
+			if t=='movie':
+				s_movies = cache.get(str(query))
+				if not s_movies: 
+					url = 'https://api.themoviedb.org/3/search/movie?api_key='+api+'&language='+lang+'&query='+query+'&page=1&include_adult=false'
+					response = urllib.urlopen(url)
+					s_movies = json.loads(response.read())['results']
+					cache.set(str(query), s_movies, 18000)
+				context = {
+					'results' : s_movies,
+					's' : query,
+					't' : t,
+				}
+			else:
+				s_tv = cache.get(str(query))
+				if not s_tv: 
+					url = 'https://api.themoviedb.org/3/search/tv?api_key='+api+'&language='+lang+'&query='+query+'&page=1'
+					response = urllib.urlopen(url)
+					s_tv = json.loads(response.read())['results']
+					cache.set(str(query), s_tv, 18000)
+				context = {
+					'results' : s_tv,
+					's' : query,
+					't' : t,
+				}
+
+			return render(request, 'search.html', context)
+		else:
+			return HttpResponse('Not Allowed')
+	else:
+		return redirect('/login/')

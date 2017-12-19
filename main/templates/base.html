@@ -64,14 +64,9 @@
 							<a href="#page-top"></a>
 						</li>
 						<li class="dropdown first">
-							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
-							Home <i class="fa fa-angle-down" aria-hidden="true"></i>
+							<a href="/index/" class="btn btn-default dropdown-toggle lv1">
+							Home
 							</a>
-							<ul class="dropdown-menu level1">
-								<li><a href="index.html">Home 01</a></li>
-								<li><a href="homev2.html">Home 02</a></li>
-								<li><a href="homev3.html">Home 03</a></li>
-							</ul>
 						</li>
 						<li class="dropdown first">
 							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
@@ -147,11 +142,15 @@
 	    
 	    <!-- top search form -->
 	    <div class="top-search">
-	    	<select>
-				<option value="united">TV show</option>
-				<option value="saab">Others</option>
-			</select>
-			<input type="text" placeholder="Search for a movie, TV Show or celebrity that you are looking for">
+		    <form action="/search/" method="POST" class="form-control">
+		    {% csrf_token %}
+		    	<select name="search-type">
+					<option value="tv">TV show</option>
+					<option value="movie">Movie</option>
+				</select>
+				<input type="text" name="query" placeholder="Search for a Movie or TV Show that you are looking for">
+				<!-- <input type="submit">Submit -->
+		    </form>
 	    </div>
 	</div>
 </header>
