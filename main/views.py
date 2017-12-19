@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.http import HttpResponse, JsonResponse
-import urllib.request, json
+import json
+import urllib
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.cache import cache
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.csrf import csrf_exempt
 
-# Create your views here.
 
 api = '4a95b57fbcd4eea6c3e07a72ee861599'
 lang = 'en-US'
 genreURL = 'https://api.themoviedb.org/3/genre/movie/list?api_key='+api+'&language='+lang
-response0 = urllib.request.urlopen(genreURL)
+response0 = urllib.urlopen(genreURL)
 genre = json.loads(response0.read())
 genre = genre['genres']
 
@@ -76,7 +77,7 @@ def index(request):
 	if not popmovie:
 		popmovie= []
 		popurl = 'https://api.themoviedb.org/3/movie/popular?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(popurl)
+		response0 = urllib.urlopen(popurl)
 		pop = json.loads(response0.read())
 		for i in pop['results']:
 			i['genres']=[]
@@ -85,10 +86,16 @@ def index(request):
 					i['genres'].append(j['name'])	
 		popmovie.append(pop['results'])
 		cache.set('popmovie', popmovie, 18000)  #18000 here is the number of seconds until the caache clears this data
+		print('NEW ENTRY')
+	else:
+		print('old entry')
+
+
+
 	if not nowmovie:
 		nowmovie=[]
 		nowurl= 'https://api.themoviedb.org/3/movie/now_playing?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(nowurl)
+		response0 = urllib.urlopen(nowurl)
 		now = json.loads(response0.read())
 		for i in now['results']:
 			i['genres']=[]
@@ -97,10 +104,15 @@ def index(request):
 					i['genres'].append(j['name'])	
 		nowmovie.append(now['results'])
 		cache.set('nowmovie', nowmovie, 18000)  #18000 here is the number of seconds until the caache clears this data
+		print('NEW ENTRY')
+	else:
+		print('old entry')
+
+
 	if not topmovie:
 		topmovie=[]
 		topurl= 'https://api.themoviedb.org/3/movie/top_rated?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(topurl)
+		response0 = urllib.urlopen(topurl)
 		top = json.loads(response0.read())
 		for i in top['results']:
 			i['genres']=[]
@@ -109,10 +121,15 @@ def index(request):
 					i['genres'].append(j['name'])	
 		topmovie.append(top['results'])
 		cache.set('topmovie', topmovie, 18000)  #18000 here is the number of seconds until the caache clears this data	
+		print('NEW ENTRY')
+	else:
+		print('old entry')
+
+
 	if not upmovie:
 		upmovie=[]
 		upurl= 'https://api.themoviedb.org/3/movie/upcoming?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(upurl)
+		response0 = urllib.urlopen(upurl)
 		up = json.loads(response0.read())
 		for i in up['results']:
 			i['genres']=[]
@@ -121,16 +138,21 @@ def index(request):
 					i['genres'].append(j['name'])	
 		upmovie.append(up['results'])
 		cache.set('upmovie', upmovie, 18000)
+		print('NEW ENTRY')
+	else:
+		print('old entry')
+
 
 
 	airtodayshow = cache.get('lateshow')
 	airshow = cache.get('airshow')
 	popshow = cache.get('popshow')
 	topshow = cache.get('topshow')
+	
 	if not airtodayshow:
 		airtodayshow= []
 		airtodayurl = 'https://api.themoviedb.org/3/tv/airing_today?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(airtodayurl)
+		response0 = urllib.urlopen(airtodayurl)
 		airtoday = json.loads(response0.read())
 		for i in airtoday['results']:
 			i['genres']=[]
@@ -139,10 +161,15 @@ def index(request):
 					i['genres'].append(j['name'])	
 		airtodayshow.append(airtoday['results'])
 		cache.set('airtodayshow', airtodayshow, 18000)  #18000 here is the number of seconds until the caache clears this data
+		print('NEW ENTRY')
+	else:
+		print('old entry')
+
+
 	if not airshow:
 		airshow=[]
 		airurl= 'https://api.themoviedb.org/3/tv/on_the_air?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(airurl)
+		response0 = urllib.urlopen(airurl)
 		air = json.loads(response0.read())
 		for i in air['results']:
 			i['genres']=[]
@@ -151,10 +178,15 @@ def index(request):
 					i['genres'].append(j['name'])	
 		airshow.append(air['results'])
 		cache.set('airshow', airshow, 18000)  #18000 here is the number of seconds until the caache clears this data
+		print('NEW ENTRY')
+	else:
+		print('old entry')
+
+
 	if not popshow:
 		popshow=[]
 		popurl= 'https://api.themoviedb.org/3/tv/popular?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(popurl)
+		response0 = urllib.urlopen(popurl)
 		pop = json.loads(response0.read())
 		for i in pop['results']:
 			i['genres']=[]
@@ -163,10 +195,15 @@ def index(request):
 					i['genres'].append(j['name'])	
 		popshow.append(pop['results'])
 		cache.set('popshow', popshow, 18000)
+		print('NEW ENTRY')
+	else:
+		print('old entry')
+
+
 	if not topshow:
 		topshow=[]
 		topurl= 'https://api.themoviedb.org/3/tv/top_rated?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(topurl)
+		response0 = urllib.urlopen(topurl)
 		top = json.loads(response0.read())
 		for i in top['results']:
 			i['genres']=[]
@@ -175,7 +212,7 @@ def index(request):
 					i['genres'].append(j['name'])	
 		topshow.append(top['results'])
 		cache.set('topshow', topshow, 18000)  #18000 here is the number of seconds until the caache clears this data	
-	
+
 	context={
 		'pop': popmovie,
 		'now': nowmovie,
@@ -193,14 +230,13 @@ def base(request):
 
 def movielist(request):
 	if request.user.is_authenticated():		
-		popmovie = cache.get('popmovie')
-		if not popmovie:
+		popmovie = cache.get('popmovie')	#find in cache
+		if not popmovie:					#if not in cache, call api
 			popmovie= []
-			for i in range(1,2):
-				popurl = 'https://api.themoviedb.org/3/movie/popular?api_key='+api+'&language='+lang+'&page='+str(i)
-				response0 = urllib.request.urlopen(popurl)
-				pop = json.loads(response0.read())
-				print(pop)
+			for i in range(1,11):			#ignore this part
+				popurl = 'https://api.themoviedb.org/3/movie/popular?api_key='+api+'&language='+lang+'&page='+str(i) #develop the api
+				response0 = urllib.urlopen(popurl) 	#call the api
+				pop = json.loads(response0.read())	#
 				for i in pop['results']:
 					i['genres']=[]
 					for j in genre:
@@ -217,8 +253,7 @@ def movielist(request):
 		return render(request, 'moviegrid.html', context)
 	else:
 		return redirect('/login/')
-
-
+		
 def movie(request, movie_id):
 	movurl = 'https://api.themoviedb.org/3/movie/'+movie_id+'?api_key='+api+'&language='+lang+'&page=1'
 	response0 = urllib.request.urlopen(movurl)
@@ -263,5 +298,67 @@ def movie(request, movie_id):
 def show(request, show_id):
 	return render(request, 'seriessingle.html')
 
+def tvlist(request):
+	if request.user.is_authenticated():		
+		poptv = cache.get('poptv')
+		if not poptv:
+			poptv= []
+			for i in range(1,11):
+				popurl = 'https://api.themoviedb.org/3/tv/popular?api_key='+api+'&language='+lang+'&page='+str(i)
+				response0 = urllib.urlopen(popurl)
+				pop = json.loads(response0.read())
+				for i in pop['results']:
+					i['genres']=[]
+					for j in genre:
+						if j['id'] in i['genre_ids']:
+							i['genres'].append(j['name'])	
+				poptv.append(pop['results'])
+			cache.set('poptv', poptv, 18000)
+			print('NEW ENTRY')
+		else:
+			print('old entry')
+
+		context={
+			'poptv': poptv,
+		}
+		return render(request, 'tvgrid.html', context)
+	else:
+		return redirect('/login/')
+
+@csrf_exempt
 def search(request):
-	pass
+	if request.user.is_authenticated():
+		if request.method == 'POST':
+			query = request.POST['query']
+			t = request.POST['search-type']
+			print(query,  t)
+			if t=='movie':
+				s_movies = cache.get(str(query)+t)
+				if not s_movies: 
+					url = 'https://api.themoviedb.org/3/search/movie?api_key='+api+'&language='+lang+'&query='+query+'&page=1&include_adult=false'
+					response = urllib.urlopen(url)
+					s_movies = json.loads(response.read())['results']
+					cache.set(str(query)+t, s_movies, 18000)
+				context = {
+					'results' : s_movies,
+					's' : query,
+					't' : t,
+				}
+			else:
+				s_tv = cache.get(str(query)+t)
+				if not s_tv: 
+					url = 'https://api.themoviedb.org/3/search/tv?api_key='+api+'&language='+lang+'&query='+query+'&page=1'
+					response = urllib.urlopen(url)
+					s_tv = json.loads(response.read())['results']
+					cache.set(str(query)+t, s_tv, 18000)
+				context = {
+					'results' : s_tv,
+					's' : query,
+					't' : t,
+				}
+
+			return render(request, 'search.html', context)
+		else:
+			return HttpResponse('Not Allowed')
+	else:
+		return redirect('/login/')

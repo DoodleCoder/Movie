@@ -64,30 +64,17 @@
 							<a href="#page-top"></a>
 						</li>
 						<li class="dropdown first">
-							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
-							Home <i class="fa fa-angle-down" aria-hidden="true"></i>
+							<a href="/index/" class="btn btn-default dropdown-toggle lv1">
+							Home
 							</a>
-							<ul class="dropdown-menu level1">
-								<li><a href="index.html">Home 01</a></li>
-								<li><a href="homev2.html">Home 02</a></li>
-								<li><a href="homev3.html">Home 03</a></li>
-							</ul>
 						</li>
 						<li class="dropdown first">
 							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-							movies<i class="fa fa-angle-down" aria-hidden="true"></i>
+							list<i class="fa fa-angle-down" aria-hidden="true"></i>
 							</a>
-							<ul class="dropdown-menu level1">
-								<li class="dropdown">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown" >Movie grid<i class="ion-ios-arrow-forward"></i></a>
-									<ul class="dropdown-menu level2">
-										<li><a href="moviegrid.html">Movie grid</a></li>
-										<li><a href="moviegridfw.html">movie grid full width</a></li>
-									</ul>
-								</li>			
-								<li><a href="movielist.html">Movie list</a></li>
-								<li><a href="moviesingle.html">Movie single</a></li>
-								<li class="it-last"><a href="seriessingle.html">Series single</a></li>
+							<ul class="dropdown-menu level1">			
+								<li><a href="/movielist/">MOVIE</a></li>
+								<li><a href="/tvlist/">TV</a></li>
 							</ul>
 						</li>
 						<li class="dropdown first">
@@ -147,11 +134,15 @@
 	    
 	    <!-- top search form -->
 	    <div class="top-search">
-	    	<select>
-				<option value="united">TV show</option>
-				<option value="saab">Others</option>
-			</select>
-			<input type="text" placeholder="Search for a movie, TV Show or celebrity that you are looking for">
+		    <form action="/search/" method="POST" class="form-control">
+		    {% csrf_token %}
+		    	<select name="search-type">
+					<option value="tv">TV show</option>
+					<option value="movie">Movie</option>
+				</select>
+				<input type="text" name="query" placeholder="Search for a Movie or TV Show that you are looking for">
+				<!-- <input type="submit">Submit -->
+		    </form>
 	    </div>
 	</div>
 </header>

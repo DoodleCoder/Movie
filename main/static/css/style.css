@@ -4232,7 +4232,7 @@ ul {
 .movie_list .movie-item-style-2 img,
 .movie_single .movie-item-style-2 img,
 .userfav_list .movie-item-style-2 img {
-  width: 30%;
+  width: 80%;
 }
 @media (max-width: 767px) {
   .movie_list .movie-item-style-2 img,
