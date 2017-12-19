@@ -217,12 +217,6 @@ def index(request):
 					i['genres'].append(j['name'])	
 		topshow.append(top['results'])
 		cache.set('topshow', topshow, 18000)  #18000 here is the number of seconds until the caache clears this data	
-		print('NEW ENTRY')
-	else:
-		print('old entry')
-
-
-		
 
 	context={
 		'pop': popmovie,
@@ -264,6 +258,50 @@ def movielist(request):
 		return render(request, 'moviegrid.html', context)
 	else:
 		return redirect('/login/')
+		
+def movie(request, movie_id):
+	movurl = 'https://api.themoviedb.org/3/movie/'+movie_id+'?api_key='+api+'&language='+lang+'&page=1'
+	response0 = urllib.request.urlopen(movurl)
+	mov = json.loads(response0.read())
+	date=mov['release_date']
+	date=date[:4]
+
+	movcredurl= 'https://api.themoviedb.org/3/movie/'+movie_id+'/credits?api_key='+api+'&language='+lang+'&page=1'
+	response0 = urllib.request.urlopen(movcredurl)
+	movcred = json.loads(response0.read())
+	cast=movcred['cast']
+	crew=movcred['crew']
+	writers=[]
+	producers=[]
+	for c in crew:
+		if(c['job']=='Director'):
+			director=c
+		elif(c['job']=='Story'):
+			writers.append(c)
+		elif(c['department']=='Production'):
+			producers.append(c)
+
+	movsimurl='https://api.themoviedb.org/3/movie/'+movie_id+'/similar?api_key='+api+'&language='+lang+'&page=1'
+	response0 = urllib.request.urlopen(movsimurl)
+	movsim = json.loads(response0.read())
+	movsim=movsim['results']
+
+	# movrevurl='https://api.themoviedb.org/3/movie/'+movie_id+'/reviews?api_key='+api+'&language='+lang+'&page=1'
+
+	context={
+		'detail':mov,
+		'date':date,
+		'cast':cast,
+		'crew':crew,
+		'director':director,
+		'writers':writers,
+		'producers':producers,
+		'movsim':movsim,
+	}
+	return render(request, 'moviesingle.html',context)
+
+def show(request, show_id):
+	return render(request, 'seriessingle.html')
 
 def tvlist(request):
 	if request.user.is_authenticated():		
