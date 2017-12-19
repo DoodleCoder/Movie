@@ -53,15 +53,20 @@ def register(request):
 		user.save()
 		user = authenticate(username=username, password=password)
 		if user is not None:
-		 	login(request, user)
-		# 	profile=Profile.objects.create(
-		# 			user=user,
-		# 			firstName=firstName,
-		# 			lastName=lastName,
-		# 			username=username,
-		# 			regDate=timezone.now(),
-		# 		)
-		return redirect('/index/')
+			login(request, user)
+			profile=Profile.objects.create(
+					user=user,
+					firstName=firstName,
+					lastName=lastName,
+					username=username,
+				)
+			seenlist = Seenlist.objects.create(
+					user=user
+				)
+			watchlist = Watchlist.objects.create(
+					user=user
+				)
+			return redirect('/index/')
 	else:
 		return render(request, 'register.html')
 
