@@ -156,8 +156,8 @@ $(function(){
 	//slider movie and tv show home 1, 3
 	multiItem.slick({
 		infinite: true,
-		slidesToShow: 4,
-		slidesToScroll: 4,
+		slidesToShow: 6,
+		slidesToScroll: 6,
 		arrows: false,
 		draggable:true,
 		// autoplay: true,
@@ -316,7 +316,7 @@ $(function(){
 	  asNavFor: '.slider-nav',
 	});
 	slidenav.slick({
-	  slidesToShow: 5,
+	  slidesToShow: 6,
 	  slidesToScroll: 1,
 	  asNavFor: '.slider-for',
 	  dots: true,
@@ -361,7 +361,7 @@ $(function(){
 		asNavFor: '.slider-nav-2',
 	});
 	slidenav2.slick({
-		slidesToShow: 3,
+		slidesToShow: 6,
 		slidesToScroll: 1,
 		asNavFor: '.slider-for-2',
 		dots: false,
