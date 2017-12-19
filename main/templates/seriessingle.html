@@ -19,7 +19,7 @@
 		<div class="row ipad-width2">
 			<div class="col-md-4 col-sm-12 col-xs-12">
 				<div class="movie-img sticky-sb">
-					<img src="images/uploads/series-img.jpg" alt="">
+					<img src="https://image.tmdb.org/t/p/w500{{detail.backdrop_path}}" alt="">
 					<div class="movie-btn">	
 						<div class="btn-transform transform-vertical red">
 							<div><a href="#" class="item item-1 redbtn"> <i class="ion-play"></i> Watch Trailer</a></div>
@@ -34,7 +34,7 @@
 			</div>
 			<div class="col-md-8 col-sm-12 col-xs-12">
 				<div class="movie-single-ct main-content">
-					<h1 class="bd-hd">The Big Bang Theory <span> 2007 - current</span></h1>
+					<h1 class="bd-hd">{{detail.name}}<span> {{date}} - {{enddate}}</span></h1>
 					<div class="social-btn">
 						<a href="#" class="parent-btn"><i class="ion-heart"></i> Add to Favorite</a>
 						<div class="hover-bnt">
@@ -50,8 +50,8 @@
 					<div class="movie-rate">
 						<div class="rate">
 							<i class="ion-android-star"></i>
-							<p><span>8.1</span> /10<br>
-								<span class="rv">56 Reviews</span>
+							<p><span>{{detail.vote_average}}</span> /10<br>
+								<!-- <span class="rv">56 Reviews</span> -->
 							</p>
 						</div>
 						<div class="rate-star">
@@ -81,7 +81,7 @@
 						        <div id="overview" class="tab active">
 						            <div class="row">
 						            	<div class="col-md-8 col-sm-12 col-xs-12">
-						            		<p>Leonard Hofstadter and Sheldon Cooper are both brilliant physicists working at Cal Tech in Pasadena, California. They are colleagues, best friends, and roommates, although in all capacities their relationship is always tested primarily by Sheldon's regimented, deeply eccentric, and non-conventional ways.</p>
+						            		<p>{{detail.overview}}</p>
 						            		<div class="title-hd-sm">
 												<h4>Current Season</h4>
 												<a href="#" class="time">View All Seasons <i class="ion-ios-arrow-right"></i></a>
@@ -90,12 +90,11 @@
 											<div class="mvcast-item">											
 												<div class="cast-it">
 													<div class="cast-left series-it">
-														<img src="images/uploads/season.jpg" alt="">
+														<img src="https://image.tmdb.org/t/p/w500{{curr.poster_path}}" alt="" style="width:25%">
 														<div>
-															<a href="#">Season 10</a>
-															<p>21 Episodes</p>
-															<p>Season 10 of The Big Bang Theory premiered on 
-															September 19, 2016.</p>
+															<a href="#">Season {{curr.season_number}}</a>
+														<p>{{curr.episode_count}} Episodes</p>
+														<p>Season {{curr.season_number}} of {{detail.name}} premiered on {{curr.air_date}}.</p>
 														</div>	
 													</div>											
 												</div>	
@@ -118,63 +117,15 @@
 												<a href="#" class="time">Full Cast & Crew  <i class="ion-ios-arrow-right"></i></a>
 											</div>
 											<!-- movie cast -->
-											<div class="mvcast-item">											
+											<div class="mvcast-item">											{%for c in cast %}
 												<div class="cast-it">
 													<div class="cast-left">
 														<img src="images/uploads/cast1.jpg" alt="">
-														<a href="#">Robert Downey Jr.</a>
+														<a href="#">{{c.name}}</a>
 													</div>
-													<p>...  Robert Downey Jr.</p>
+													<p>...  {{c.character}}</p>
 												</div>
-												<div class="cast-it">
-													<div class="cast-left">
-														<img src="images/uploads/cast2.jpg" alt="">
-														<a href="#">Chris Hemsworth</a>
-													</div>
-													<p>...  Thor</p>
-												</div>
-												<div class="cast-it">
-													<div class="cast-left">
-														<img src="images/uploads/cast3.jpg" alt="">
-														<a href="#">Mark Ruffalo</a>
-													</div>
-													<p>...  Bruce Banner/ Hulk</p>
-												</div>
-												<div class="cast-it">
-													<div class="cast-left">
-														<img src="images/uploads/cast4.jpg" alt="">
-														<a href="#">Chris Evans</a>
-													</div>
-													<p>...  Steve Rogers/ Captain America</p>
-												</div>
-												<div class="cast-it">
-													<div class="cast-left">
-														<img src="images/uploads/cast5.jpg" alt="">
-														<a href="#">Scarlett Johansson</a>
-													</div>
-													<p>...  Natasha Romanoff/ Black Widow</p>
-												</div>
-												<div class="cast-it">
-													<div class="cast-left">
-														<img src="images/uploads/cast6.jpg" alt="">
-														<a href="#">Jeremy Renner</a>
-													</div>
-													<p>...  Clint Barton/ Hawkeye</p>
-												</div>
-												<div class="cast-it">
-													<div class="cast-left">
-														<img src="images/uploads/cast7.jpg" alt="">
-														<a href="#">James Spader</a>
-													</div>
-													<p>...  Ultron</p>
-												</div>
-												<div class="cast-it">
-													<div class="cast-left">
-														<img src="images/uploads/cast9.jpg" alt="">
-														<a href="#">Don Cheadle</a>
-													</div>
-													<p>...  James Rhodes/ War Machine</p>
-												</div>
+												{% endfor %}
 											</div>
 											<div class="title-hd-sm">
 												<h4>User reviews</h4>
@@ -204,32 +155,46 @@
 						            	<div class="col-md-4 col-xs-12 col-sm-12">
 						            		<div class="sb-it">
 						            			<h6>Director: </h6>
-						            			<p><a href="#">Mark Cendrowski</a></p>
+						            			<p><a href="#">{{director}}</a></p>
 						            		</div>
 						            		<div class="sb-it">
 						            			<h6>Writer: </h6>
-						            			<p><a href="#"> Chuck Lorre,</a> <a href="#">Bill Prady</a></p>
+						            			<p>
+						            				{% for w in writers %}
+						            				<a href="#">{{w.name}},</a>
+						            				{%endfor%}
+						            			</p>
 						            		</div>
 						            		<div class="sb-it">
 						            			<h6>Stars: </h6>
-						            			<p><a href="#">Robert Downey Jr,</a> <a href="#">Chris Evans,</a> <a href="#">Mark Ruffalo,</a><a href="#"> Scarlett Johansson</a></p>
+						            			<p>
+						            				{% for c in cast %}
+						            				<a href="#">{{c.name}},</a>
+						            				{% endfor %}
+						            			</p>
 						            		</div>
 						            		<div class="sb-it">
 						            			<h6>Genres:</h6>
-						            			<p><a href="#">Action, </a> <a href="#"> Sci-Fi,</a> <a href="#">Adventure</a></p>
+						            			<p>
+						            				{% for g in detail.genres %}
+						            				<a href="#">{{g.name}}, </a>
+						            				{% endfor %}
+						            			</p>
 						            		</div>
 						            		<div class="sb-it">
 						            			<h6>Release Date:</h6>
-						            			<p>1 May 2006 (U.S.A)</p>
+						            			<p>{{detail.first_air_date}}</p>
 						            		</div>
 						            		<div class="sb-it">
 						            			<h6>Run Time:</h6>
-						            			<p>22 min</p>
+						            			{%for r in detail.episode_run_time %}
+						            			<p>{{r}} min</p>
+						            			{% endfor %}
 						            		</div>
-						            		<div class="sb-it">
+						            		<!-- <div class="sb-it">
 						            			<h6>MMPA Rating:</h6>
 						            			<p>TV-14</p>
-						            		</div>
+						            		</div> -->
 						            		<div class="sb-it">
 						            			<h6>Plot Keywords:</h6>
 						            			<p class="tags">
@@ -250,10 +215,10 @@
 						           <div class="row">
 						            	<div class="rv-hd">
 						            		<div class="div">
-							            		<h3>Related Movies To</h3>
-						       	 				<h2>Skyfall: Quantum of Spectre</h2>
+							            		<h3>User Reviews of</h3>
+						       	 				<h2>{{detail.name}}</h2>
 							            	</div>
-							            	<a href="#" class="redbtn">Write Review</a>
+							            	<!-- <a href="#" class="redbtn">Write Review</a> -->
 						            	</div>
 						            	<div class="topbar-filter">
 											<p>Found <span>56 reviews</span> in total</p>
@@ -424,191 +389,61 @@
 						        <div id="cast" class="tab">
 						        	<div class="row">
 						            	<h3>Cast & Crew of</h3>
-					       	 			<h2>Avengers: Age of Ultron</h2>
+					       	 			<h2>{{detail.name}}</h2>
 										<!-- //== -->
 					       	 			<div class="title-hd-sm">
-											<h4>Directors & Credit Writers</h4>
+											<h4>Director</h4>
 										</div>
 										<div class="mvcast-item">											
 											<div class="cast-it">
 												<div class="cast-left">
-													<h4>JW</h4>
-													<a href="#">Joss Whedon</a>
+													<a href="#">{{director}}</a>
 												</div>
 												<p>...  Director</p>
 											</div>
 										</div>
 										<!-- //== -->
 										<div class="title-hd-sm">
-											<h4>Directors & Credit Writers</h4>
+											<h4>Writers</h4>
 										</div>
-										<div class="mvcast-item">											
+										<div class="mvcast-item">	
+											{% for w in writers%}										
 											<div class="cast-it">
 												<div class="cast-left">
-													<h4>SL</h4>
-													<a href="#">Stan Lee</a>
+													<a href="#">{{w.name}}</a>
 												</div>
-												<p>...  (based on Marvel comics)</p>
+												<p>...  {{w.job}}</p>
 											</div>
-											<div class="cast-it">
-												<div class="cast-left">
-													<h4>JK</h4>
-													<a href="#">Jack Kirby</a>
-												</div>
-												<p>...  (based on Marvel comics)</p>
-											</div>
-											<div class="cast-it">
-												<div class="cast-left">
-													<h4>JS</h4>
-													<a href="#">Joe Simon</a>
-												</div>
-												<p>...  (character created by: Captain America)</p>
-											</div>
-											<div class="cast-it">
-												<div class="cast-left">
-													<h4>JS</h4>
-													<a href="#">Joe Simon</a>
-												</div>
-												<p>...  (character created by: Thanos)</p>
-											</div>
-											<div class="cast-it">
-												<div class="cast-left">
-													<h4>RT</h4>
-													<a href="#">Roy Thomas</a>
-												</div>
-												<p>...  (character created by: Ultron, Vision)</p>
-											</div>
-											<div class="cast-it">
-												<div class="cast-left">
-													<h4>JB</h4>
-													<a href="#">John Buscema</a>
-												</div>
-												<p>...  (character created by: Ultron, Vision)</p>
-											</div>
+											{% endfor %}
 										</div>
 										<!-- //== -->
 										<div class="title-hd-sm">
 											<h4>Cast</h4>
 										</div>
-										<div class="mvcast-item">											
+										<div class="mvcast-item">
+											{% for c in cast %}											
 											<div class="cast-it">
 												<div class="cast-left">
 													<img src="images/uploads/cast1.jpg" alt="">
-													<a href="#">Robert Downey Jr.</a>
+													<a href="#">{{c.name}}</a>
 												</div>
-												<p>...  Robert Downey Jr.</p>
+												<p>...  {{c.character}}</p>
 											</div>
-											<div class="cast-it">
-												<div class="cast-left">
-													<img src="images/uploads/cast2.jpg" alt="">
-													<a href="#">Chris Hemsworth</a>
-												</div>
-												<p>...  Thor</p>
-											</div>
-											<div class="cast-it">
-												<div class="cast-left">
-													<img src="images/uploads/cast3.jpg" alt="">
-													<a href="#">Mark Ruffalo</a>
-												</div>
-												<p>...  Bruce Banner/ Hulk</p>
-											</div>
-											<div class="cast-it">
-												<div class="cast-left">
-													<img src="images/uploads/cast4.jpg" alt="">
-													<a href="#">Chris Evans</a>
-												</div>
-												<p>...  Steve Rogers/ Captain America</p>
-											</div>
-											<div class="cast-it">
-												<div class="cast-left">
-													<img src="images/uploads/cast5.jpg" alt="">
-													<a href="#">Scarlett Johansson</a>
-												</div>
-												<p>...  Natasha Romanoff/ Black Widow</p>
-											</div>
-											<div class="cast-it">
-												<div class="cast-left">
-													<img src="images/uploads/cast6.jpg" alt="">
-													<a href="#">Jeremy Renner</a>
-												</div>
-												<p>...  Clint Barton/ Hawkeye</p>
-											</div>
-											<div class="cast-it">
-												<div class="cast-left">
-													<img src="images/uploads/cast7.jpg" alt="">
-													<a href="#">James Spader</a>
-												</div>
-												<p>...  Ultron</p>
-											</div>
-											<div class="cast-it">
-												<div class="cast-left">
-													<img src="images/uploads/cast9.jpg" alt="">
-													<a href="#">Don Cheadle</a>
-												</div>
-												<p>...  James Rhodes/ War Machine</p>
-											</div>
+											{% endfor %}
 										</div>
 										<!-- //== -->
 										<div class="title-hd-sm">
 											<h4>Produced by</h4>
 										</div>
-										<div class="mvcast-item">											
+										<div class="mvcast-item">
+											{% for p in producers %}
 											<div class="cast-it">
 												<div class="cast-left">
-													<h4>VA</h4>
-													<a href="#">Victoria Alonso</a>
+													<a href="#">{{p.name}}</a>
 												</div>
-												<p>...  executive producer</p>
+												<p>...  {{p.job}}</p>
 											</div>
-											<div class="cast-it">
-												<div class="cast-left">
-													<h4>MB</h4>
-													<a href="#">Mitchel Bell</a>
-												</div>
-												<p>...  co-producer (as Mitch Bell)</p>
-											</div>
-											<div class="cast-it">
-												<div class="cast-left">
-													<h4>JC</h4>
-													<a href="#">Jamie Christopher</a>
-												</div>
-												<p>...  associate producer</p>
-											</div>
-											<div class="cast-it">
-												<div class="cast-left">
-													<h4>LD</h4>
-													<a href="#">Louis D’Esposito</a>
-												</div>
-												<p>...  executive producer</p>
-											</div>
-											<div class="cast-it">
-												<div class="cast-left">
-													<h4>JF</h4>
-													<a href="#">Jon Favreau</a>
-												</div>
-												<p>...  executive producer</p>
-											</div>
-											<div class="cast-it">
-												<div class="cast-left">
-													<h4>KF</h4>
-													<a href="#">Kevin Feige</a>
-												</div>
-												<p>...  producer</p>
-											</div>
-											<div class="cast-it">
-												<div class="cast-left">
-													<h4>AF</h4>
-													<a href="#">Alan Fine</a>
-												</div>
-												<p>...  executive producer</p>
-											</div>
-											<div class="cast-it">
-												<div class="cast-left">
-													<h4>JF</h4>
-													<a href="#">Jeffrey Ford</a>
-												</div>
-												<p>...  associate producer</p>
-											</div>
+											{% endfor %}
 										</div>
 						            </div>
 					       	 	</div>
@@ -735,90 +570,26 @@
 					       	 	</div>
 					       	 	<div id="season" class="tab">
 					       	 		<div class="row">
+					       	 			{% for season in detail.seasons %}
 					       	 			<div class="mvcast-item">											
 											<div class="cast-it">
 												<div class="cast-left series-it">
-													<img src="images/uploads/season.jpg" alt="">
+													<img src="https://image.tmdb.org/t/p/w500{{season.poster_path}}" alt="" style="width: 25%">
 													<div>
-														<a href="#">Season 10</a>
-														<p>21 Episodes</p>
-														<p>Season 10 of The Big Bang Theory premiered on 
-														September 19, 2016.</p>
+														<a href="#">Season {{season.season_number}}</a>
+														<p>{{season.episode_count}} Episodes</p>
+														<p>Season {{season.season_number}} of {{detail.name}} premiered on {{season.air_date}}.</p>
 													</div>	
 												</div>											
 											</div>	
 										</div>
-										<div class="mvcast-item">											
-												<div class="cast-it">
-													<div class="cast-left series-it">
-														<img src="images/uploads/season.jpg" alt="">
-														<div>
-															<a href="#">Season 10</a>
-															<p>21 Episodes</p>
-															<p>Season 10 of The Big Bang Theory premiered on 
-															September 19, 2016.</p>
-														</div>	
-													</div>											
-												</div>	
-											</div>
-											<div class="mvcast-item">											
-												<div class="cast-it">
-													<div class="cast-left series-it">
-														<img src="images/uploads/season.jpg" alt="">
-														<div>
-															<a href="#">Season 10</a>
-															<p>21 Episodes</p>
-															<p>Season 10 of The Big Bang Theory premiered on 
-															September 19, 2016.</p>
-														</div>	
-													</div>											
-												</div>	
-											</div>
-											<div class="mvcast-item">											
-												<div class="cast-it">
-													<div class="cast-left series-it">
-														<img src="images/uploads/season.jpg" alt="">
-														<div>
-															<a href="#">Season 10</a>
-															<p>21 Episodes</p>
-															<p>Season 10 of The Big Bang Theory premiered on 
-															September 19, 2016.</p>
-														</div>	
-													</div>											
-												</div>	
-											</div>
-											<div class="mvcast-item">											
-												<div class="cast-it">
-													<div class="cast-left series-it">
-														<img src="images/uploads/season.jpg" alt="">
-														<div>
-															<a href="#">Season 10</a>
-															<p>21 Episodes</p>
-															<p>Season 10 of The Big Bang Theory premiered on 
-															September 19, 2016.</p>
-														</div>	
-													</div>											
-												</div>	
-											</div>
-											<div class="mvcast-item">											
-												<div class="cast-it">
-													<div class="cast-left series-it">
-														<img src="images/uploads/season.jpg" alt="">
-														<div>
-															<a href="#">Season 10</a>
-															<p>21 Episodes</p>
-															<p>Season 10 of The Big Bang Theory premiered on 
-															September 19, 2016.</p>
-														</div>	
-													</div>											
-												</div>	
-											</div>
+										{% endfor %}
 					       	 		</div>
 					       	 	</div>
 					       	 	<div id="moviesrelated" class="tab">
 					       	 		<div class="row">
-					       	 			<h3>Related Movies To</h3>
-					       	 			<h2>Skyfall: Quantum of Spectre</h2>
+					       	 			<h3>Related Shows To</h3>
+					       	 			<h2>{{detail.name}}</h2>
 					       	 			<div class="topbar-filter">
 											<p>Found <span>12 movies</span> in total</p>
 											<label>Sort by:</label>
@@ -831,74 +602,19 @@
 												<option value="date">Release date Ascending</option>
 											</select>
 										</div>
+										{% for sim in showsim %}
 										<div class="movie-item-style-2">
-											<img src="images/uploads/mv1.jpg" alt="">
+											<img src="https://image.tmdb.org/t/p/w500{{sim.poster_path}}" alt="" style="width:25%">
 											<div class="mv-item-infor">
-												<h6><a href="#">oblivion <span>(2012)</span></a></h6>
-												<p class="rate"><i class="ion-android-star"></i><span>8.1</span> /10</p>
-												<p class="describe">Earth's mightiest heroes must come together and learn to fight as a team if they are to stop the mischievous Loki and his alien army from enslaving humanity...</p>
+												<h6><a href="/show/{{sim.id}}">{{sim.original_name}} <span>(2012)</span></a></h6>
+												<p class="rate"><i class="ion-android-star"></i><span>{{sim.vote_average}}</span> /10</p>
+												<p class="describe">{{sim.overview}}</p>
 												<p class="run-time"> Run Time: 2h21’    .     <span>MMPA: PG-13 </span>    .     <span>Release: 1 May 2015</span></p>
 												<p>Director: <a href="#">Joss Whedon</a></p>
 												<p>Stars: <a href="#">Robert Downey Jr.,</a> <a href="#">Chris Evans,</a> <a href="#">  Chris Hemsworth</a></p>
 											</div>
 										</div>
-										<div class="movie-item-style-2">
-											<img src="images/uploads/mv2.jpg" alt="">
-											<div class="mv-item-infor">
-												<h6><a href="#">into the wild <span>(2014)</span></a></h6>
-												<p class="rate"><i class="ion-android-star"></i><span>7.8</span> /10</p>
-												<p class="describe">As Steve Rogers struggles to embrace his role in the modern world, he teams up with a fellow Avenger and S.H.I.E.L.D agent, Black Widow, to battle a new threat...</p>
-												<p class="run-time"> Run Time: 2h21’    .     <span>MMPA: PG-13 </span>    .     <span>Release: 1 May 2015</span></p>
-												<p>Director: <a href="#">Anthony Russo,</a><a href="#">Joe Russo</a></p>
-												<p>Stars: <a href="#">Chris Evans,</a> <a href="#">Samuel L. Jackson,</a> <a href="#">  Scarlett Johansson</a></p>
-											</div>
-										</div>
-										<div class="movie-item-style-2">
-											<img src="images/uploads/mv3.jpg" alt="">
-											<div class="mv-item-infor">
-												<h6><a href="#">blade runner  <span>(2015)</span></a></h6>
-												<p class="rate"><i class="ion-android-star"></i><span>7.3</span> /10</p>
-												<p class="describe">Armed with a super-suit with the astonishing ability to shrink in scale but increase in strength, cat burglar Scott Lang must embrace his inner hero and help...</p>
-												<p class="run-time"> Run Time: 2h21’    .     <span>MMPA: PG-13 </span>    .     <span>Release: 1 May 2015</span></p>
-												<p>Director: <a href="#">Peyton Reed</a></p>
-												<p>Stars: <a href="#">Paul Rudd,</a> <a href="#"> Michael Douglas</a></p>
-											</div>
-										</div>
-										<div class="movie-item-style-2">
-											<img src="images/uploads/mv4.jpg" alt="">
-											<div class="mv-item-infor">
-												<h6><a href="#">Mulholland pride<span> (2013)  </span></a></h6>
-												<p class="rate"><i class="ion-android-star"></i><span>7.2</span> /10</p>
-												<p class="describe">When Tony Stark's world is torn apart by a formidable terrorist called the Mandarin, he starts an odyssey of rebuilding and retribution.</p>
-												<p class="run-time"> Run Time: 2h21’    .     <span>MMPA: PG-13 </span>    .     <span>Release: 1 May 2015</span></p>
-												<p>Director: <a href="#">Shane Black</a></p>
-												<p>Stars: <a href="#">Robert Downey Jr., </a> <a href="#">  Guy Pearce,</a><a href="#">Don Cheadle</a></p>
-											</div>
-										</div>
-										<div class="movie-item-style-2">
-											<img src="images/uploads/mv5.jpg" alt="">
-											<div class="mv-item-infor">
-												<h6><a href="#">skyfall: evil of boss<span> (2013)  </span></a></h6>
-												<p class="rate"><i class="ion-android-star"></i><span>7.0</span> /10</p>
-												<p class="describe">When Tony Stark's world is torn apart by a formidable terrorist called the Mandarin, he starts an odyssey of rebuilding and retribution.</p>
-												<p class="run-time"> Run Time: 2h21’    .     <span>MMPA: PG-13 </span>    .     <span>Release: 1 May 2015</span></p>
-												<p>Director: <a href="#">Alan Taylor</a></p>
-												<p>Stars: <a href="#">Chris Hemsworth,  </a> <a href="#">  Natalie Portman,</a><a href="#">Tom Hiddleston</a></p>
-											</div>
-										</div>
-										<div class="topbar-filter">
-											<label>Movies per page:</label>
-											<select>
-												<option value="range">5 Movies</option>
-												<option value="saab">10 Movies</option>
-											</select>
-											<div class="pagination2">
-												<span>Page 1 of 2:</span>
-												<a class="active" href="#">1</a>
-												<a href="#">2</a>
-												<a href="#"><i class="ion-arrow-right-b"></i></a>
-											</div>
-										</div>
+										{%endfor%}
 					       	 		</div>
 					       	 	</div>
 						    </div>
