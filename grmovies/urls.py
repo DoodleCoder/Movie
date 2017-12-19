@@ -27,4 +27,7 @@ urlpatterns = [
     url(r'^login/$', views.login_site),
     url(r'^register/$', views.register),
     url(r'^logout/$', views.logout_site),
+    url(r'^movie/(?P<movie_id>\d+)/$', views.movie),
+    url(r'^show/(?P<show_id>\d+)/$', views.show),
+
 ]
