@@ -242,7 +242,7 @@ def movielist(request):
 		popmovie = cache.get('popmovie')	#find in cache
 		if not popmovie:					#if not in cache, call api
 			popmovie= []
-			for i in range(1,2):			#ignore this part
+			for i in range(1,3):			#ignore this part
 				popurl = 'https://api.themoviedb.org/3/movie/popular?api_key='+api+'&language='+lang+'&page='+str(i) #develop the api
 				response0 = urllib.urlopen(popurl) 	#call the api
 				pop = json.loads(response0.read())	#
@@ -256,16 +256,18 @@ def movielist(request):
 			print('NEW ENTRY')
 		else:
 			print('old entry')
-		poplist = popmovie[0]
+		context = {}
+		poplist = []
+		for i in popmovie:
+			for j in i:
+				poplist.append(j)
 		pop = sorted(poplist, key=itemgetter('popularity'), reverse=True)
-		
 		if request.method == 'POST':	
 			t = request.POST['filter']
 			rate = sorted(poplist, key=itemgetter('vote_average'), reverse=True)
 			a_z = sorted(poplist, key=itemgetter('title'))
 			z_a = sorted(poplist, key=itemgetter('title'), reverse=True)
 			date = sorted(poplist, key=itemgetter('release_date'), reverse=True)
-			# date = pop
 			if t == '1':
 				context={
 					'results': pop,
@@ -296,14 +298,14 @@ def movielist(request):
 					'results' : pop,
 					't' : t,
 				}
-			print(context)
+			# print(context)
 			return render(request, 'moviegrid.html', context)
 		else:
 			context={
 				'results' : pop,
 				't' : 1,
 			}
-			print(context)
+			# print(context)
 			return render(request, 'moviegrid.html', context)
 	else:
 		return redirect('/login/')
@@ -521,5 +523,7 @@ def search(request):
 			return HttpResponse('Not Allowed')
 	else:
 		return redirect('/login/')
+
+
 
 
