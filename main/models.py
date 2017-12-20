@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.contrib.auth.models import User
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
-
 
 class Profile(models.Model):
 	user= models.ForeignKey(User)
@@ -15,3 +14,31 @@ class Profile(models.Model):
 	def __str__(self):
 		return str(self.id) + '-' + self.user.username + ' Profile'
 
+class Movie(models.Model):
+	name = models.CharField(max_length=1000)
+	m_id = models.IntegerField()
+	w_add = models.IntegerField(default=0)
+	s_add = models.IntegerField(default=0)
+	u_rating = models.IntegerField(default=0)
+	d_rating = models.IntegerField(default=0)
+	pic = models.CharField(max_length=9999)
+	def __str__(self):
+		return str(self.name)
+
+class Watchlist(models.Model):
+	movie = models.ForeignKey(Movie, null=True)
+	user = models.ForeignKey(User, default='')
+	def __str__(self):
+		return str(self.user.username)
+
+class Seenlist(models.Model):
+	movie = models.ForeignKey(Movie, null=True)
+	user = models.ForeignKey(User, default='')
+	def __str__(self):
+		return str(self.user.username)
+
+class Genre(models.Model):
+	user = models.ForeignKey(User)
+	name = models.CharField(max_length=1000) 
+	def __str__(self):
+		return str(self.name)

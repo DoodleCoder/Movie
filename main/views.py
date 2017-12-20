@@ -295,6 +295,7 @@ def movie(request, movie_id):
 		'detail':mov,
 		'date':date,
 		'cast':cast,
+		'casto':cast[:7],
 		'crew':crew,
 		'director':director,
 		'writers':writers,
