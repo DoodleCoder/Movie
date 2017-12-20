@@ -256,7 +256,7 @@ def movielist(request):
 
 def movie(request, movie_id):
 	movurl = 'https://api.themoviedb.org/3/movie/'+movie_id+'?api_key='+api+'&language='+lang+'&page=1'
-	response0 = urllib.request.request.urlopen(movurl)
+	response0 = urllib.request.urlopen(movurl)
 	mov = json.loads(response0.read())
 	date=mov['release_date']
 	date=date[:4]
@@ -281,7 +281,10 @@ def movie(request, movie_id):
 	movsim = json.loads(response0.read())
 	movsim=movsim['results']
 
-	# movrevurl='https://api.themoviedb.org/3/movie/'+movie_id+'/reviews?api_key='+api+'&language='+lang+'&page=1'
+	movrevurl='https://api.themoviedb.org/3/movie/'+movie_id+'/reviews?api_key='+api+'&language='+lang+'&page=1'
+	response0 = urllib.request.urlopen(movrevurl)
+	movrev = json.loads(response0.read())
+	movrev=movrev['results']
 
 	context={
 		'detail':mov,
@@ -292,6 +295,7 @@ def movie(request, movie_id):
 		'writers':writers,
 		'producers':producers,
 		'movsim':movsim,
+		'reviews':movrev,
 	}
 	return render(request, 'moviesingle.html',context)
 
@@ -330,7 +334,10 @@ def show(request, show_id):
 		elif(c['department']=='Production'):
 			producers.append(c)
 
-
+	showkeyurl='https://api.themoviedb.org/3/tv/'+show_id+'/keywords?api_key='+api+'&language='+lang+'&page=1'
+	response0 = urllib.request.urlopen(showkeyurl)
+	showkey = json.loads(response0.read())
+	keywords=showkey['results']
 
 	context={
 		'detail':showdet,
@@ -342,6 +349,7 @@ def show(request, show_id):
 		'date': date,
 		'enddate': enddate,
 		'curr':curr,
+		'keywords':keywords,
 	}
 	return render(request, 'seriessingle.html', context)
 
