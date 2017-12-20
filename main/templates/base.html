@@ -111,17 +111,12 @@
 						</li>
 					</ul>
 					<ul class="nav navbar-nav flex-child-menu menu-right">
-						<li class="dropdown first">
-							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-							pages <i class="fa fa-angle-down" aria-hidden="true"></i>
+						<li class="">
+							<a href="/seenlist/" class="btn btn-default dropdown-toggle lv1"  data-hover="dropdown">
+							seenlist
 							</a>
-							<ul class="dropdown-menu level1">
-								<li><a href="landing.html">Landing</a></li>
-								<li><a href="404.html">404 Page</a></li>
-								<li class="it-last"><a href="comingsoon.html">Coming soon</a></li>
-							</ul>
 						</li>                
-						<li><a href="#">Help</a></li>
+						<li><a href="/watchlist/">Watchlist</a></li>
 						{% if request.user.username %}
 						<li class="btn"><a href="/logout/">log out</a></li>
 						{% else %}

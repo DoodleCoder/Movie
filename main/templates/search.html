@@ -47,17 +47,23 @@
 					<div class="movie-item-style-2">
 						<div class="row">
 							<div class="col-md-3">
-								<a href="/moviesingle/{{m.id}}/"><img src="https://image.tmdb.org/t/p/w500{{m.poster_path}}" alt="{{m.original_title}}" style="max-height: 100%"></a>
+								{% if t == 'movie' %}
+									<a href="/moviesingle/{{m.id}}/"><img src="https://image.tmdb.org/t/p/w500{{m.poster_path}}" alt="{{m.original_title}}" style="max-height: 100%"></a>
+								{% else %}
+									<a href="/show/{{m.id}}/"><img src="https://image.tmdb.org/t/p/w500{{m.poster_path}}" alt="{{m.name}}" style="max-height: 100%"></a>
+								{% endif %}
 							</div>
 							<div class="col-md-9">
 								<div class="mv-item-infor">
-									<h6><a href="/moviesingle/{{m.id}}/">
 									{% if t == 'movie' %}
-										{{m.title}}
+										<h6><a href="/movie/{{m.id}}/">
+											{{m.title}}
+										</a></h6>
 									{% else %}
-										{{m.name}}
+										<h6><a href="/show/{{m.id}}/">
+											{{m.name}}
+										</a></h6>
 									{% endif %}
-									</a></h6>
 									<p class="rate"><i class="ion-android-star"></i><span>{{m.vote_average}}</span> /10</p>
 									<p class="describe">{{m.overview}}</p>
 									<p class="run-time"> Popularity:{{m.popularity}}<span></span>.<span>

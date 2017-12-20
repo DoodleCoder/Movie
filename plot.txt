@@ -1,18 +1,6 @@
-1. logged in 
-	a. Reccommended 
-	b. 
-		i. now playing
-		ii. popular
-		iii. top-rated
-		iv. upcoming
-
-
-2. not logged in
-	a. Combi of popular and top-rated
-
-
-
-Gaurav
-2. Movie Single
-
-Ria
+1. paginate
+2. filter
+3. seenlist
+4. watchlist
+5. Recommend
+5. movie rarting predict

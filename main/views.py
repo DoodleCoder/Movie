@@ -2,10 +2,11 @@
 from __future__ import unicode_literals
 from django.http import HttpResponse, JsonResponse
 import json
-import urllib.request
+import urllib
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.cache import cache
 from django.contrib.auth.models import User
+from .models import Profile, Genre, Movie, Watchlist, Seenlist
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
@@ -14,7 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 api = '4a95b57fbcd4eea6c3e07a72ee861599'
 lang = 'en-US'
 genreURL = 'https://api.themoviedb.org/3/genre/movie/list?api_key='+api+'&language='+lang
-response0 = urllib.request.urlopen(genreURL)
+response0 = urllib.urlopen(genreURL)
 genre = json.loads(response0.read())
 genre = genre['genres']
 
@@ -82,7 +83,7 @@ def index(request):
 	if not popmovie:
 		popmovie= []
 		popurl = 'https://api.themoviedb.org/3/movie/popular?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(popurl)
+		response0 = urllib.urlopen(popurl)
 		pop = json.loads(response0.read())
 		for i in pop['results']:
 			i['genres']=[]
@@ -100,7 +101,7 @@ def index(request):
 	if not nowmovie:
 		nowmovie=[]
 		nowurl= 'https://api.themoviedb.org/3/movie/now_playing?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(nowurl)
+		response0 = urllib.urlopen(nowurl)
 		now = json.loads(response0.read())
 		for i in now['results']:
 			i['genres']=[]
@@ -117,7 +118,7 @@ def index(request):
 	if not topmovie:
 		topmovie=[]
 		topurl= 'https://api.themoviedb.org/3/movie/top_rated?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(topurl)
+		response0 = urllib.urlopen(topurl)
 		top = json.loads(response0.read())
 		for i in top['results']:
 			i['genres']=[]
@@ -134,7 +135,7 @@ def index(request):
 	if not upmovie:
 		upmovie=[]
 		upurl= 'https://api.themoviedb.org/3/movie/upcoming?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(upurl)
+		response0 = urllib.urlopen(upurl)
 		up = json.loads(response0.read())
 		for i in up['results']:
 			i['genres']=[]
@@ -157,7 +158,7 @@ def index(request):
 	if not airtodayshow:
 		airtodayshow= []
 		airtodayurl = 'https://api.themoviedb.org/3/tv/airing_today?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(airtodayurl)
+		response0 = urllib.urlopen(airtodayurl)
 		airtoday = json.loads(response0.read())
 		for i in airtoday['results']:
 			i['genres']=[]
@@ -174,7 +175,7 @@ def index(request):
 	if not airshow:
 		airshow=[]
 		airurl= 'https://api.themoviedb.org/3/tv/on_the_air?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(airurl)
+		response0 = urllib.urlopen(airurl)
 		air = json.loads(response0.read())
 		for i in air['results']:
 			i['genres']=[]
@@ -191,7 +192,7 @@ def index(request):
 	if not popshow:
 		popshow=[]
 		popurl= 'https://api.themoviedb.org/3/tv/popular?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(popurl)
+		response0 = urllib.urlopen(popurl)
 		pop = json.loads(response0.read())
 		for i in pop['results']:
 			i['genres']=[]
@@ -208,7 +209,7 @@ def index(request):
 	if not topshow:
 		topshow=[]
 		topurl= 'https://api.themoviedb.org/3/tv/top_rated?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(topurl)
+		response0 = urllib.urlopen(topurl)
 		top = json.loads(response0.read())
 		for i in top['results']:
 			i['genres']=[]
@@ -240,7 +241,7 @@ def movielist(request):
 			popmovie= []
 			for i in range(1,11):			#ignore this part
 				popurl = 'https://api.themoviedb.org/3/movie/popular?api_key='+api+'&language='+lang+'&page='+str(i) #develop the api
-				response0 = urllib.request.urlopen(popurl) 	#call the api
+				response0 = urllib.urlopen(popurl) 	#call the api
 				pop = json.loads(response0.read())	#
 				for i in pop['results']:
 					i['genres']=[]
@@ -261,13 +262,13 @@ def movielist(request):
 
 def movie(request, movie_id):
 	movurl = 'https://api.themoviedb.org/3/movie/'+movie_id+'?api_key='+api+'&language='+lang+'&page=1'
-	response0 = urllib.request.urlopen(movurl)
+	response0 = urllib.urlopen(movurl)
 	mov = json.loads(response0.read())
 	date=mov['release_date']
 	date=date[:4]
 
 	movcredurl= 'https://api.themoviedb.org/3/movie/'+movie_id+'/credits?api_key='+api+'&language='+lang+'&page=1'
-	response0 = urllib.request.urlopen(movcredurl)
+	response0 = urllib.urlopen(movcredurl)
 	movcred = json.loads(response0.read())
 	cast=movcred['cast']
 	crew=movcred['crew']
@@ -282,12 +283,12 @@ def movie(request, movie_id):
 			producers.append(c)
 
 	movsimurl='https://api.themoviedb.org/3/movie/'+movie_id+'/similar?api_key='+api+'&language='+lang+'&page=1'
-	response0 = urllib.request.urlopen(movsimurl)
+	response0 = urllib.urlopen(movsimurl)
 	movsim = json.loads(response0.read())
 	movsim=movsim['results']
 
 	movrevurl='https://api.themoviedb.org/3/movie/'+movie_id+'/reviews?api_key='+api+'&language='+lang+'&page=1'
-	response0 = urllib.request.urlopen(movrevurl)
+	response0 = urllib.urlopen(movrevurl)
 	movrev = json.loads(response0.read())
 	movrev=movrev['results']
 
@@ -307,7 +308,7 @@ def movie(request, movie_id):
 
 def show(request, show_id):
 	showurl = 'https://api.themoviedb.org/3/tv/'+show_id+'?api_key='+api+'&language='+lang
-	response0 = urllib.request.urlopen(showurl)
+	response0 = urllib.urlopen(showurl)
 	showdet = json.loads(response0.read())
 	date=showdet['first_air_date']
 	date=date[:4]
@@ -320,12 +321,12 @@ def show(request, show_id):
 	curr=seasons[-1]
 
 	showsimurl= 'https://api.themoviedb.org/3/tv/'+show_id+'/similar?api_key='+api+'&language='+lang+'&page=1'
-	response0 = urllib.request.urlopen(showsimurl)
+	response0 = urllib.urlopen(showsimurl)
 	showsim = json.loads(response0.read())
 	showsim=showsim['results']
 
 	showcredurl= 'https://api.themoviedb.org/3/tv/'+show_id+'/credits?api_key='+api+'&language='+lang+'&page=1'
-	response0 = urllib.request.urlopen(showcredurl)
+	response0 = urllib.urlopen(showcredurl)
 	showcred = json.loads(response0.read())
 	cast=showcred['cast']
 	crew=showcred['crew']
@@ -341,7 +342,7 @@ def show(request, show_id):
 			producers.append(c)
 
 	showkeyurl='https://api.themoviedb.org/3/tv/'+show_id+'/keywords?api_key='+api+'&language='+lang+'&page=1'
-	response0 = urllib.request.urlopen(showkeyurl)
+	response0 = urllib.urlopen(showkeyurl)
 	showkey = json.loads(response0.read())
 	keywords=showkey['results']
 
