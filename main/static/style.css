@@ -61,7 +61,7 @@ html, body {
 }
 
 body {
-  background: #ff7361;
+  background: #59a0ff;
   font-family: 'Montserrat', sans-serif;
   color: #fff;
   line-height: 1.3;
@@ -92,7 +92,7 @@ h1::after {
   content: '';
   width: 80px;
   display: block;
-  background: #fff;
+  background: #396aad;
   height: 10px;
   margin: 30px auto;
   line-height: 1.1;
@@ -118,8 +118,8 @@ p {
           transition: all 0.4s;
 }
 .btn:hover {
-  color: #005544;
-  border-color: #005544;
+  color: #396aad;
+  border-color: #396aad;
 }
 
 @media only screen and (max-width: 1000px) {
