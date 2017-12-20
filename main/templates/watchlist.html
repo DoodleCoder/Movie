@@ -55,17 +55,16 @@
 				</div>
 				<div class="flex-wrap-movielist user-fav-list">
 					{% for w in watchMovies %}
+					{% if w.name %}
 					<div class="movie-item-style-2">
-						<img src="images/uploads/mv1.jpg" alt="">
+						<img src="{{w.pic}}" alt="{{w.name}}" style="width: 30%;">
 						<div class="mv-item-infor">
-							<h6><a href="#">{{w.movie}}<span>(2012)</span></a></h6>
-							<p class="rate"><i class="ion-android-star"></i><span>8.1</span> /10</p>
-							<p class="describe">Earth's mightiest heroes must come together and learn to fight as a team if they are to stop the mischievous Loki and his alien army from enslaving humanity...</p>
-							<p class="run-time"> Run Time: 2h21’    .     <span>MMPA: PG-13 </span>    .     <span>Release: 1 May 2015</span></p>
-							<p>Director: <a href="#">Joss Whedon</a></p>
-							<p>Stars: <a href="#">Robert Downey Jr.,</a> <a href="#">Chris Evans,</a> <a href="#">  Chris Hemsworth</a></p>
+							<h6><a href="/movie/{{w.m_id}}/">{{w.name}}<span>({{w.date}})</span></a></h6>
+							<p class="rate"><i class="ion-android-star"></i><span>{{w.d_rating}}</span> /10</p>
+							<p class="describe">{{w.overview}}</p>
 						</div>
 					</div>
+					{% endif %}
 					{% endfor %}
 				</div>		
 				<div class="topbar-filter">

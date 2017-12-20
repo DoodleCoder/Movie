@@ -77,7 +77,7 @@ def logout_site(request):
 	return redirect('/index/')
 
 def index(request):
-	popmovie = cache.get('popmovie')
+	popmovie = cache.get('popmovie-index')
 	nowmovie = cache.get('nowmovie')
 	topmovie = cache.get('topmovie')
 	upmovie = cache.get('upmovie')
@@ -92,7 +92,7 @@ def index(request):
 				if j['id'] in i['genre_ids']:
 					i['genres'].append(j['name'])	
 		popmovie.append(pop['results'])
-		cache.set('popmovie', popmovie, 18000)  #18000 here is the number of seconds until the caache clears this data
+		cache.set('popmovie-index', popmovie, 18000)  #18000 here is the number of seconds until the caache clears this data
 		print('NEW ENTRY')
 	else:
 		print('old entry')
@@ -255,6 +255,7 @@ def movielist(request,page_no):
 					popmovie.append(i)
 			cache.set('popmovie', popmovie, 18000)  
 		poplist=popmovie
+		print(popmovie)
 		pop = sorted(poplist, key=itemgetter('popularity'), reverse=True)
 		if request.method == 'POST':	
 			t = request.POST['filter']
@@ -375,7 +376,9 @@ def movie(request, movie_id):
 			name=mov['title'],
 			m_id=movie_id,
 			d_rating = mov['vote_average'],
-			pic=mov['poster_path']
+			pic='https://image.tmdb.org/t/p/w500'+mov['poster_path'],
+			overview=mov['overview'],
+			date=mov['release_date'][:4]
 		)
 	for g in mov['genres']:
 			gen = Genre.objects.get_or_create(
@@ -581,17 +584,22 @@ def add_seenlist(request, movie_id):
 			})
 
 def seen(request):
-	print(request.user)
 	seens=Seenlist.objects.filter(user=request.user)
+	a = []
+	for i in seens:
+		a.append(i.movie)
 	context={
-		'seenMovies':seens,
+		'seenMovies':a,
 	}
 	return render(request, 'seenlist.html', context)
 
 def watch(request):
 	watch=Watchlist.objects.filter(user=request.user)
+	a = []
+	for i in watch:
+		a.append(i.movie)
 	context={
-		'watchMovies':watch,
+		'watchMovies':a,
 	}
 	return render(request, 'watchlist.html', context)
 

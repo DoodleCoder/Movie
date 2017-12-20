@@ -1,6 +1,20 @@
-1. paginate
-2. filter
-3. seenlist
-4. watchlist
+
+CLEAR:
+1. Index
+2. Search - TV
+3. Search - Movie
+4. List - TV
+5. List - Movie
+6. Single - TV
+7. Single - Movie
+8. Seenlist
+9. Watchlist
+
+BUGS:
+1. NONE in seenlist - DB
+2. NONE in watchlist - DB
+
+LEFT:
 5. Recommend
 6. movie rating predict
+

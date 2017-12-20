@@ -21,6 +21,8 @@ class Movie(models.Model):
 	s_add = models.IntegerField(default=0)
 	u_rating = models.IntegerField(default=0)
 	d_rating = models.IntegerField(default=0)
+	date = models.CharField(max_length=9999)
+	overview = models.TextField()
 	pic = models.CharField(max_length=9999)
 	def __str__(self):
 		return str(self.name)
