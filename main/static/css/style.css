@@ -4532,7 +4532,7 @@ ul {
   }
 }
 .topbar-filter p {
-  padding-right: 200px;
+  padding-right: 20px;
   margin-bottom: 0;
 }
 @media (max-width: 991px) {

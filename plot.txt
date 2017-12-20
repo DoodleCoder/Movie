@@ -3,4 +3,4 @@
 3. seenlist
 4. watchlist
 5. Recommend
-5. movie rarting predict
+6. movie rating predict

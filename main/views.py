@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.http import HttpResponse, JsonResponse
 import json
 import urllib
+from operator import itemgetter
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.cache import cache
 from django.contrib.auth.models import User
@@ -232,14 +233,16 @@ def index(request):
 	return render(request, 'index.html', context)
 
 def base(request):
+
+
 	return render(request, 'base.html')
 
 def movielist(request):
-	if request.user.is_authenticated():		
+	if request.user.is_authenticated():	
 		popmovie = cache.get('popmovie')	#find in cache
 		if not popmovie:					#if not in cache, call api
 			popmovie= []
-			for i in range(1,11):			#ignore this part
+			for i in range(1,2):			#ignore this part
 				popurl = 'https://api.themoviedb.org/3/movie/popular?api_key='+api+'&language='+lang+'&page='+str(i) #develop the api
 				response0 = urllib.urlopen(popurl) 	#call the api
 				pop = json.loads(response0.read())	#
@@ -253,23 +256,80 @@ def movielist(request):
 			print('NEW ENTRY')
 		else:
 			print('old entry')
-		context={
-			'pop': popmovie,
-		}
-		return render(request, 'moviegrid.html', context)
+		poplist = popmovie[0]
+		pop = sorted(poplist, key=itemgetter('popularity'), reverse=True)
+		
+		if request.method == 'POST':	
+			t = request.POST['filter']
+			rate = sorted(poplist, key=itemgetter('vote_average'), reverse=True)
+			a_z = sorted(poplist, key=itemgetter('title'))
+			z_a = sorted(poplist, key=itemgetter('title'), reverse=True)
+			date = sorted(poplist, key=itemgetter('release_date'), reverse=True)
+			# date = pop
+			if t == '1':
+				context={
+					'results': pop,
+					't' : t,
+				}
+			elif t == '2':
+				context={
+					'results': rate,
+					't' : t,
+				}
+			elif t == '3':
+				context={
+					'results': date,
+					't' : t,
+				}
+			elif t == '4':
+				context={
+					'results' : a_z,
+					't' : t,
+				}
+			elif t == '5':
+				context={
+					'results' : z_a,
+					't' : t,
+				}
+			else:
+				context={
+					'results' : pop,
+					't' : t,
+				}
+			print(context)
+			return render(request, 'moviegrid.html', context)
+		else:
+			context={
+				'results' : pop,
+				't' : 1,
+			}
+			print(context)
+			return render(request, 'moviegrid.html', context)
 	else:
 		return redirect('/login/')
 
 def movie(request, movie_id):
-	movurl = 'https://api.themoviedb.org/3/movie/'+movie_id+'?api_key='+api+'&language='+lang+'&page=1'
-	response0 = urllib.urlopen(movurl)
-	mov = json.loads(response0.read())
+	mov = cache.get('movie-'+str(movie_id))
+	if not mov:
+		movurl = 'https://api.themoviedb.org/3/movie/'+movie_id+'?api_key='+api+'&language='+lang+'&page=1'
+		response0 = urllib.urlopen(movurl)
+		mov = json.loads(response0.read())
+		cache.set('movie-'+str(movie_id), mov)
+		print('NEW ENTRY')
+	else:
+		print('old entry')
 	date=mov['release_date']
 	date=date[:4]
 
-	movcredurl= 'https://api.themoviedb.org/3/movie/'+movie_id+'/credits?api_key='+api+'&language='+lang+'&page=1'
-	response0 = urllib.urlopen(movcredurl)
-	movcred = json.loads(response0.read())
+	movcred = cache.get('movie-'+str(movie_id)+'-cred')
+	if not movcred:
+		movcredurl= 'https://api.themoviedb.org/3/movie/'+movie_id+'/credits?api_key='+api+'&language='+lang+'&page=1'
+		response0 = urllib.urlopen(movcredurl)
+		movcred = json.loads(response0.read())
+		cache.set('movie-'+str(movie_id)+'-cred', movcred)
+		print('NEW ENTRY')
+	else:
+		print('old entry')		
 	cast=movcred['cast']
 	crew=movcred['crew']
 	writers=[]
@@ -282,15 +342,27 @@ def movie(request, movie_id):
 		elif(c['department']=='Production'):
 			producers.append(c)
 
-	movsimurl='https://api.themoviedb.org/3/movie/'+movie_id+'/similar?api_key='+api+'&language='+lang+'&page=1'
-	response0 = urllib.urlopen(movsimurl)
-	movsim = json.loads(response0.read())
-	movsim=movsim['results']
+	movsim = cache.get('movie-'+str(movie_id)+'-sim')
+	if not movsim:
+		movsimurl='https://api.themoviedb.org/3/movie/'+movie_id+'/similar?api_key='+api+'&language='+lang+'&page=1'
+		response0 = urllib.urlopen(movsimurl)
+		movsim = json.loads(response0.read())
+		movsim=movsim['results']
+		cache.set('movie-'+str(movie_id)+'-sim', movsim)
+		print('NEW ENTRY')
+	else:
+		print('old entry')
 
-	movrevurl='https://api.themoviedb.org/3/movie/'+movie_id+'/reviews?api_key='+api+'&language='+lang+'&page=1'
-	response0 = urllib.urlopen(movrevurl)
-	movrev = json.loads(response0.read())
-	movrev=movrev['results']
+	movrev = cache.get('movie-'+str(movie_id)+'-review')
+	if not movrev:
+		movrevurl='https://api.themoviedb.org/3/movie/'+movie_id+'/reviews?api_key='+api+'&language='+lang+'&page=1'
+		response0 = urllib.urlopen(movrevurl)
+		movrev = json.loads(response0.read())
+		movrev=movrev['results']
+		cache.set('movie-'+str(movie_id)+'-review', movrev)
+		print('NEW ENTRY')
+	else:
+		print('old entry')
 
 	context={
 		'detail':mov,
@@ -307,9 +379,16 @@ def movie(request, movie_id):
 	return render(request, 'moviesingle.html',context)
 
 def show(request, show_id):
-	showurl = 'https://api.themoviedb.org/3/tv/'+show_id+'?api_key='+api+'&language='+lang
-	response0 = urllib.urlopen(showurl)
-	showdet = json.loads(response0.read())
+	showdet = cache.get('tv-'+str(show_id))
+	if not showdet:
+		showurl = 'https://api.themoviedb.org/3/tv/'+show_id+'?api_key='+api+'&language='+lang
+		response0 = urllib.urlopen(showurl)
+		showdet = json.loads(response0.read())
+		cache.set('tv-'+str(show_id), showdet)
+		print('NEW ENTRY')
+	else:
+		print('old entry')
+
 	date=showdet['first_air_date']
 	date=date[:4]
 	if(showdet['in_production']):
@@ -320,14 +399,26 @@ def show(request, show_id):
 	seasons=showdet['seasons']
 	curr=seasons[-1]
 
-	showsimurl= 'https://api.themoviedb.org/3/tv/'+show_id+'/similar?api_key='+api+'&language='+lang+'&page=1'
-	response0 = urllib.urlopen(showsimurl)
-	showsim = json.loads(response0.read())
-	showsim=showsim['results']
+	showsim = cache.get('tv-'+str(show_id)+'-sim')
+	if not showsim:
+		showsimurl= 'https://api.themoviedb.org/3/tv/'+show_id+'/similar?api_key='+api+'&language='+lang+'&page=1'
+		response0 = urllib.urlopen(showsimurl)
+		showsim = json.loads(response0.read())
+		showsim=showsim['results']
+		cache.set('tv-'+str(show_id)+'-sim', showsim)
+		print('NEW ENTRY')
+	else:
+		print('old entry')
 
-	showcredurl= 'https://api.themoviedb.org/3/tv/'+show_id+'/credits?api_key='+api+'&language='+lang+'&page=1'
-	response0 = urllib.urlopen(showcredurl)
-	showcred = json.loads(response0.read())
+	showcred = cache.get('tv-'+str(show_id)+'-cred')
+	if not showcred:
+		showcredurl= 'https://api.themoviedb.org/3/tv/'+show_id+'/credits?api_key='+api+'&language='+lang+'&page=1'
+		response0 = urllib.urlopen(showcredurl)
+		showcred = json.loads(response0.read())
+		cache.set('tv-'+str(show_id)+'-cred',showcred)
+		print('NEW ENTRY')
+	else:
+		print('old entry')
 	cast=showcred['cast']
 	crew=showcred['crew']
 	writers=[]
@@ -341,10 +432,16 @@ def show(request, show_id):
 		elif(c['department']=='Production'):
 			producers.append(c)
 
-	showkeyurl='https://api.themoviedb.org/3/tv/'+show_id+'/keywords?api_key='+api+'&language='+lang+'&page=1'
-	response0 = urllib.urlopen(showkeyurl)
-	showkey = json.loads(response0.read())
-	keywords=showkey['results']
+	showkey = cache.get('tv-'+str(show_id)+'-keywords')
+	if not showkey:
+		showkeyurl='https://api.themoviedb.org/3/tv/'+show_id+'/keywords?api_key='+api+'&language='+lang+'&page=1'
+		response0 = urllib.urlopen(showkeyurl)
+		showkey = json.loads(response0.read())
+		keywords=showkey['results']
+		cache.set('tv-'+str(show_id)+'-keywords', showkey)
+		print('NEW ENTRY')
+	else:
+		print('old entry')
 
 	context={
 		'detail':showdet,
@@ -424,3 +521,5 @@ def search(request):
 			return HttpResponse('Not Allowed')
 	else:
 		return redirect('/login/')
+
+

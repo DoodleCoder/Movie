@@ -1,6 +1,21 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<style type="text/css">
+	.abc{
+		font-family: 'Dosis', sans-serif;
+		border-color: #dd003f;
+	   	text-transform: uppercase;
+	    border-radiusus: 3px !important;
+	    background: #dd003f;
+    	color: white;
+    	height: 30px;
+    	width: 175%;
+    	margin-left: -55%;
+    	margin-top: 1px;
+	}
+</style>
+
 <div class="hero common-hero">
 	<div class="container">
 		<div class="row">
@@ -22,32 +37,35 @@
 			<div class="col-md-8 col-sm-12 col-xs-12">
 				<div class="topbar-filter">
 					<p>Found <span>1,608 movies</span> in total</p>
-					<label>Sort by:</label>
-					<select>
-						<option value="popularity">Popularity Descending</option>
-						<option value="popularity">Popularity Ascending</option>
-						<option value="rating">Rating Descending</option>
-						<option value="rating">Rating Ascending</option>
-						<option value="date">Release date Descending</option>
-						<option value="date">Release date Ascending</option>
-					</select>
-					<a href="movielist.html" class="list"><i class="ion-ios-list-outline "></i></a>
-					<a  href="moviegrid.html" class="grid"><i class="ion-grid active"></i></a>
+					<label style="">Sort by:</label>
+					<form method="POST" action="/movielist/">
+					{% csrf_token %}
+						<div class="col-md-9">
+							<select name="filter">
+								<option value="1" >Popularity</option>
+								<option value="2" >Rating</option>
+								<option value="3" >Release date</option>
+								<option value="4" >A-Z</option>
+								<option value="5" >Z-A</option>
+							</select>
+						</div>
+						<div class="col-md-3">
+							<input class="submit abc" type="submit" value="submit">
+						</div>
+					</form>
 				</div>
 				<div class="flex-wrap-movielist">
-					{% for page in pop %}
-						{% for m in page %}
-							<div class="movie-item-style-2 movie-item-style-1">
-								<img src="https://image.tmdb.org/t/p/w500{{m.poster_path}}" alt="">
-								<div class="hvr-inner">
-		            				<a  href="/movie/{{m.id}}/"> Read more <i class="ion-android-arrow-dropright"></i> </a>
-		            			</div>
-								<div class="mv-item-infor">
-									<h6><a href="/movie/{{m.id}}/">{{m.original_title}}</a></h6>
-									<p class="rate"><i class="ion-android-star"></i><span>{{m.vote_average}}</span> /10</p>
-								</div>
-							</div>				
-						{% endfor %}	
+					{% for m in results %}
+						<div class="movie-item-style-2 movie-item-style-1">
+							<img src="https://image.tmdb.org/t/p/w500{{m.poster_path}}" alt="">
+							<div class="hvr-inner">
+	            				<a  href="/movie/{{m.id}}/"> Read more <i class="ion-android-arrow-dropright"></i> </a>
+	            			</div>
+							<div class="mv-item-infor">
+								<h6><a href="/movie/{{m.id}}/">{{m.original_title}}</a></h6>
+								<p class="rate"><i class="ion-android-star"></i><span>{{m.vote_average}}</span> /10</p>
+							</div>
+						</div>	
 					{% endfor %}
 				</div>		
 				<div class="topbar-filter">
