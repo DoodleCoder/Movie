@@ -581,11 +581,19 @@ def add_seenlist(request, movie_id):
 			})
 
 def seen(request):
-
-	return render(request, 'seenlist.html')
+	print(request.user)
+	seens=Seenlist.objects.filter(user=request.user)
+	context={
+		'seenMovies':seens,
+	}
+	return render(request, 'seenlist.html', context)
 
 def watch(request):
-	return render(request, 'watchlist.html')
+	watch=Watchlist.objects.filter(user=request.user)
+	context={
+		'watchMovies':watch,
+	}
+	return render(request, 'watchlist.html', context)
 
 
 
