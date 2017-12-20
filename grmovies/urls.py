@@ -26,6 +26,8 @@ urlpatterns = [
     url(r'^movielist/$', views.movielist),
     url(r'^tvlist/$', views.tvlist),
     url(r'^login/$', views.login_site),
+    url(r'^add_watchlist/(?P<movie_id>\d+)/$', views.add_watchlist),
+    url(r'^add_seenlist/(?P<movie_id>\d+)/$', views.add_seenlist),
     url(r'^register/$', views.register),
     url(r'^logout/$', views.logout_site),
     url(r'^movie/(?P<movie_id>\d+)/$', views.movie),

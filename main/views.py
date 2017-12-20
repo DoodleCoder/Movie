@@ -242,7 +242,7 @@ def movielist(request):
 		popmovie = cache.get('popmovie')	#find in cache
 		if not popmovie:					#if not in cache, call api
 			popmovie= []
-			for i in range(1,3):			#ignore this part
+			for i in range(1,11):			#ignore this part
 				popurl = 'https://api.themoviedb.org/3/movie/popular?api_key='+api+'&language='+lang+'&page='+str(i) #develop the api
 				response0 = urllib.urlopen(popurl) 	#call the api
 				pop = json.loads(response0.read())	#
@@ -378,6 +378,17 @@ def movie(request, movie_id):
 		'movsim':movsim,
 		'reviews':movrev,
 	}
+	m = Movie.objects.get_or_create(
+			name=mov['title'],
+			m_id=movie_id,
+			d_rating = mov['vote_average'],
+			pic=mov['poster_path']
+		)
+	for g in mov['genres']:
+			gen = Genre.objects.get_or_create(
+				user=request.user,
+				name=g['name']
+			)
 	return render(request, 'moviesingle.html',context)
 
 def show(request, show_id):
@@ -524,6 +535,57 @@ def search(request):
 	else:
 		return redirect('/login/')
 
+@csrf_exempt
+def add_watchlist(request, movie_id):
+	# print('reached')
+	user = request.user
+	m = Movie.objects.get(m_id=movie_id)
+	if m.s_add == 0:
+		if m.w_add == 0:
+			m.w_add = 1
+			m.save()
+			w = Watchlist.objects.create(
+					user=user,
+					movie=m,
+				)
+			w.save();
+			return JsonResponse({
+				'success': 'true'
+				})
+		else:
+			return JsonResponse({
+				'success': 'false-already in watchlist'
+				})
+	else:
+		return JsonResponse({
+			'success' : 'false-already in seenlist'
+			})
+
+@csrf_exempt
+def add_seenlist(request, movie_id):
+	# print('reached')
+	user = request.user
+	m = Movie.objects.get(m_id=movie_id)
+	if m.w_add == 0:
+		if m.s_add == 0:
+			m.s_add = 1
+			m.save()
+			s = Seenlist.objects.create(
+					user=user,
+					movie=m,
+				)
+			s.save();
+			return JsonResponse({
+				'success': 'true'
+				})
+		else:
+			return JsonResponse({
+				'success': 'false-already in seenlist'
+				})
+	else:
+		return JsonResponse({
+			'success': 'false-already in watchlist'
+			})
 
 
 

@@ -1,6 +1,36 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<script type="text/javascript">
+	
+  	function c(id) {
+  		console.log(id);
+  		console.log('hello');
+  		$.ajax({
+			url: '/add_watchlist/'+id+'/',
+			type: 'POST',
+			dataType: 'json',
+			data: {},
+			success: function(data) {
+				console.log(data);
+				$('#watch').innerHTML = 'Added to Watchlist';
+			}
+		});
+	}
+	function d(id) {
+  		console.log(id);
+  		$.ajax({
+			url: '/add_seenlist/'+id+'/',
+			type: 'POST',
+			dataType: 'json',
+			data: {},
+			success: function(data) {
+				console.log(data);
+				$('#seen').innerHTML = 'Added to Seenlist';
+			}
+		});
+	}
+</script>
 <div class="hero mv-single-hero">
 	<div class="container">
 		<div class="row">
@@ -22,12 +52,12 @@
 					<img src="https://image.tmdb.org/t/p/w500{{detail.backdrop_path}}" alt="">
 					<div class="movie-btn">	
 						<div class="btn-transform transform-vertical red">
-							<div><a href="#" class="item item-1 redbtn"> <i class="ion-play"></i> Watch Trailer</a></div>
-							<div><a href="https://www.youtube.com/embed/o-0hcF97wy0" class="item item-2 redbtn fancybox-media hvr-grow"><i class="ion-play"></i></a></div>
+							<div><a onclick="c( {{detail.id}} )" id="watch" class="item redbtn"> <i class="ion-play"></i>Add to watchlist</a></div>
+							<!-- <div><a href="#" class="item item-2 redbtn fancybox-media hvr-grow"><i class="ion-play"></i></a></div> -->
 						</div>
 						<div class="btn-transform transform-vertical">
-							<div><a href="#" class="item item-1 yellowbtn"> <i class="ion-card"></i> Buy ticket</a></div>
-							<div><a href="#" class="item item-2 yellowbtn"><i class="ion-card"></i></a></div>
+							<div><a onclick="d( {{detail.id}} )" id="seen" class="item yellowbtn"> <i class="ion-card"></i>Have seen before</a></div>
+							<!-- <div><a href="#" class="item item-2 yellowbtn"><i class="ion-card"></i></a></div> -->
 						</div>
 					</div>
 				</div>
