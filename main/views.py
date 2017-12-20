@@ -525,4 +525,11 @@ def search(request):
 	else:
 		return redirect('/login/')
 
+def seen(request):
+	return render(request, 'seenlist.html')
+
+def watch(request):
+	return render(request, 'watchlist.html')
+
+
 

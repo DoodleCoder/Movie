@@ -30,7 +30,9 @@ urlpatterns = [
     url(r'^logout/$', views.logout_site),
     url(r'^movie/(?P<movie_id>\d+)/$', views.movie),
     url(r'^show/(?P<show_id>\d+)/$', views.show),
-    # url(r'^seenlist/$', views.seen),
+    url(r'^seenlist/$', views.seen),
+    url(r'^watchlist/$', views.watch),
+
 
 
 ]
