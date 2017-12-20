@@ -237,22 +237,23 @@ def base(request):
 
 	return render(request, 'base.html')
 
-def movielist(request):
+def movielist(request,page_no):
+	pageNo=int(page_no)
 	if request.user.is_authenticated():	
-		popmovie = cache.get('popmovie')	#find in cache
-		if not popmovie:					#if not in cache, call api
+		popmovie = cache.get('popmovie')	
+		if not popmovie:					
 			popmovie= []
-			for i in range(1,11):			#ignore this part
-				popurl = 'https://api.themoviedb.org/3/movie/popular?api_key='+api+'&language='+lang+'&page='+str(i) #develop the api
-				response0 = urllib.urlopen(popurl) 	#call the api
-				pop = json.loads(response0.read())	#
+			for i in range(1,11):			
+				popurl = 'https://api.themoviedb.org/3/movie/popular?api_key='+api+'&language='+lang+'&page='+str(i) 
+				response0 = urllib.urlopen(popurl) 	
+				pop = json.loads(response0.read())	
 				for i in pop['results']:
 					i['genres']=[]
 					for j in genre:
 						if j['id'] in i['genre_ids']:
 							i['genres'].append(j['name'])	
-				popmovie.append(pop['results'])
-			cache.set('popmovie', popmovie, 18000)  #18000 here is the number of seconds until the caache clears this data
+					popmovie.append(i)
+			cache.set('popmovie', popmovie, 18000)  
 			print('NEW ENTRY')
 		else:
 			print('old entry')
@@ -270,43 +271,42 @@ def movielist(request):
 			date = sorted(poplist, key=itemgetter('release_date'), reverse=True)
 			if t == '1':
 				context={
-					'results': pop,
+					'results': pop[(pageNo-1)*20:pageNo*20],
 					't' : t,
 				}
 			elif t == '2':
 				context={
-					'results': rate,
+					'results': rate[(pageNo-1)*20:pageNo*20],
 					't' : t,
 				}
 			elif t == '3':
 				context={
-					'results': date,
+					'results': date[(pageNo-1)*20:pageNo*20],
 					't' : t,
 				}
 			elif t == '4':
 				context={
-					'results' : a_z,
+					'results' : a_z[(pageNo-1)*20:pageNo*20],
 					't' : t,
 				}
 			elif t == '5':
 				context={
-					'results' : z_a,
+					'results' : z_a[(pageNo-1)*20:pageNo*20],
 					't' : t,
 				}
 			else:
 				context={
-					'results' : pop,
+					'results' : pop[(pageNo-1)*20:pageNo*20],
 					't' : t,
 				}
-			# print(context)
-			return render(request, 'moviegrid.html', context)
 		else:
 			context={
-				'results' : pop,
+				'results' : pop[(pageNo-1)*20:pageNo*20],
 				't' : 1,
 			}
-			# print(context)
-			return render(request, 'moviegrid.html', context)
+		context['page']=pageNo
+		context['pageNumbers']=[1,2,3,4,5,6,7,8,9,10]
+		return render(request, 'moviegrid.html', context)
 	else:
 		return redirect('/login/')
 
@@ -586,6 +586,13 @@ def add_seenlist(request, movie_id):
 		return JsonResponse({
 			'success': 'false-already in watchlist'
 			})
+
+def seen(request):
+
+	return render(request, 'seenlist.html')
+
+def watch(request):
+	return render(request, 'watchlist.html')
 
 
 

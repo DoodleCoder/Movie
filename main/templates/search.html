@@ -139,7 +139,7 @@
 									<h6><a href="/moviesingle/{{m.id}}/">{{m.original_title}}</a></h6>
 									<p class="rate"><i class="ion-android-star"></i><span>{{m.vote_average}}</span> /10</p>
 									<p class="describe">{{m.overview}}</p>
-									<p class="run-time"> Popularity:{{m.popularity}}    .     {% if m.adult is 'False' %}<span>MPAA: PG-13 </span>{% else %}<span>MPAA: Rated R </span>{% endif %}    .     <span>Release: {{m.release_date}}</span></p>
+									<p class="run-time"> Popularity:{{m.popularity}}    .     {% ifequal m.adult 'False' %}<span>MPAA: PG-13 </span>{% else %}<span>MPAA: Rated R </span>{% endifequal%}    .     <span>Release: {{m.release_date}}</span></p>
 								</div>
 							</div>
 						</div>
