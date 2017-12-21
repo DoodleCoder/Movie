@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'^show/(?P<show_id>\d+)/$', views.show),
     url(r'^seenlist/$', views.seen),
     url(r'^watchlist/$', views.watch),
+    url(r'^profile/$', views.profile),
 
 
 

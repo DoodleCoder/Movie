@@ -603,5 +603,8 @@ def watch(request):
 	}
 	return render(request, 'watchlist.html', context)
 
+def profile(request):
+	return render(request, 'profile.html')
+
 
 
