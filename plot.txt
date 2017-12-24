@@ -18,3 +18,9 @@ LEFT:
 5. Recommend
 6. movie rating predict
 
+
+
+STEPS FOR ML:
+1. get data in u_id, m_id, rating csv format
+2. get highly correlated movies
+3. K-Means
