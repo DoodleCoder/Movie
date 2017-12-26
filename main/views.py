@@ -19,6 +19,17 @@ genreURL = 'https://api.themoviedb.org/3/genre/movie/list?api_key='+api+'&langua
 response0 = urllib.urlopen(genreURL)
 genre = json.loads(response0.read())
 genre = genre['genres']
+b=0
+fp = open('u.genre','w')
+for i in genre:
+	# print(i)
+	for key, value in i.items():
+		fp.write(str(value)+'|')
+		b+=1
+		if b%2==0:
+			fp.write('\n')
+fp.close()
+
 
 
 def login_site(request):
