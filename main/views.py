@@ -316,6 +316,12 @@ def movie(request, movie_id):
 		print('old entry')
 	date=mov['release_date']
 	date=date[:4]
+	r = int(mov['vote_average'])
+	q = int(10-r)
+	ratingsss = [i for i in range(r)]
+	# print(ratingsss)
+	non_ratingsss = [i for i in range(q)]
+
 
 	movcred = cache.get('movie-'+str(movie_id)+'-cred')
 	if not movcred:
@@ -371,6 +377,8 @@ def movie(request, movie_id):
 		'producers':producers,
 		'movsim':movsim,
 		'reviews':movrev,
+		'abcdef':ratingsss,
+		'uvwxyz':non_ratingsss,
 	}
 	m = Movie.objects.get_or_create(
 			name=mov['title'],

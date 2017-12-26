@@ -112,15 +112,12 @@
 						</div>
 						<div class="rate-star">
 							<p>Rate This Movie:  </p>
-							<i class="ion-ios-star"></i>
-							<i class="ion-ios-star"></i>
-							<i class="ion-ios-star"></i>
-							<i class="ion-ios-star"></i>
-							<i class="ion-ios-star"></i>
-							<i class="ion-ios-star"></i>
-							<i class="ion-ios-star"></i>
-							<i class="ion-ios-star"></i>
-							<i class="ion-ios-star-outline"></i>
+							{% for i in abcdef %}
+								<i class="ion-ios-star"></i>
+							{% endfor %}
+							{% for i in uvwxyz %}
+								<i class="ion-ios-star-outline"></i>
+							{% endfor %}
 						</div>
 					</div>
 					<div class="movie-tabs">
