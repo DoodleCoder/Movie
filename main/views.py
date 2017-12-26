@@ -627,5 +627,28 @@ def watch(request):
 	return render(request, 'watchlist.html', context)
 
 def profile(request):
-	return render(request, 'profile.html')
+	pro=Profile.objects.get(user=request.user)
+	print(pro)
+	user=User.objects.get(id=request.user.id)
+	if request.method == 'POST':
+		print('hi')
+		username=request.POST['username']
+		fname=request.POST['fname']
+		lname=request.POST['lname']
+		country=request.POST['country']
+
+		pro.username=username
+		pro.firstName=fname
+		pro.lastName=lname
+		pro.country=country
+		pro.save()
+		user.first_name=fname
+		user.last_name=lname
+		user.username=username
+		user.save()
+
+	context={
+		'profile': pro
+	}
+	return render(request, 'profile.html', context)		
 
