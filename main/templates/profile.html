@@ -44,42 +44,27 @@
 			</div>
 			<div class="col-md-9 col-sm-12 col-xs-12">
 				<div class="form-style-1 user-pro" action="#">
-					<form action="#" class="user">
-						<h4>01. Profile details</h4>
+					<form action="#" method="post" class="user">
+						{% csrf_token %}
+						<h4>Profile details</h4>
 						<div class="row">
 							<div class="col-md-6 form-it">
 								<label>Username</label>
-								<input type="text" value="{{request.user}}">
+								<input type="text" name= "username" value="{{request.user}}">
 							</div>
 							<div class="col-md-6 form-it">
-								<label>Email Address</label>
-								<input type="text" value="{{request.user.username}}">
+								<label>Country</label>
+								<input type="text" name="country" value="{{profile.country}}">
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-6 form-it">
 								<label>First Name</label>
-								<input type="text" value="{{request.user.first_name}}">
+								<input type="text" name="fname" value="{{request.user.first_name}}">
 							</div>
 							<div class="col-md-6 form-it">
 								<label>Last Name</label>
-								<input type="text" value="{{request.user.last_name}}">
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-6 form-it">
-								<label>Country</label>
-								<select>
-								  <option value="united">United States</option>
-								  <option value="saab">Others</option>
-								</select>
-							</div>
-							<div class="col-md-6 form-it">
-								<label>State</label>
-								<select>
-								  <option value="united">New York</option>
-								  <option value="saab">Others</option>
-								</select>
+								<input type="text" name="lname" value="{{request.user.last_name}}">
 							</div>
 						</div>
 						<div class="row">
