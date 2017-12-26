@@ -587,11 +587,11 @@ def add_seenlist(request, movie_id):
 	if m.w_add == 0:
 		if m.s_add == 0:
 			m.s_add = 1
-			m.u_rating = rate
 			m.save()
 			s = Seenlist.objects.create(
 					user=user,
 					movie=m,
+					rate=rate,
 				)
 			s.save();
 			return JsonResponse({

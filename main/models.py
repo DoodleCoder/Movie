@@ -19,7 +19,6 @@ class Movie(models.Model):
 	m_id = models.IntegerField()
 	w_add = models.IntegerField(default=0)
 	s_add = models.IntegerField(default=0)
-	u_rating = models.IntegerField(default=0)
 	d_rating = models.IntegerField(default=0)
 	date = models.CharField(max_length=9999)
 	overview = models.TextField()
@@ -36,6 +35,7 @@ class Watchlist(models.Model):
 class Seenlist(models.Model):
 	movie = models.ForeignKey(Movie, null=True)
 	user = models.ForeignKey(User, default='')
+	rate = models.IntegerField(default=0)
 	def __str__(self):
 		return str(self.user.username)
 
