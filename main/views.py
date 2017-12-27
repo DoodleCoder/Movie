@@ -592,6 +592,7 @@ def search(request):
 
 @csrf_exempt
 def add_watchlist(request, movie_id):
+
 	user = request.user
 	m = Movie.objects.get(m_id=movie_id, user=request.user)
 	print(m)
