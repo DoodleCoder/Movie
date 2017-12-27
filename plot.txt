@@ -15,6 +15,122 @@ BUGS:
 2. NONE in watchlist - DB
 
 LEFT:
+
+A. Base:
+	1. Search bar fix
+	2. Title bar clean-up
+	3. Profile next to seenlist and watchlist
+
+B. Login/Register
+	1. Page should be dark blue background with gray dots
+
+C. Homepage
+	1. Automatic carousel for current movies and tv shows (not recommended)
+	2. Some without ratings, should be mentioned not rated
+
+D. Movie-List
+	1. Gray should be lightend
+	2. When 'sort by' is changed to some other attribute, that attribute should be mentioned in the field instead of default 'Popular'
+	3. Change "Found 1608 Movies"
+	4. In 'sort by rating' all movies show 0/10 rating
+	5. Search for movie side bar not working
+	6. Movies per page not working
+	7. Some without ratings, should be mentioned not rated
+
+E. TV-List
+	1. The sort by options are different than movie
+	2. No submit button
+	3. Remove button to convert from movie grid to movie list
+	4. Pagination not done
+	5. Gray should be lightend
+	6. Change "Found 1608 Movies"
+	7. Search for show side bar not working
+	8. Shows per page not working
+	9. Some without ratings, should be mentioned not rated
+
+F. Search
+	1. If there are no upcoming movies than that section should not be there
+	2. Upcoming movies have not been moved to upcoming section
+	3. Some dont have images, there should be a default image
+	4. Some without ratings, should be mentioned not rated
+	5. Some without overview, should be mentioned no review
+	6. Popularity should be converted to %
+	7. Some searches result in "BAD REQUEST"
+
+G. Movie Single
+	1. There is a black background, that should be filled with the backdrop
+	2. "Add to Favourite" changed to "Add to Watchlist"
+	3. "Add to Watchlist" changed to "Watch Trailer"
+	4. Remove Rating with stars next to the actual rating
+	5. Add rating instead of Share button (user rating/imdb rating)
+	6. Limit number of stars that can be shown in the side bar
+	7. No comma after last genre, actor, producer in sidebar
+	8. Release date should be like "13th May, 2017"
+	9. When clicked on a plot-keyword, all the movies having that plot keyword should be shown (format should be same as search page) or just remove this section
+	10. top gray colour is not consistent (should be like the gray on the homepage)
+	11. Pagination in reviews
+	12. Reviews per page not working
+	13. Related movies pagination not working
+	14. Related movies per page not working
+	15. Related Movies - Runtime, MMPA, Release make proper columns and remove ' after Runtime
+	16. Related Movies - Director and stars are not populated, along with rating, runtime and releasedate
+	17. Cannot sort 
+	18. Feedback for add to watchlist and seenlist 
+	19. Rating in stars
+
+H. TV Single
+	1. There is a background, that should be filled with the backdrop
+	2. "Add to Favourite" changed to "Add to Watchlist"
+	3. "Add to Watchlist" changed to "Watch Trailer"
+	4. Remove Rating with stars next to the actual rating
+	5. Add rating instead of Share button (user rating/imdb rating)
+	6. If show has ended there should not be a current season
+	7. If show is still airing then there should be information about the current season, how many episodes done, when was the last episode released and when is the next episode going to release
+	8. If show season has not begun, then either show about the upcoming season or the season that just aired
+	9. View all seasons, View all cast not working
+	10. No director, then remove field
+	11. No comma after last genre, actor, producer in sidebar
+	12. Release date should be like "13th May, 2017"
+	13. "Run Time" changed to "Aprrox Episode Run Time"
+	10. When clicked on a plot-keyword, all the shows having that plot keyword should be shown (format should be same as search page) or just remove this section
+	11. Under "Season" section use all the space give, info like season name, how many episodes, first release date and last release date should be mentioned
+	12. Related shows no pagination?
+	13. Related shows per page not there?
+	14. Related shows - Runtime, MMPA, Release make proper columns and remove ' after Runtime
+	15. Related shows - Director and stars are not populated, along with rating, runtime and releasedate
+	16. Cannot sort
+	17. Feedback for add to watchlist and seenlist 
+	18. Rating in stars
+
+I. Seenlist
+	1. Mention that the rating displayed is the user's rating
+	2. "Found 1608 Movies" should be changed
+	3. Sort-by not working
+	4. Remove button to switch from movie grid to movie list
+	5. Pagination not working
+	6. Movies per page not working
+	7. Change rating option?
+	8. If blank, there should be some message
+	9. Change "User's Profile" to "User's Seenlist"
+
+J. Watchlist
+	1. Mention next to the movie our predicted rating for the movie 	
+	2. "Found 1608 Movies" should be changed
+	3. Sort-by not working
+	4. Remove button to switch from movie grid to movie list
+	5. Pagination not working
+	6. If blank, there should be some message
+	7. There should be an option to move to seenlist along with rating
+	8. Shows per page not working
+	9. Change "User's Profile" to "User's Watchlist"
+
+H. Profile
+	1. Change password functionality
+	2. Profile Pic
+	3. Remove "Change password" from side bar, or have another page for it
+	4. Log out button not working
+	5. Align "User's Profile" to the breadcrumbs
+
 5. Recommend
 6. movie rating predict
 
