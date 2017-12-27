@@ -25,54 +25,40 @@ gname = ['Action','Adventure','Animation','Comedy','Crime','Documentary','Drama'
 idsss=[i for i in range(19)]
 # print(gid, gname, idsss)
 
+# b=0
+# popmovie = cache.get('popmovie')	
+# if not popmovie:					
+# 	popmovie= []
+# 	for i in range(1,501):
+# 		popurl = 'https://api.themoviedb.org/3/movie/popular?api_key='+api+'&language='+lang+'&page='+str(i) 
+# 		response0 = urllib.urlopen(popurl) 	
+# 		pop = json.loads(response0.read())	
+# 		for i in pop['results']:
+# 			i['genres']=[]
+# 			for j in genre:
+# 				if j['id'] in i['genre_ids']:
+# 					i['genres'].append(j['name'])	
+# 			popmovie.append(i)
+# 	cache.set('popmovie', popmovie, 18000) 
+# c=popmovie
 
-b=0
-fp = open('u.genre','w')
-for i in genre:
-	# print(i)
-	for key, value in i.items():
-		fp.write(str(value)+'|')
-		b+=1
-		if b%2==0:
-			fp.write('\n')
-fp.close()
-
-b=0
-popmovie = cache.get('popmovie')	
-if not popmovie:					
-	popmovie= []
-	for i in range(1,5001):
-		popurl = 'https://api.themoviedb.org/3/movie/popular?api_key='+api+'&language='+lang+'&page='+str(i) 
-		response0 = urllib.urlopen(popurl) 	
-		pop = json.loads(response0.read())	
-		for i in pop['results']:
-			i['genres']=[]
-			for j in genre:
-				if j['id'] in i['genre_ids']:
-					i['genres'].append(j['name'])	
-			popmovie.append(i)
-	cache.set('popmovie', popmovie, 18000) 
-c=popmovie
-
-fp = open('allmovies.txt', 'w')
-# fp.write('id|title|Action|Adventure|Animation|Comedy|Crime|Documentary|Drama|Family|Fantasy|History|Horror|Music|Mystery|Romance|Sci Fi|TV Movie|Thriller|War|Western\n')
-for i in c:
-	try:
-		fp.write(str(i['id'])+'|'+(i['title'])+'|')
-	except UnicodeEncodeError:
-		continue
-	ge = [0 for j in range(19)]
-	l = i['genre_ids']
-	for k in range(19):
-		if gid[k] in l:
-			ge[k] = 1
-		else: 
-			ge[k]=0
-	# print(ge)
-	for i in ge:
-		fp.write(str(i)+'|')
-	fp.write('\n')
-fp.close()
+# fp = open('allmovies.txt', 'w')
+# for i in c:
+# 	try:
+# 		fp.write(str(i['id'])+'|'+(i['title'])+'|')
+# 	except UnicodeEncodeError:
+# 		continue
+# 	ge = [0 for j in range(19)]
+# 	l = i['genre_ids']
+# 	for k in range(19):
+# 		if gid[k] in l:
+# 			ge[k] = 1
+# 		else: 
+# 			ge[k]=0
+# 	for i in ge:
+# 		fp.write(str(i)+'|')
+# 	fp.write('\n')
+# fp.close()
 
 def login_site(request):
 	if request.method == 'POST':
