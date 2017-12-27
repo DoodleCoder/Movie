@@ -610,7 +610,8 @@ def seen(request):
 	seens=Seenlist.objects.filter(user=request.user)
 	a = []
 	for i in seens:
-		a.append(i.movie)
+		a.append(i)
+
 	context={
 		'seenMovies':a,
 	}

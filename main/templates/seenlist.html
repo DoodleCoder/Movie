@@ -6,7 +6,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="hero-ct">
-					<h1 style="margin-right: 20%">{{request.user.first_name}}’s profile</h1>
+					<h1 style="margin-right: 10%">{{request.user.first_name}}’s profile</h1>
 					<ul class="breadcumb">
 						<li class="active"><a href="#">Home</a></li>
 						<li> <span class="ion-ios-arrow-right"></span>Seen movies</li>
@@ -55,13 +55,13 @@
 				</div>
 				<div class="flex-wrap-movielist user-fav-list">
 					{% for w in seenMovies %}
-					{% if w.name %}
+					{% if w.movie.name %}
 					<div class="movie-item-style-2">
-						<img src="{{w.pic}}" alt="{{w.name}}" style="width: 25%;">
+						<img src="{{w.movie.pic}}" alt="{{w.movie.name}}" style="width: 25%;">
 						<div class="mv-item-infor">
-							<h6><a href="/movie/{{w.m_id}}/">{{w.name}}<span>({{w.date}})</span></a></h6>
-							<p class="rate"><i class="ion-android-star"></i><span>{{w.d_rating}}</span> /10</p>
-							<p class="describe">{{w.overview}}</p>
+							<h6><a href="/movie/{{w.movie.m_id}}/">{{w.movie.name}}<span>({{w.movie.date}})</span></a></h6>
+							<p class="rate"><i class="ion-android-star"></i><span>{{w.rate}}</span> /10</p>
+							<p class="describe">{{w.movie.overview}}</p>
 						</div>
 					</div>
 					{% endif %}
