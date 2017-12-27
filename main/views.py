@@ -41,7 +41,7 @@ b=0
 popmovie = cache.get('popmovie')	
 if not popmovie:					
 	popmovie= []
-	for i in range(1,101):
+	for i in range(1,5001):
 		popurl = 'https://api.themoviedb.org/3/movie/popular?api_key='+api+'&language='+lang+'&page='+str(i) 
 		response0 = urllib.urlopen(popurl) 	
 		pop = json.loads(response0.read())	
