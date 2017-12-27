@@ -60,6 +60,16 @@ idsss=[i for i in range(19)]
 # 	fp.write('\n')
 # fp.close()
 
+# fp = open('ratings.txt','w')
+# usersAll = User.objects.all()
+# for u in usersAll:
+# 	seenAll = Seenlist.objects.filter(user=u)
+# 	for s in seenAll:
+# 		fp.write(str(u.id)+'|'+str(s.movie.m_id)+'|'+str(s.rate)+'\n')
+# 		# print(s.movie.name,s.rate)
+# fp.close()
+
+
 def login_site(request):
 	if request.method == 'POST':
 		username = request.POST['email']
@@ -613,6 +623,9 @@ def add_seenlist(request, movie_id):
 	rate = t['u_rate']
 	user = request.user
 	m = Movie.objects.get(m_id=movie_id)
+	fp = open('ratings.txt','a')
+	fp.write(str(user.id)+'|'+str(m.m_id)+'|'+str(rate)+'\n')
+	fp.close()
 	if m.w_add == 0:
 		if m.s_add == 0:
 			m.s_add = 1

@@ -13,29 +13,31 @@ CLEAR:
 BUGS:
 1. NONE in seenlist - DB
 2. NONE in watchlist - DB
+3. Movie added to watchlist by one user cannot be added to seenlist by another user
+4. Movie added to seenlist by one user cannot be added to watchlist by another user
 
 LEFT:
 
 A. Base:
-	1. Search bar fix
-	2. Title bar clean-up
-	3. Profile next to seenlist and watchlist
+	-->1. Search bar fix
+	-->2. Title bar clean-up
+	-3. Profile next to seenlist and watchlist
 
 B. Login/Register
-	1. Page should be dark blue background with gray dots
+	-1. Page should be dark blue background with gray dots
 
 C. Homepage
-	1. Automatic carousel for current movies and tv shows (not recommended)
-	2. Some without ratings, should be mentioned not rated
+	-1. Automatic carousel for current movies and tv shows (not recommended)
+	-2. Some without ratings, should be mentioned not rated
 
 D. Movie-List
-	1. Gray should be lightend
+	-1. Gray should be lightend
 	2. When 'sort by' is changed to some other attribute, that attribute should be mentioned in the field instead of default 'Popular'
 	3. Change "Found 1608 Movies"
-	4. In 'sort by rating' all movies show 0/10 rating
+	-->4. In 'sort by rating' all movies show 0/10 rating
 	5. Search for movie side bar not working
-	6. Movies per page not working
-	7. Some without ratings, should be mentioned not rated
+	-6. Movies per page not working
+	-7. Some without ratings, should be mentioned not rated
 
 E. TV-List
 	1. The sort by options are different than movie
@@ -135,15 +137,8 @@ H. Profile
 6. movie rating predict
 
 
-
 STEPS FOR ML:
-1. get data in u_id, m_id, rating csv format
-2. get highly correlated movies
-3. K-Means
-
-
-STEPS FOR ML:
-1. get movie data - 1/0 for each genre
-2. get user data
+---> 1. get movie data - 1/0 for each genre
+---> 2. get user data
 3. get rating data - user VS movie VS rating
 4. Kmeans
