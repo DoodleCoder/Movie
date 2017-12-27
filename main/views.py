@@ -11,7 +11,7 @@ from .models import Profile, Genre, Movie, Watchlist, Seenlist
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
-
+from django.db.models import Q
 
 api = '4a95b57fbcd4eea6c3e07a72ee861599'
 lang = 'en-US'
@@ -140,7 +140,7 @@ def index(request):
 			for j in genre:
 				if j['id'] in i['genre_ids']:
 					i['genres'].append(j['name'])	
-		popmovie.append(pop['results'])
+		popmovie.append(pop['results'][:10])
 		cache.set('popmovie-index', popmovie, 18000)  #18000 here is the number of seconds until the caache clears this data
 		print('NEW ENTRY')
 	else:
@@ -158,7 +158,7 @@ def index(request):
 			for j in genre:
 				if j['id'] in i['genre_ids']:
 					i['genres'].append(j['name'])	
-		nowmovie.append(now['results'])
+		nowmovie.append(now['results'][:10])
 		cache.set('nowmovie', nowmovie, 18000)  #18000 here is the number of seconds until the caache clears this data
 		print('NEW ENTRY')
 	else:
@@ -175,7 +175,7 @@ def index(request):
 			for j in genre:
 				if j['id'] in i['genre_ids']:
 					i['genres'].append(j['name'])	
-		topmovie.append(top['results'])
+		topmovie.append(top['results'][:10])
 		cache.set('topmovie', topmovie, 18000)  #18000 here is the number of seconds until the caache clears this data	
 		print('NEW ENTRY')
 	else:
@@ -192,7 +192,7 @@ def index(request):
 			for j in genre:
 				if j['id'] in i['genre_ids']:
 					i['genres'].append(j['name'])	
-		upmovie.append(up['results'])
+		upmovie.append(up['results'][:10])
 		cache.set('upmovie', upmovie, 18000)
 		print('NEW ENTRY')
 	else:
@@ -215,7 +215,7 @@ def index(request):
 			for j in genre:
 				if j['id'] in i['genre_ids']:
 					i['genres'].append(j['name'])	
-		airtodayshow.append(airtoday['results'])
+		airtodayshow.append(airtoday['results'][:10])
 		cache.set('airtodayshow', airtodayshow, 18000)  #18000 here is the number of seconds until the caache clears this data
 		print('NEW ENTRY')
 	else:
@@ -232,7 +232,7 @@ def index(request):
 			for j in genre:
 				if j['id'] in i['genre_ids']:
 					i['genres'].append(j['name'])	
-		airshow.append(air['results'])
+		airshow.append(air['results'][:10])
 		cache.set('airshow', airshow, 18000)  #18000 here is the number of seconds until the caache clears this data
 		print('NEW ENTRY')
 	else:
@@ -249,7 +249,7 @@ def index(request):
 			for j in genre:
 				if j['id'] in i['genre_ids']:
 					i['genres'].append(j['name'])	
-		popshow.append(pop['results'])
+		popshow.append(pop['results'][:10])
 		cache.set('popshow', popshow, 18000)
 		print('NEW ENTRY')
 	else:
@@ -266,9 +266,9 @@ def index(request):
 			for j in genre:
 				if j['id'] in i['genre_ids']:
 					i['genres'].append(j['name'])	
-		topshow.append(top['results'])
+		topshow.append(top['results'][:10])
 		cache.set('topshow', topshow, 18000)  #18000 here is the number of seconds until the caache clears this data	
-
+	print(len(popmovie))
 	context={
 		'pop': popmovie,
 		'now': nowmovie,
@@ -431,6 +431,7 @@ def movie(request, movie_id):
 		'uvwxyz':non_ratingsss,
 	}
 	m = Movie.objects.get_or_create(
+			user=request.user,
 			name=mov['title'],
 			m_id=movie_id,
 			d_rating = mov['vote_average'],
@@ -591,9 +592,9 @@ def search(request):
 
 @csrf_exempt
 def add_watchlist(request, movie_id):
-	# print('reached')
 	user = request.user
-	m = Movie.objects.get(m_id=movie_id)
+	m = Movie.objects.get(m_id=movie_id, user=request.user)
+	print(m)
 	if m.s_add == 0:
 		if m.w_add == 0:
 			m.w_add = 1
@@ -617,12 +618,10 @@ def add_watchlist(request, movie_id):
 
 @csrf_exempt
 def add_seenlist(request, movie_id):
-	# print('reached')
 	t = json.loads(request.body.decode('utf-8'))
-	print(t)
 	rate = t['u_rate']
 	user = request.user
-	m = Movie.objects.get(m_id=movie_id)
+	m = Movie.objects.get(m_id=movie_id, user=user)
 	fp = open('ratings.txt','a')
 	fp.write(str(user.id)+'|'+str(m.m_id)+'|'+str(rate)+'\n')
 	fp.close()

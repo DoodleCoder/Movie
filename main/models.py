@@ -15,6 +15,7 @@ class Profile(models.Model):
 		return str(self.id) + '-' + self.user.username + ' Profile'
 
 class Movie(models.Model):
+	user = models.ForeignKey(User)
 	name = models.CharField(max_length=1000)
 	m_id = models.IntegerField()
 	w_add = models.IntegerField(default=0)
