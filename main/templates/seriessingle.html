@@ -36,36 +36,10 @@
 				<div class="movie-single-ct main-content">
 					<h1 class="bd-hd">{{detail.name}}<span> {{date}} - {{enddate}}</span></h1>
 					<div class="social-btn">
-						<a href="#" class="parent-btn"><i class="ion-heart"></i> Add to Favorite</a>
-						<div class="hover-bnt">
-							<a href="#" class="parent-btn"><i class="ion-android-share-alt"></i>share</a>
-							<div class="hvr-item">
-								<a href="#" class="hvr-grow"><i class="ion-social-facebook"></i></a>
-								<a href="#" class="hvr-grow"><i class="ion-social-twitter"></i></a>
-								<a href="#" class="hvr-grow"><i class="ion-social-googleplus"></i></a>
-								<a href="#" class="hvr-grow"><i class="ion-social-youtube"></i></a>
-							</div>
-						</div>		
-					</div>
-					<div class="movie-rate">
-						<div class="rate">
-							<i class="ion-android-star"></i>
-							<p><span>{{detail.vote_average}}</span> /10<br>
-								<!-- <span class="rv">56 Reviews</span> -->
-							</p>
-						</div>
-						<div class="rate-star">
-							<p>Rate This Movie:  </p>
-							<i class="ion-ios-star"></i>
-							<i class="ion-ios-star"></i>
-							<i class="ion-ios-star"></i>
-							<i class="ion-ios-star"></i>
-							<i class="ion-ios-star"></i>
-							<i class="ion-ios-star"></i>
-							<i class="ion-ios-star"></i>
-							<i class="ion-ios-star"></i>
-							<i class="ion-ios-star-outline"></i>
-						</div>
+						<a href="#" class="parent-btn"><i class="ion-heart"></i> Add to Watchlist</a>
+						<div>
+							<a class="parent-btn" style="font-size: 14px"><i class="ion-star"></i>{{detail.vote_average}}/10</a>
+						</div>	
 					</div>
 					<div class="movie-tabs">
 						<div class="tabs">
@@ -81,7 +55,11 @@
 						            	<div class="col-md-8 col-sm-12 col-xs-12">
 						            		<p>{{detail.overview}}</p>
 						            		<div class="title-hd-sm">
+						            			{% ifequal detail.status "Returning Series" %}
 												<h4>Current Season</h4>
+												{% else %}
+												<h4>Last Season</h4>
+												{% endifequal %}
 												<a href="#" class="time">View All Seasons <i class="ion-ios-arrow-right"></i></a>
 											</div>
 											<!-- movie cast -->
@@ -90,9 +68,9 @@
 													<div class="cast-left series-it">
 														<img src="https://image.tmdb.org/t/p/w500{{curr.poster_path}}" alt="" style="width:25%">
 														<div>
-															<a href="#">Season {{curr.season_number}}</a>
-														<p>{{curr.episode_count}} Episodes</p>
-														<p>Season {{curr.season_number}} of {{detail.name}} premiered on {{curr.air_date}}.</p>
+															<a>Season {{curr.season_number}}</a>
+															<p style="width: 100%">There are {{curr.episode_count}} episodes in this season</p>
+															<p style="width: 100%">It first aired on {{currairdate}} and the last episode came out on {{currlastdate}}</p>
 														</div>	
 													</div>											
 												</div>	
@@ -102,11 +80,11 @@
 												<a href="#" class="time">Full Cast & Crew  <i class="ion-ios-arrow-right"></i></a>
 											</div>
 											<!-- movie cast -->
-											<div class="mvcast-item">											{%for c in cast %}
+											<div class="mvcast-item">											
+												{%for c in cast %}
 												<div class="cast-it">
 													<div class="cast-left">
-														<img src="images/uploads/cast1.jpg" alt="">
-														<a href="#">{{c.name}}</a>
+														<p>{{c.name}}</p>
 													</div>
 													<p>...  {{c.character}}</p>
 												</div>
@@ -114,23 +92,27 @@
 											</div>
 						            	</div>
 						            	<div class="col-md-4 col-xs-12 col-sm-12">
+						            		{% ifnotequal director '' %}
 						            		<div class="sb-it">
 						            			<h6>Director: </h6>
 						            			<p><a href="#">{{director}}</a></p>
 						            		</div>
+						            		{% endifnotequal %}
+						            		{% ifnotequal writers|length 0 %}
 						            		<div class="sb-it">
 						            			<h6>Writer: </h6>
 						            			<p>
 						            				{% for w in writers %}
-						            				<a href="#">{{w.name}},</a>
+						            				<span>{{w.name}},</span>
 						            				{%endfor%}
 						            			</p>
 						            		</div>
+						            		{% endifnotequal %}
 						            		<div class="sb-it">
 						            			<h6>Stars: </h6>
 						            			<p>
 						            				{% for c in cast %}
-						            				<a href="#">{{c.name}},</a>
+						            				<span>{{c.name}},</span>
 						            				{% endfor %}
 						            			</p>
 						            		</div>
@@ -138,16 +120,16 @@
 						            			<h6>Genres:</h6>
 						            			<p>
 						            				{% for g in detail.genres %}
-						            				<a href="#">{{g.name}}, </a>
+						            				<span>{{g.name}}, </span>
 						            				{% endfor %}
 						            			</p>
 						            		</div>
 						            		<div class="sb-it">
 						            			<h6>Release Date:</h6>
-						            			<p>{{detail.first_air_date}}</p>
+						            			<p>{{reldate}}</p>
 						            		</div>
 						            		<div class="sb-it">
-						            			<h6>Run Time:</h6>
+						            			<h6>Average Episode Run Time:</h6>
 						            			{%for r in detail.episode_run_time %}
 						            			<p>{{r}} min</p>
 						            			{% endfor %}
@@ -233,15 +215,15 @@
 					       	 	</div>
 					       	 	<div id="season" class="tab">
 					       	 		<div class="row">
-					       	 			{% for season in detail.seasons %}
+					       	 			{% for season in seasons %}
 					       	 			<div class="mvcast-item">											
 											<div class="cast-it">
 												<div class="cast-left series-it">
 													<img src="https://image.tmdb.org/t/p/w500{{season.poster_path}}" alt="" style="width: 25%">
 													<div>
 														<a href="#">Season {{season.season_number}}</a>
-														<p>{{season.episode_count}} Episodes</p>
-														<p>Season {{season.season_number}} of {{detail.name}} premiered on {{season.air_date}}.</p>
+														<p style="width: 100%">There are {{season.episode_count}} episodes in this season</p>
+														<p style="width: 100%">It first aired on {{season.air_date}}.</p>
 													</div>	
 												</div>											
 											</div>	

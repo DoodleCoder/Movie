@@ -78,7 +78,7 @@
 					<img src="https://image.tmdb.org/t/p/w500{{detail.backdrop_path}}" alt="">
 					<div class="movie-btn">	
 						<div class="btn-transform transform-vertical red">
-							<div><a onclick="c( {{detail.id}} )" id="watch" class="item redbtn"> <i class="ion-play"></i>Add to watchlist</a></div>
+							<div><a href="#" class="item redbtn"> <i class="ion-play"></i>Watch Trailer</a></div>
 							<!-- <div><a href="#" class="item item-2 redbtn fancybox-media hvr-grow"><i class="ion-play"></i></a></div> -->
 						</div>
 						<div class="btn-transform transform-vertical">
@@ -92,33 +92,10 @@
 				<div class="movie-single-ct main-content">
 					<h1 class="bd-hd">{{detail.original_title}}<span> {{date}}</span></h1>
 					<div class="social-btn">
-						<a href="#" class="parent-btn"><i class="ion-heart"></i> Add to Favorite</a>
-						<div class="hover-bnt">
-							<a href="#" class="parent-btn"><i class="ion-android-share-alt"></i>share</a>
-							<div class="hvr-item">
-								<a href="#" class="hvr-grow"><i class="ion-social-facebook"></i></a>
-								<a href="#" class="hvr-grow"><i class="ion-social-twitter"></i></a>
-								<a href="#" class="hvr-grow"><i class="ion-social-googleplus"></i></a>
-								<a href="#" class="hvr-grow"><i class="ion-social-youtube"></i></a>
-							</div>
+						<div><a href="" onclick="c( {{detail.id}} )" id="watch" class="parent-btn"><i class="ion-heart"></i> Add to Watchlist</a></div>
+						<div>
+							<a class="parent-btn" style="font-size: 14px"><i class="ion-star"></i>{{detail.vote_average}}/10</a>
 						</div>		
-					</div>
-					<div class="movie-rate">
-						<div class="rate">
-							<i class="ion-android-star"></i>
-							<p><span>{{detail.vote_average}}</span> /10<br>
-								<!-- <span class="rv">56 Reviews</span> -->
-							</p>
-						</div>
-						<div class="rate-star">
-							<p>Rate This Movie:  </p>
-							{% for i in abcdef %}
-								<i class="ion-ios-star"></i>
-							{% endfor %}
-							{% for i in uvwxyz %}
-								<i class="ion-ios-star-outline"></i>
-							{% endfor %}
-						</div>
 					</div>
 					<div class="movie-tabs">
 						<div class="tabs">
@@ -143,7 +120,7 @@
 													<div class="cast-it">
 														<div class="cast-left">
 															<img src="images/uploads/cast1.jpg" alt="">
-															<a href="#">{{c.name}}</a>
+															<p>{{c.name}}</p>
 														</div>
 														<p>...  {{c.character}}</p>
 													</div>
@@ -153,13 +130,13 @@
 						            	<div class="col-md-4 col-xs-12 col-sm-12">
 						            		<div class="sb-it">
 						            			<h6>Director: </h6>
-						            			<p><a href="#">{{director.name}}</a></p>
+						            			<p><span>{{director.name}}</span></p>
 						            		</div>
 						            		<div class="sb-it">
-						            			<h6>Writer: </h6>
+						            			<h6>Writers: </h6>
 						            			<p>
 						            				{% for w in writers %}
-						            				<a href="#">{{w.name}},</a>
+						            				<span>{{w.name}},</span>
 						            				{% endfor %}
 						            			</p>
 						            		</div>
@@ -167,7 +144,7 @@
 						            			<h6>Stars: </h6>
 						            			<p>
 						            				{% for c in cast %}
-						            				<a href="#">{{c.name}},</a>
+						            				<span>{{c.name}},</span>
 						            				{% endfor %}
 						            			</p>
 						            		</div>
@@ -175,13 +152,13 @@
 						            			<h6>Genres:</h6>
 						            			<p>
 						            				{% for g in detail.genres %}
-						            				<a href="#">{{g.name}}, </a>
+						            				<span>{{g.name}}, </span>
 						            				{% endfor %}
 						            			</p>
 						            		</div>
 						            		<div class="sb-it">
 						            			<h6>Release Date:</h6>
-						            			<p>{{detail.release_date}}</p>
+						            			<p>{{reldate}}</p>
 						            		</div>
 						            		<div class="sb-it">
 						            			<h6>Run Time:</h6>
@@ -197,9 +174,6 @@
 													<span class="time"><a href="#">final battle</a></span>
 						            			</p>
 						            		</div>
-						            		<div class="ads">
-												<img src="images/uploads/ads1.png" alt="">
-											</div>
 						            	</div>
 						            </div>
 						        </div>
@@ -271,7 +245,7 @@
 										<div class="mvcast-item">											
 											<div class="cast-it">
 												<div class="cast-left">
-													<a href="#">{{director.name}}</a>
+													<p>{{director.name}}</p>
 												</div>
 												<p>...  Director</p>
 											</div>
@@ -285,7 +259,7 @@
 											<div class="cast-it">
 												<div class="cast-left">
 													<!-- <h4>SL</h4> -->
-													<a href="#">{{w.name}}</a>
+													<p>{{w.name}}</p>
 												</div>
 												<p>...  {{w.job}}</p>
 											</div>
@@ -299,8 +273,8 @@
 											{% for c in cast%}
 											<div class="cast-it">
 												<div class="cast-left">
-													<img src="images/uploads/cast1.jpg" alt="">
-													<a href="#">{{c.name}}</a>
+													<!-- <img src="images/uploads/cast1.jpg" alt=""> -->
+													<p>{{c.name}}<p>
 												</div>
 												<p>...  {{c.character}}</p>
 											</div>
@@ -315,7 +289,7 @@
 												<div class="cast-it">
 													<div class="cast-left">
 														<!-- <h4>VA</h4> -->
-														<a href="#">{{p.name}}</a>
+														<p>{{p.name}}<p>
 													</div>
 													<p>...  {{p.job}}</p>
 												</div>
@@ -348,9 +322,13 @@
 														<span>(2012)</span>
 													</a>
 												</h6>
+												{% ifequal mov.vote_average 0.0 %}
+												<p style="color: white;">Not Rated</p>
+												{% else %}
 												<p class="rate"><i class="ion-android-star"></i><span>{{mov.vote_average}}</span> /10</p>
+												{% endifequal %}
 												<p class="describe">{{mov.overview}}</p>
-												<p class="run-time"> Run Time: 2h21’    .     <span>MMPA: PG-13 </span>    .     <span>Release: 1 May 2015</span></p>
+												<p class="run-time">Run Time: 2h21<span>MMPA: PG-13<span>Release Date: 1 May 2015</span></p>
 												<p>Director: <a href="#">Joss Whedon</a></p>
 												<p>Stars: <a href="#">Robert Downey Jr.,</a> <a href="#">Chris Evans,</a> <a href="#">  Chris Hemsworth</a></p>
 											</div>
