@@ -237,15 +237,6 @@
 					       	 			<h2>{{detail.name}}</h2>
 					       	 			<div class="topbar-filter">
 											<p>Found <span>12 movies</span> in total</p>
-											<label>Sort by:</label>
-											<select>
-												<option value="popularity">Popularity Descending</option>
-												<option value="popularity">Popularity Ascending</option>
-												<option value="rating">Rating Descending</option>
-												<option value="rating">Rating Ascending</option>
-												<option value="date">Release date Descending</option>
-												<option value="date">Release date Ascending</option>
-											</select>
 										</div>
 										{% for sim in showsim %}
 										<div class="movie-item-style-2">
@@ -254,7 +245,7 @@
 												<h6><a href="/show/{{sim.id}}">{{sim.original_name}} <span>(2012)</span></a></h6>
 												<p class="rate"><i class="ion-android-star"></i><span>{{sim.vote_average}}</span> /10</p>
 												<p class="describe">{{sim.overview}}</p>
-												<p class="run-time"> Run Time: 2h21’    .     <span>MMPA: PG-13 </span>    .     <span>Release: 1 May 2015</span></p>
+												<p class="run-time"> Run Time: 2h21<span>MMPA: PG-13<span>Release Date: 1 May 2015</span></p>
 												<p>Director: <a href="#">Joss Whedon</a></p>
 												<p>Stars: <a href="#">Robert Downey Jr.,</a> <a href="#">Chris Evans,</a> <a href="#">  Chris Hemsworth</a></p>
 											</div>
