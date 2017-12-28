@@ -61,48 +61,35 @@ F. Search ---------------
 
 G. Movie Single
 	1. There is a black background, that should be filled with the backdrop
-	2. "Add to Favourite" changed to "Add to Watchlist"
-	3. "Add to Watchlist" changed to "Watch Trailer"
-	4. Remove Rating with stars next to the actual rating
-	5. Add rating instead of Share button (user rating/imdb rating)
-	6. Limit number of stars that can be shown in the side bar
-	7. No comma after last genre, actor, producer in sidebar
-	8. Release date should be like "13th May, 2017"
-	9. When clicked on a plot-keyword, all the movies having that plot keyword should be shown (format should be same as search page) or just remove this section
-	10. top gray colour is not consistent (should be like the gray on the homepage)
-	11. Pagination in reviews
-	12. Reviews per page not working
-	13. Related movies pagination not working
-	14. Related movies per page not working
-	15. Related Movies - Runtime, MMPA, Release make proper columns and remove ' after Runtime
-	16. Related Movies - Director and stars are not populated, along with rating, runtime and releasedate
-	17. Cannot sort 
-	18. Feedback for add to watchlist and seenlist 
-	19. Rating in stars
+	2. "Add to Favourite" changed to "Add to Watchlist"  (Add to Watchlist is no longer a clickable, i have put a temp href which reloads the page)
+	3. No comma after last genre, actor, producer in sidebar
+	4. When clicked on a plot-keyword, all the movies having that plot keyword should be shown (format should be same as search page) or just remove this section
+	5. top gray colour is not consistent (should be like the gray on the homepage)
+	6. Pagination in reviews
+	7. Reviews per page not working
+	8. Related movies pagination not working
+	9. Related movies per page not working
+	10. Related Movies - Runtime, MMPA, Release make proper columns and remove ' after Runtime
+	11. Related Movies - Director and stars are not populated, along with rating, runtime and releasedate
+	12. Cannot sort 
+	13. Feedback for add to watchlist and seenlist 
+	14. Rating in stars
+	15. Fix "Full Cast Crew"
 
 H. TV Single
 	1. There is a background, that should be filled with the backdrop
-	2. "Add to Favourite" changed to "Add to Watchlist"
-	3. "Add to Watchlist" changed to "Watch Trailer"
-	4. Remove Rating with stars next to the actual rating
-	5. Add rating instead of Share button (user rating/imdb rating)
-	6. If show has ended there should not be a current season
-	7. If show is still airing then there should be information about the current season, how many episodes done, when was the last episode released and when is the next episode going to release
-	8. If show season has not begun, then either show about the upcoming season or the season that just aired
-	9. View all seasons, View all cast not working
-	10. No director, then remove field
-	11. No comma after last genre, actor, producer in sidebar
-	12. Release date should be like "13th May, 2017"
-	13. "Run Time" changed to "Aprrox Episode Run Time"
-	10. When clicked on a plot-keyword, all the shows having that plot keyword should be shown (format should be same as search page) or just remove this section
-	11. Under "Season" section use all the space give, info like season name, how many episodes, first release date and last release date should be mentioned
-	12. Related shows no pagination?
-	13. Related shows per page not there?
-	14. Related shows - Runtime, MMPA, Release make proper columns and remove ' after Runtime
-	15. Related shows - Director and stars are not populated, along with rating, runtime and releasedate
-	16. Cannot sort
-	17. Feedback for add to watchlist and seenlist 
-	18. Rating in stars
+	2. View all seasons, View all cast not working
+	3. No comma after last genre, actor, producer in sidebar
+	4. When clicked on a plot-keyword, all the shows having that plot keyword should be shown (format should be same as search page) or just remove this section
+	5. Related shows no pagination?
+	6. Related shows per page not there?
+	7. Related shows - Runtime, MMPA, Release make proper columns and remove ' after Runtime
+	8. Related shows - Director and stars are not populated, along with rating, runtime and releasedate
+	9. Cannot sort
+	10. Feedback for add to watchlist and seenlist 
+	11. Rating in stars
+	12. Add To Seenlist not working
+	13. Add to Watchlist not working
 
 I. Seenlist
 	1. Mention that the rating displayed is the user's rating
