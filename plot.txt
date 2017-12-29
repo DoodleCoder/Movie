@@ -19,9 +19,6 @@ BUGS:
 LEFT:
 
 A. Base:
-	-->1. Search bar fix
-	-->2. Title bar clean-up
-	-3. Profile next to seenlist and watchlist
 
 B. Login/Register
 	-1. Page should be dark blue background with gray dots
@@ -41,7 +38,6 @@ F. Search
 
 G. Movie Single
 	R 3. No comma after last genre, actor, producer in sidebar
-	R 5. Feedback for add to watchlist and seenlist 
 	G 6. Rating in stars
 
 H. TV Single
