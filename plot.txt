@@ -39,16 +39,12 @@ E. TV-List
 F. Search 
 	8. Some without ratings, should be mentioned not rated
 
-F. Search
-
 G. Movie Single
-	R 1. There is a black background, that should be filled with the backdrop
 	R 3. No comma after last genre, actor, producer in sidebar
 	R 5. Feedback for add to watchlist and seenlist 
 	G 6. Rating in stars
 
 H. TV Single
-	R 1. There is a background, that should be filled with the backdrop
 	R 3. No comma after last genre, actor, producer in sidebar
 	R 4. Feedback for add to watchlist and seenlist 
 	G 5. Rating in stars

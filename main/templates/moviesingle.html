@@ -2,21 +2,6 @@
 {% load static %}
 {% block content %}
 <script type="text/javascript">
-	
-  	function c(id) {
-  		console.log(id);
-  		console.log('hello');
-  		$.ajax({
-			url: '/add_watchlist/'+id+'/',
-			type: 'POST',
-			dataType: 'json',
-			data: {},
-			success: function(data) {
-				console.log(data);
-				$('#watch').innerHTML = 'Added to Watchlist';
-			}
-		});
-	}
 	function d(id) {
   		console.log(id);
   		var u_rate = document.getElementById('user_rating').value;
@@ -34,9 +19,43 @@
 		});
 	}
 </script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+	function f(id){
+		swal({
+	  title: "You have seen this movie",
+	  text: "How much would you rate it",
+	  content: "input",
+	  buttons: true,
+	})
+	.then((value) => {
+	    swal(`You rated ${value}`, {
+	      icon: "success",
+	    });
+	});
+	}
+</script>
+<script>
+	function w(id)
+	{
+		swal("The movie has been saved to your watchlist", {
+			icon:"success",
+		})
+		$.ajax({
+			url: '/add_watchlist/'+id+'/',
+			type: 'POST',
+			dataType: 'json',
+			data: {},
+			success: function(data) {
+				console.log(data);
+				$('#watch').innerHTML = 'Added to Watchlist';
+			}
+		});
+	}
+</script>
 <div class="hero mv-single-hero">
-	<!-- <img src="https://image.tmdb.org/t/p/w500{{detail.backdrop_path}}" style="width:100%; height: 598px"> -->
-	<div class="container">
+	<img src="https://image.tmdb.org/t/p/w500{{detail.backdrop_path}}" style="width:10000px; height: 598px">
+	<div>
 	
 		<div class="row">
 			<div class="col-md-12">
@@ -56,7 +75,7 @@
 <!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Small Modal</button> -->
 
 <!-- Modal -->
-<div class="modal fade" id="myModal" role="dialog">
+<!-- <div class="modal fade" id="myModal" role="dialog">
 <div class="modal-dialog modal-md" style="margin-top: 5%;">
   <div class="modal-content">
     <div class="modal-header">
@@ -71,22 +90,22 @@
     </div>
   </div>
 </div>
-</div>
+</div> -->
 </div>
 <div class="page-single movie-single movie_single">
 	<div class="container">
 		<div class="row ipad-width2">
 			<div class="col-md-4 col-sm-12 col-xs-12">
 				<div class="movie-img sticky-sb">
-					<img src="https://image.tmdb.org/t/p/w500{{detail.backdrop_path}}" alt="">
+					<!-- <img src="https://image.tmdb.org/t/p/w500{{detail.backdrop_path}}" alt=""> -->
 					<div class="movie-btn">	
 						<div class="btn-transform transform-vertical red">
 							<div><a href="#" class="item redbtn"> <i class="ion-play"></i>Watch Trailer</a></div>
 							<!-- <div><a href="#" class="item item-2 redbtn fancybox-media hvr-grow"><i class="ion-play"></i></a></div> -->
 						</div>
 						<div class="btn-transform transform-vertical">
-							<div><a id="seen" data-toggle="modal" class="item yellowbtn" data-target="#myModal" > <i class="ion-card"></i>Have seen before</a></div>
-							<!-- <div><a href="#" class="item item-2 yellowbtn"><i class="ion-card"></i></a></div> -->
+							<div><a id="seen" class="item yellowbtn" onclick="f( {{detail.id}} );")> <i class="ion-card"></i>Have seen before</a></div>
+							
 						</div>
 					</div>
 				</div>
@@ -95,7 +114,7 @@
 				<div class="movie-single-ct main-content">
 					<h1 class="bd-hd">{{detail.original_title}}<span> {{date}}</span></h1>
 					<div class="social-btn">
-						<div><a href="#" onclick="c( {{detail.id}} )" id="watch" class="parent-btn"><i class="ion-heart"></i> Add to Watchlist</a></div>
+						<div><a href="#" onclick="w( {{ detail.id }} );" id="watch" class="parent-btn"><i class="ion-heart"></i> Add to Watchlist</a></div>
 						<div>
 							<a class="parent-btn" style="font-size: 14px"><i class="ion-star"></i>{{detail.vote_average}}/10</a>
 						</div>		
