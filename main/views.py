@@ -20,56 +20,73 @@ genreURL = 'https://api.themoviedb.org/3/genre/movie/list?api_key='+api+'&langua
 response0 = urllib.urlopen(genreURL)
 genre = json.loads(response0.read())
 genre = genre['genres']
-# print(genre)
 gid=[28,12,16,35,80,99,18,10751,14,36,27,10402,9648,10749,878,10770,53,10752,37]
 gname = ['Action','Adventure','Animation','Comedy','Crime','Documentary','Drama','Family','Fantasy','History','Horror','Music','Mystery','Romance','Science Fiction','TV Movie','Thriller','War','Western']
 idsss=[i for i in range(19)]
-# print(gid, gname, idsss)
 
-# b=0
-# popmovie = cache.get('popmovie')	
-# if not popmovie:					
-# 	popmovie= []
-# 	for i in range(401,601):
-# 		popurl = 'https://api.themoviedb.org/3/movie/upcoming?api_key='+api+'&language='+lang+'&page='+str(i) 
-# 		response0 = urllib.urlopen(popurl) 	
-# 		pop = json.loads(response0.read())	
-# 		for i in pop['results']:
-# 			i['genres']=[]
-# 			for j in genre:
-# 				if j['id'] in i['genre_ids']:
-# 					i['genres'].append(j['name'])	
-# 			popmovie.append(i)
-# 	cache.set('popmovie', popmovie, 18000) 
-# c=popmovie
+def populate_movies():
+	popmovie = cache.get('popmovie')	
+	if not popmovie:					
+		popmovie= []
+		for i in range(1,201):
+			popurl = 'https://api.themoviedb.org/3/movie/upcoming?api_key='+api+'&language='+lang+'&page='+str(i) 
+			response0 = urllib.urlopen(popurl) 	
+			pop = json.loads(response0.read())	
+			for i in pop['results']:
+				i['genres']=[]
+				for j in genre:
+					if j['id'] in i['genre_ids']:
+						i['genres'].append(j['name'])	
+				popmovie.append(i)
+		for i in range(201,401):
+			popurl = 'https://api.themoviedb.org/3/movie/upcoming?api_key='+api+'&language='+lang+'&page='+str(i) 
+			response0 = urllib.urlopen(popurl) 	
+			pop = json.loads(response0.read())	
+			for i in pop['results']:
+				i['genres']=[]
+				for j in genre:
+					if j['id'] in i['genre_ids']:
+						i['genres'].append(j['name'])	
+				popmovie.append(i)
+		for i in range(401,601):
+			popurl = 'https://api.themoviedb.org/3/movie/upcoming?api_key='+api+'&language='+lang+'&page='+str(i) 
+			response0 = urllib.urlopen(popurl) 	
+			pop = json.loads(response0.read())	
+			for i in pop['results']:
+				i['genres']=[]
+				for j in genre:
+					if j['id'] in i['genre_ids']:
+						i['genres'].append(j['name'])	
+				popmovie.append(i)
+		cache.set('popmovie', popmovie, 18000) 
+	c=popmovie
+	fp = open('allmovies.txt', 'a')
+	for i in c:
+		try:
+			fp.write(str(i['id'])+'|'+(i['title'])+'|')
+		except UnicodeEncodeError:
+			continue
+		ge = [0 for j in range(19)]
+		l = i['genre_ids']
+		for k in range(19):
+			if gid[k] in l:
+				ge[k] = 1
+			else: 
+				ge[k]=0
+		for i in ge:
+			fp.write(str(i)+'|')
+		fp.write('\n')
+	fp.close()
 
-# fp = open('allmovies.txt', 'a')
-# for i in c:
-# 	try:
-# 		fp.write(str(i['id'])+'|'+(i['title'])+'|')
-# 	except UnicodeEncodeError:
-# 		continue
-# 	ge = [0 for j in range(19)]
-# 	l = i['genre_ids']
-# 	for k in range(19):
-# 		if gid[k] in l:
-# 			ge[k] = 1
-# 		else: 
-# 			ge[k]=0
-# 	for i in ge:
-# 		fp.write(str(i)+'|')
-# 	fp.write('\n')
-# fp.close()
-
-# fp = open('ratings.txt','w')
-# usersAll = User.objects.all()
-# for u in usersAll:
-# 	seenAll = Seenlist.objects.filter(user=u)
-# 	for s in seenAll:
-# 		fp.write(str(u.id)+'|'+str(s.movie.m_id)+'|'+str(s.rate)+'\n')
-# 		# print(s.movie.name,s.rate)
-# fp.close()
-
+def populate_ratings():
+	fp = open('ratings.txt','w')
+	usersAll = User.objects.all()
+	for u in usersAll:
+		seenAll = Seenlist.objects.filter(user=u)
+		for s in seenAll:
+			fp.write(str(u.id)+'|'+str(s.movie.m_id)+'|'+str(s.rate)+'\n')
+			# print(s.movie.name,s.rate)
+	fp.close()
 
 def login_site(request):
 	if request.method == 'POST':
@@ -287,8 +304,138 @@ def base(request):
 
 	return render(request, 'base.html')
 
+def tvlist(request,page_no):
+	pageNo=int(page_no)
+	g=''
+	if request.user.is_authenticated():	
+		poptv = cache.get('poptv')	
+		if not poptv:					
+			poptv= []
+			for i in range(1,11):			
+				popurl = 'https://api.themoviedb.org/3/tv/popular?api_key='+api+'&language='+lang+'&page='+str(i)
+				response0 = urllib.urlopen(popurl) 	
+				pop = json.loads(response0.read())	
+				for i in pop['results']:
+					i['genres']=[]
+					for j in genre:
+						if j['id'] in i['genre_ids']:
+							i['genres'].append(j['name'])	
+					poptv.append(i)
+			cache.set('poptv', poptv, 18000)  
+		poplist=poptv
+		pop = sorted(poplist, key=itemgetter('popularity'), reverse=True)
+		if request.method == 'POST':	
+			t = request.POST['filter']
+			rate = sorted(poplist, key=itemgetter('vote_average'), reverse=True)
+			a_z = sorted(poplist, key=itemgetter('name'))
+			z_a = sorted(poplist, key=itemgetter('name'), reverse=True)
+			date = sorted(poplist, key=itemgetter('first_air_date'), reverse=True)
+			if t == '1':
+				results = pop[(pageNo-1)*20:pageNo*20]
+				context={
+					
+					'results': pop[(pageNo-1)*20:pageNo*20],
+					't' : t,
+				}
+			elif t == '2':
+				results = rate[(pageNo-1)*20:pageNo*20]
+				context={
+					
+					'results': results,
+					't' : t,
+				}
+			elif t == '3':
+				results = date[(pageNo-1)*20:pageNo*20]
+				context={
+					
+					'results': results,
+					't' : t,
+				}
+			elif t == '4':
+				results = a_z[(pageNo-1)*20:pageNo*20]
+				context={
+						
+					'results' : results,
+					't' : t,
+				}
+			elif t == '5':
+				results = z_a[(pageNo-1)*20:pageNo*20]
+				context={
+						
+					'results' : results,
+					't' : t,
+				}
+			else:
+				results = pop[(pageNo-1)*20:pageNo*20]
+				context={
+						
+					'results' : results,
+					't' : t,
+				}
+			context['page']=pageNo
+			tpages = int(len(results)/20)+1
+			context['pageNumbers']=[i for i in range(1,tpages+1)]
+			context['tpages']=tpages
+			return render(request, 'tvgrid.html', context)
+		else:
+			name = request.GET.get('name','')
+			g = request.GET.getlist('g','')
+			r = request.GET.get('r','')
+			ans = []
+			for i in poplist:
+				if name.lower() in i['name'].lower():
+					ans.append(i)
+			# print(poplist[0]['name'])
+			ans2 = []
+			
+			if g != '[]' or g!= '':
+				for i in ans:
+					b=0
+					for j in g:
+						if j in i['genres']:
+							b+=1
+					if b == len(g):
+						ans2.append(i)
+				# print(g)
+			else:
+				g = ''
+				ans2 = ans
+			# print(ans2)
+			results = []
+			if r=='6-10':
+				for i in ans2:
+					if i['vote_average'] > 6:
+						results.append(i)
+			elif r=='3-6':
+				for i in ans2:
+					if i['vote_average'] > 3 and i['vote_average'] < 6:
+						results.append(i)
+			elif r=='0-3':
+				for i in ans2:
+					if i['vote_average'] < 3:
+						results.append(i)
+			else:
+				results = ans2
+			context={
+					'results' : results[(pageNo-1)*20:pageNo*20],
+					't' : '1',
+				}
+			context['page']=pageNo
+			context['string'] = name
+			context['genress'] = g
+			context['ratingss'] = r
+			tpages = int(len(results)/20)+1
+			context['pageNumbers']=[i for i in range(1,tpages+1)]
+			context['tpages']=tpages
+			return render(request, 'tvgrid.html', context)
+
+	else:
+		return redirect('/login/')
+
+
 def movielist(request,page_no):
 	pageNo=int(page_no)
+	g=''
 	if request.user.is_authenticated():	
 		popmovie = cache.get('popmovie')	
 		if not popmovie:					
@@ -305,8 +452,6 @@ def movielist(request,page_no):
 					popmovie.append(i)
 			cache.set('popmovie', popmovie, 18000)  
 		poplist=popmovie
-		for i in poplist:
-			print(i['title'])
 		pop = sorted(poplist, key=itemgetter('popularity'), reverse=True)
 		if request.method == 'POST':	
 			t = request.POST['filter']
@@ -315,43 +460,101 @@ def movielist(request,page_no):
 			z_a = sorted(poplist, key=itemgetter('title'), reverse=True)
 			date = sorted(poplist, key=itemgetter('release_date'), reverse=True)
 			if t == '1':
+				results = pop[(pageNo-1)*20:pageNo*20]
 				context={
+					
 					'results': pop[(pageNo-1)*20:pageNo*20],
 					't' : t,
 				}
 			elif t == '2':
+				results = rate[(pageNo-1)*20:pageNo*20]
 				context={
-					'results': rate[(pageNo-1)*20:pageNo*20],
+					
+					'results': results,
 					't' : t,
 				}
 			elif t == '3':
+				results = date[(pageNo-1)*20:pageNo*20]
 				context={
-					'results': date[(pageNo-1)*20:pageNo*20],
+					
+					'results': results,
 					't' : t,
 				}
 			elif t == '4':
+				results = a_z[(pageNo-1)*20:pageNo*20]
 				context={
-					'results' : a_z[(pageNo-1)*20:pageNo*20],
+						
+					'results' : results,
 					't' : t,
 				}
 			elif t == '5':
+				results = z_a[(pageNo-1)*20:pageNo*20]
 				context={
-					'results' : z_a[(pageNo-1)*20:pageNo*20],
+						
+					'results' : results,
 					't' : t,
 				}
 			else:
+				results = pop[(pageNo-1)*20:pageNo*20]
 				context={
-					'results' : pop[(pageNo-1)*20:pageNo*20],
+						
+					'results' : results,
 					't' : t,
 				}
+			context['page']=pageNo
+			tpages = int(len(results)/20)+1
+			context['pageNumbers']=[i for i in range(1,tpages+1)]
+			context['tpages']=tpages
+			return render(request, 'moviegrid.html', context)
+			
 		else:
+			name = request.GET.get('name','')
+			g = request.GET.getlist('g','')
+			r = request.GET.get('r','')
+			ans = []
+			for i in poplist:
+				if name.lower() in i['title'].lower():
+					ans.append(i)
+			ans2 = []
+			
+			if g != '[]' or g != '':
+				for i in ans:
+					b=0
+					for j in g:
+						if j in i['genres']:
+							b+=1
+					if b == len(g):
+						ans2.append(i)
+			else:
+				g=''
+				ans2 = ans
+			results = []
+			if r=='6-10':
+				for i in ans2:
+					if i['vote_average'] > 6:
+						results.append(i)
+			elif r=='3-6':
+				for i in ans2:
+					if i['vote_average'] > 3 and i['vote_average'] < 6:
+						results.append(i)
+			elif r=='0-3':
+				for i in ans2:
+					if i['vote_average'] < 3:
+						results.append(i)
+			else:
+				results = ans2
 			context={
-				'results' : pop[(pageNo-1)*20:pageNo*20],
-				't' : 1,
-			}
-		context['page']=pageNo
-		context['pageNumbers']=[1,2,3,4,5,6,7,8,9,10]
-		return render(request, 'moviegrid.html', context)
+					'results' : results[(pageNo-1)*20:pageNo*20],
+					't' : '1',
+				}
+			context['page']=pageNo
+			context['string'] = name
+			context['genress'] = g
+			context['ratingss'] = r
+			tpages = int(len(results)/20)+1
+			context['pageNumbers']=[i for i in range(1,tpages+1)]
+			context['tpages']=tpages
+			return render(request, 'moviegrid.html', context)
 	else:
 		return redirect('/login/')
 
@@ -546,71 +749,6 @@ def show(request, show_id):
 	}
 	return render(request, 'seriessingle.html', context)
 
-def tvlist(request,page_no):
-	pageNo=int(page_no)
-	if request.user.is_authenticated():	
-		poptv = cache.get('poptv')	
-		if not poptv:					
-			poptv= []
-			for i in range(1,11):			
-				popurl = 'https://api.themoviedb.org/3/tv/popular?api_key='+api+'&language='+lang+'&page='+str(i)
-				response0 = urllib.urlopen(popurl) 	
-				pop = json.loads(response0.read())	
-				for i in pop['results']:
-					i['genres']=[]
-					for j in genre:
-						if j['id'] in i['genre_ids']:
-							i['genres'].append(j['name'])	
-					poptv.append(i)
-			cache.set('poptv', poptv, 18000)  
-		poplist=poptv
-		pop = sorted(poplist, key=itemgetter('popularity'), reverse=True)
-		if request.method == 'POST':	
-			t = request.POST['filter']
-			rate = sorted(poplist, key=itemgetter('vote_average'), reverse=True)
-			a_z = sorted(poplist, key=itemgetter('name'))
-			z_a = sorted(poplist, key=itemgetter('name'), reverse=True)
-			date = sorted(poplist, key=itemgetter('first_air_date'), reverse=True)
-			if t == '1':
-				context={
-					'results': pop[(pageNo-1)*20:pageNo*20],
-					't' : t,
-				}
-			elif t == '2':
-				context={
-					'results': rate[(pageNo-1)*20:pageNo*20],
-					't' : t,
-				}
-			elif t == '3':
-				context={
-					'results': date[(pageNo-1)*20:pageNo*20],
-					't' : t,
-				}
-			elif t == '4':
-				context={
-					'results' : a_z[(pageNo-1)*20:pageNo*20],
-					't' : t,
-				}
-			elif t == '5':
-				context={
-					'results' : z_a[(pageNo-1)*20:pageNo*20],
-					't' : t,
-				}
-			else:
-				context={
-					'results' : pop[(pageNo-1)*20:pageNo*20],
-					't' : t,
-				}
-		else:
-			context={
-				'results' : pop[(pageNo-1)*20:pageNo*20],
-				't' : 1,
-			}
-		context['page']=pageNo
-		context['pageNumbers']=[1,2,3,4,5,6,7,8,9,10]
-		return render(request, 'tvgrid.html', context)
-	else:
-		return redirect('/login/')
 
 @csrf_exempt
 def search(request):
@@ -618,33 +756,41 @@ def search(request):
 		if request.method == 'POST':
 			query = request.POST['query']
 			t = request.POST['search-type']
-			print(query,  t)
-			if t=='movie':
-				s_movies = cache.get(str(query)+t)
-				if not s_movies: 
-					url = 'https://api.themoviedb.org/3/search/movie?api_key='+api+'&language='+lang+'&query='+query+'&page=1&include_adult=false'
-					response = urllib.urlopen(url)
-					s_movies = json.loads(response.read())['results']
-					cache.set(str(query)+t, s_movies, 18000)
-				context = {
-					'results' : s_movies,
-					's' : query,
-					't' : t,
-				}
-			else:
-				s_tv = cache.get(str(query)+t)
-				if not s_tv: 
-					url = 'https://api.themoviedb.org/3/search/tv?api_key='+api+'&language='+lang+'&query='+query+'&page=1'
-					response = urllib.urlopen(url)
-					s_tv = json.loads(response.read())['results']
-					cache.set(str(query)+t, s_tv, 18000)
-				context = {
-					'results' : s_tv,
-					's' : query,
-					't' : t,
-				}
+			# print(query,  t)
+			if query:
+				if t=='movie':
+					s_movies = cache.get(str(query)+t)
+					if not s_movies: 
+						url = 'https://api.themoviedb.org/3/search/movie?api_key='+api+'&language='+lang+'&query='+query+'&page=1&include_adult=false'
+						response = urllib.urlopen(url)
+						s_movies = json.loads(response.read())['results']
+						cache.set(str(query)+t, s_movies, 18000)
+					context = {
+						'results' : s_movies,
+						's' : query,
+						't' : t,
+					}
+				else:
+					s_tv = cache.get(str(query)+t)
+					if not s_tv: 
+						url = 'https://api.themoviedb.org/3/search/tv?api_key='+api+'&language='+lang+'&query='+query+'&page=1'
+						response = urllib.urlopen(url)
+						s_tv = json.loads(response.read())['results']
+						cache.set(str(query)+t, s_tv, 18000)
+					context = {
+						'results' : s_tv,
+						's' : query,
+						't' : t,
+					}
 
-			return render(request, 'search.html', context)
+				return render(request, 'search.html', context)
+			else:
+				results = []
+				context = {
+					'results' : results,
+					't' : t,
+				}
+				return render(request, 'search.html', context)
 		else:
 			return HttpResponse('Not Allowed')
 	else:

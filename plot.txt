@@ -1,21 +1,3 @@
-
-CLEAR:
-1. Index
-2. Search - TV
-3. Search - Movie
-4. List - TV
-5. List - Movie
-6. Single - TV
-7. Single - Movie
-8. Seenlist
-9. Watchlist
-
-BUGS:
-1. NONE in seenlist - DB
-2. NONE in watchlist - DB
-3. Movie added to watchlist by one user cannot be added to seenlist by another user
-4. Movie added to seenlist by one user cannot be added to watchlist by another user
-
 LEFT:
 
 A. Base:

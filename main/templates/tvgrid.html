@@ -1,7 +1,24 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+
 <style type="text/css">
+	.apna {
+		font-family: 'Nunito', sans-serif;
+	    font-size: 12px;
+	    color: #ffffff;
+	    width: 10%;
+	    margin: 0.5em;
+	    font-weight: 300;
+	    text-transform: none;
+	    background-color: #dd003f;
+	    -webkit-border-radius: 3px;
+	    -moz-border-radius: 3px;
+	    border-radius: 3px;
+	    height: 30px;
+	    padding: 10px;
+	    text-align: center;
+	}
 	.abc{
 		font-family: 'Dosis', sans-serif;
 		border-color: #dd003f;
@@ -33,10 +50,27 @@
 </div>
 <div class="page-single">
 	<div class="container">
+	<h4 style="color: white;"> Filters Applied: </h4>
+		{% if string %}
+			<h4 style="color: white;">Name:</h4> <h4 class="apna">{{string}}</h4>
+		{% endif %}
+		<br>
+		
+		{% ifnotequal genress ''%}
+			<h4 style="color: white;">Genres: </h4>
+				{% for i in genress %}
+					<h4 class="apna">{{i}}</h4>
+				{% endfor %}
+		{% endifnotequal %}
+		<br>
+		{% if ratingss %}
+			<h4 style="color: white;">Rating Range: </h4><h4 class="apna">{{ratingss}}</h4>
+		{% endif %}
+		<br>
 		<div class="row ipad-width">
 			<div class="col-md-8 col-sm-12 col-xs-12">
 				<div class="topbar-filter">
-					<p>Found <span>200 matches</span> in total</p>
+					<p>Found <span>{{tpages}} pages</span> in total</p>
 					<label style="">Sort by:</label>
 					<form method="POST" action="/tvlist/1/">
 					{% csrf_token %}
@@ -70,7 +104,7 @@
 				</div>		
 				<div class="topbar-filter">
 					<div style="margin-left: 12.5%;" class="pagination2">
-						<span>Page 1 of 10:</span>
+						<span>Page 1 of {{tpages}}:</span>
 						{% for i in pageNumbers %}
 						<a {% ifequal i page %} class="active" {% endifequal %} href="/tvlist/{{i}}/">{{i}}</a>
 						{% endfor %}
@@ -81,49 +115,47 @@
 				<div class="sidebar">
 					<div class="searh-form">
 						<h4 class="sb-title">Search for tv</h4>
-						<form class="form-style-1" action="#">
+						<form class="form-style-1" action="/tvlist/{{page}}" method="GET">
 							<div class="row">
 								<div class="col-md-12 form-it">
 									<label>Name</label>
-									<input type="text" placeholder="Enter keywords">
+									<input type="text" name="name" placeholder="Enter keywords">
 								</div>
 								<div class="col-md-12 form-it">
-									<label>Genres & Subgenres</label>
+									<label>Genres</label>
 									<div class="group-ip">
 										<select
-											name="skills" multiple="" class="ui fluid dropdown">
-											<option value="">Enter to filter genres</option>
-											<option value="Action1">Action 1</option>
-					                        <option value="Action2">Action 2</option>
-					                        <option value="Action3">Action 3</option>
-					                        <option value="Action4">Action 4</option>
-					                        <option value="Action5">Action 5</option>
+											name="g" id="genres" multiple="" class="ui fluid dropdown">
+					                        <option value="Action">Action</option>
+					                        <option value="Adventure">Adventure</option>
+					                        <option value="Animation">Animation</option>
+					                        <option value="Comedy">Comedy</option>
+					                        <option value="Crime">Crime</option>
+					                        <option value="Documentary">Documentary</option>
+					                        <option value="Drama">Drama</option>
+					                        <option value="Family">Family</option>
+					                        <option value="Fantasy">Fantasy</option>
+					                        <option value="History">History</option>
+					                        <option value="Horror">Horror</option>
+					                        <option value="Music">Music</option>
+					                        <option value="Mystery">Mystery</option>
+					                        <option value="Romance">Romance</option>
+					                        <option value="Science Fiction">Science Fiction</option>
+					                        <option value="TV Movie">TV Movie</option>
+					                        <option value="Thriller">Thriller</option>
+					                        <option value="War">War</option>
+					                        <option value="Western">Western</option>
 										</select>
 									</div>	
 								</div>
 								<div class="col-md-12 form-it">
 									<label>Rating Range</label>
-									<select>
-									  <option value="range">-- Select the rating range below --</option>
-									  <option value="saab">-- Select the rating range below --</option>
+									<select id=ratings name="r">
+									  <option value=""></option>
+									  <option value="6-10">6-10</option>
+									  <option value="3-6">3-6</option>
+									  <option value="0-3">0-3</option>
 									</select>
-								</div>
-								<div class="col-md-12 form-it">
-									<label>Release Year</label>
-									<div class="row">
-										<div class="col-md-6">
-											<select>
-											  <option value="range">From</option>
-											  <option value="number">10</option>
-											</select>
-										</div>
-										<div class="col-md-6">
-											<select>
-											  <option value="range">To</option>
-											  <option value="number">20</option>
-											</select>
-										</div>
-									</div>
 								</div>
 								<div class="col-md-12 ">
 									<input class="submit" type="submit" value="submit">
