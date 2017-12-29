@@ -6,7 +6,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="hero-ct">
-					<h1 style="margin-right: 10%">{{request.user.first_name}}’s profile</h1>
+					<h1 style="margin-right: 10%">{{request.user.first_name}}’s Seenlist</h1>
 					<ul class="breadcumb">
 						<li class="active"><a href="#">Home</a></li>
 						<li> <span class="ion-ios-arrow-right"></span>Seen movies</li>
@@ -42,16 +42,13 @@
 					</div>
 				</div>
 			</div>
+			
 			<div class="col-md-9 col-sm-12 col-xs-12">
+				{% ifequal seenMovies|length 0 %}
+			<h2>You have not added anything to your Seenlist!</h2>
+			{% else %}
 				<div class="topbar-filter user">
-					<p>Found <span>1,608 movies</span> in total</p>
-					<label>Sort by:</label>
-					<select>
-						<option value="range">-- Choose option --</option>
-						<option value="saab">-- Choose option 2--</option>
-					</select>
-					<a href="userfavoritelist.html" class="list"><i class="ion-ios-list-outline active"></i></a>
-					<a  href="userfavoritegrid.html" class="grid"><i class="ion-grid "></i></a>
+					<p>Found <span>{{seenMovies|length}} movies</span> in total</p>
 				</div>
 				<div class="flex-wrap-movielist user-fav-list">
 					{% for w in seenMovies %}
@@ -85,7 +82,9 @@
 						<a href="#"><i class="ion-arrow-right-b"></i></a>
 					</div>
 				</div>
+			{% endifequal %}
 			</div>
+			
 		</div>
 	</div>
 </div>

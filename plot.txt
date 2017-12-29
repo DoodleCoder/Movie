@@ -65,53 +65,36 @@ G. Movie Single
 	3. No comma after last genre, actor, producer in sidebar
 	4. When clicked on a plot-keyword, all the movies having that plot keyword should be shown (format should be same as search page) or just remove this section
 	5. top gray colour is not consistent (should be like the gray on the homepage)
-	6. Pagination in reviews
-	7. Reviews per page not working
-	8. Related movies pagination not working
-	9. Related movies per page not working
-	10. Related Movies - Runtime, MMPA, Release make proper columns and remove ' after Runtime
-	11. Related Movies - Director and stars are not populated, along with rating, runtime and releasedate
-	12. Cannot sort 
-	13. Feedback for add to watchlist and seenlist 
-	14. Rating in stars
-	15. Fix "Full Cast Crew"
+	6. Related Movies - Director and stars are not populated, along with rating, runtime and releasedate
+	7. Feedback for add to watchlist and seenlist 
+	8. Rating in stars
+	9. Fix "Full Cast Crew"
 
 H. TV Single
 	1. There is a background, that should be filled with the backdrop
 	2. View all seasons, View all cast not working
 	3. No comma after last genre, actor, producer in sidebar
 	4. When clicked on a plot-keyword, all the shows having that plot keyword should be shown (format should be same as search page) or just remove this section
-	5. Related shows no pagination?
-	6. Related shows per page not there?
-	7. Related shows - Runtime, MMPA, Release make proper columns and remove ' after Runtime
-	8. Related shows - Director and stars are not populated, along with rating, runtime and releasedate
-	9. Cannot sort
-	10. Feedback for add to watchlist and seenlist 
-	11. Rating in stars
-	12. Add To Seenlist not working
-	13. Add to Watchlist not working
+	5. Related shows - Director and stars are not populated, along with rating, runtime and releasedate
+	6. Feedback for add to watchlist and seenlist 
+	7. Rating in stars
+	8. Add To Seenlist not working
+	9. Add to Watchlist not working
 
 I. Seenlist
 	1. Mention that the rating displayed is the user's rating
-	2. "Found 1608 Movies" should be changed
-	3. Sort-by not working
-	4. Remove button to switch from movie grid to movie list
-	5. Pagination not working
-	6. Movies per page not working
-	7. Change rating option?
-	8. If blank, there should be some message
-	9. Change "User's Profile" to "User's Seenlist"
+	2. Pagination not working
+	3. Movies per page not working
+	4. Change rating option?
+	5. Work on displaying movies
 
 J. Watchlist
 	1. Mention next to the movie our predicted rating for the movie 	
-	2. "Found 1608 Movies" should be changed
-	3. Sort-by not working
-	4. Remove button to switch from movie grid to movie list
-	5. Pagination not working
-	6. If blank, there should be some message
-	7. There should be an option to move to seenlist along with rating
-	8. Shows per page not working
-	9. Change "User's Profile" to "User's Watchlist"
+	2. Sort-by not working
+	3. Pagination not working
+	4. There should be an option to move to seenlist along with rating
+	5. Shows per page not working
+	6. Work on displaying movies
 
 H. Profile
 	1. Change password functionality

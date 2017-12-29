@@ -35,9 +35,12 @@
 	}
 </script>
 <div class="hero mv-single-hero">
+	<!-- <img src="https://image.tmdb.org/t/p/w500{{detail.backdrop_path}}" style="width:100%; height: 598px"> -->
 	<div class="container">
+	
 		<div class="row">
 			<div class="col-md-12">
+
 				<!-- <h1> movie listing - list</h1>
 				<ul class="breadcumb">
 					<li class="active"><a href="#">Home</a></li>
@@ -195,43 +198,11 @@
 												<!-- <img src="images/uploads/userava1.jpg" alt=""> -->
 												<div>
 													<h3>{{rev.author}}'s Review...</h3>
-													<!-- <div class="no-star">
-														<i class="ion-android-star"></i>
-														<i class="ion-android-star"></i>
-														<i class="ion-android-star"></i>
-														<i class="ion-android-star"></i>
-														<i class="ion-android-star"></i>
-														<i class="ion-android-star"></i>
-														<i class="ion-android-star"></i>
-														<i class="ion-android-star"></i>
-														<i class="ion-android-star"></i>
-														<i class="ion-android-star last"></i>
-													</div>
-													<p class="time">
-														17 December 2016 by <a href="#">{{rev.author}}</a>
-													</p> -->
 												</div>
 											</div>
 											<p>{{rev.content}}</p>
 										</div>
 										{% endfor %}
-										<div class="topbar-filter">
-											<label>Reviews per page:</label>
-											<select>
-												<option value="range">5 Reviews</option>
-												<option value="saab">10 Reviews</option>
-											</select>
-											<div class="pagination2">
-												<span>Page 1 of 6:</span>
-												<a class="active" href="#">1</a>
-												<a href="#">2</a>
-												<a href="#">3</a>
-												<a href="#">4</a>
-												<a href="#">5</a>
-												<a href="#">6</a>
-												<a href="#"><i class="ion-arrow-right-b"></i></a>
-											</div>
-										</div>
 						            </div>
 						        </div>
 						        <div id="cast" class="tab">
@@ -303,15 +274,6 @@
 					       	 			<h2>{{detail.original_title}}</h2>
 					       	 			<div class="topbar-filter">
 											<p>Found <span>12 movies</span> in total</p>
-											<label>Sort by:</label>
-											<select>
-												<option value="popularity">Popularity Descending</option>
-												<option value="popularity">Popularity Ascending</option>
-												<option value="rating">Rating Descending</option>
-												<option value="rating">Rating Ascending</option>
-												<option value="date">Release date Descending</option>
-												<option value="date">Release date Ascending</option>
-											</select>
 										</div>
 										{% for mov in movsim %}
 										<div class="movie-item-style-2">
@@ -334,19 +296,6 @@
 											</div>
 										</div>
 										{% endfor %}
-										<div class="topbar-filter">
-											<label>Movies per page:</label>
-											<select>
-												<option value="range">5 Movies</option>
-												<option value="saab">10 Movies</option>
-											</select>
-											<div class="pagination2">
-												<span>Page 1 of 2:</span>
-												<a class="active" href="#">1</a>
-												<a href="#">2</a>
-												<a href="#"><i class="ion-arrow-right-b"></i></a>
-											</div>
-										</div>
 					       	 		</div>
 					       	 	</div>
 						    </div>

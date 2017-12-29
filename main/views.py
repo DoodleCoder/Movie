@@ -479,7 +479,7 @@ def show(request, show_id):
 	seasons=showdet['seasons']
 	seasondates=[]
 	for s in seasons:
-		date=parse(seasons['air_date']).strftime('%B %d, %Y')
+		# date=parse(seasons['air_date']).strftime('%B %d, %Y')
 		seasondates.append(date)
 
 	showsim = cache.get('tv-'+str(show_id)+'-sim')
