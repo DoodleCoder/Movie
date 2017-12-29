@@ -617,10 +617,20 @@ def add_watchlist(request, movie_id):
 	user = request.user
 	m = Movie.objects.get(m_id=movie_id, user=request.user)
 	print(m)
-	if m.s_add == 0:
-		if m.w_add == 0:
-			m.w_add = 1
-			m.save()
+	watched=Watchlist.objects.filter(user=user)
+	flag=0
+	for watch in watched:
+		if(watch.movie==m):
+			flag=1
+			break 
+	if(flag==0):
+		seens=Seenlist.objects.filter(user=user)
+		flag=0
+		for seen in seens:
+			if(seen.movie==m):
+				flag=1
+				break
+		if(flag==0):
 			w = Watchlist.objects.create(
 					user=user,
 					movie=m,
@@ -631,11 +641,11 @@ def add_watchlist(request, movie_id):
 				})
 		else:
 			return JsonResponse({
-				'success': 'false-already in watchlist'
+				'success': 'false-already in seenlist'
 				})
 	else:
 		return JsonResponse({
-			'success' : 'false-already in seenlist'
+			'success' : 'false-already in watchlist'
 			})
 
 @csrf_exempt
@@ -643,14 +653,24 @@ def add_seenlist(request, movie_id):
 	t = json.loads(request.body.decode('utf-8'))
 	rate = t['u_rate']
 	user = request.user
-	m = Movie.objects.get(m_id=movie_id, user=user)
+	m = Movie.objects.get(m_id=movie_id)
 	fp = open('ratings.txt','a')
 	fp.write(str(user.id)+'|'+str(m.m_id)+'|'+str(rate)+'\n')
 	fp.close()
-	if m.w_add == 0:
-		if m.s_add == 0:
-			m.s_add = 1
-			m.save()
+	seen=Seenlist.objects.filter(user=user)
+	flag=0
+	for s in seen:
+		if(s.movie==m):
+			flag=1
+			break
+	if(flag==0):
+		watched=Watchlist.objects.filter(user=user)
+		flag=0
+		for watch in watched:
+			if(watch.movie==m):
+				flag=1
+				break;
+		if(flag==0):
 			s = Seenlist.objects.create(
 					user=user,
 					movie=m,
@@ -658,36 +678,30 @@ def add_seenlist(request, movie_id):
 				)
 			s.save();
 			return JsonResponse({
-				'success': 'true'
-				})
+					'success': 'true'
+					})
 		else:
 			return JsonResponse({
-				'success': 'false-already in seenlist'
+				'success': 'false-already in watchlist'
 				})
 	else:
 		return JsonResponse({
-			'success': 'false-already in watchlist'
+				'success': 'false-already in seenlist'
 			})
 
 def seen(request):
 	seens=Seenlist.objects.filter(user=request.user)
-	a = []
-	for i in seens:
-		a.append(i)
-
 	context={
-		'seenMovies':a,
+		'seenMovies':seens,
 	}
 	return render(request, 'seenlist.html', context)
 
 def watch(request):
 	watch=Watchlist.objects.filter(user=request.user)
-	a = []
-	for i in watch:
-		a.append(i.movie)
 	context={
-		'watchMovies':a,
+		'watchMovies':watch,
 	}
+	print(context)
 	return render(request, 'watchlist.html', context)
 
 def profile(request):

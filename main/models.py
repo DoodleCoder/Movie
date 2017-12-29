@@ -28,13 +28,13 @@ class Movie(models.Model):
 		return str(self.name)
 
 class Watchlist(models.Model):
-	movie = models.ForeignKey(Movie, null=True)
+	movie = models.ForeignKey(Movie)
 	user = models.ForeignKey(User, default='')
 	def __str__(self):
 		return str(self.user.username)
 
 class Seenlist(models.Model):
-	movie = models.ForeignKey(Movie, null=True)
+	movie = models.ForeignKey(Movie)
 	user = models.ForeignKey(User, default='')
 	rate = models.IntegerField(default=0)
 	def __str__(self):

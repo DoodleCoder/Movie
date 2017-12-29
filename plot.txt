@@ -49,44 +49,31 @@ E. TV-List
 	8. Some without ratings, should be mentioned not rated
 
 F. Search
-	1. If there are no upcoming movies than that section should not be there
-	2. Upcoming movies have not been moved to upcoming section
-	3. Some dont have images, there should be a default image
-	4. Some without ratings, should be mentioned not rated
-	5. Some without overview, should be mentioned no review
-	6. Popularity should be converted to %
-	7. Some searches result in "BAD REQUEST"
+
 
 G. Movie Single
-	1. There is a black background, that should be filled with the backdrop
-	2. "Add to Favourite" changed to "Add to Watchlist"  (Add to Watchlist is no longer a clickable, i have put a temp href which reloads the page)
-	3. No comma after last genre, actor, producer in sidebar
-	4. top gray colour is not consistent (should be like the gray on the homepage)
-	5. Feedback for add to watchlist and seenlist 
-	6. Rating in stars
-	7. Fix "Full Cast Crew"
+	R 1. There is a black background, that should be filled with the backdrop
+	R 3. No comma after last genre, actor, producer in sidebar
+	R 5. Feedback for add to watchlist and seenlist 
+	G 6. Rating in stars
 
 H. TV Single
-	1. There is a background, that should be filled with the backdrop
-	2. View all seasons, View all cast not working
-	3. No comma after last genre, actor, producer in sidebar
-	4. Feedback for add to watchlist and seenlist 
-	5. Rating in stars
-	6. Add To Seenlist not working
-	7. Add to Watchlist not working
+	R 1. There is a background, that should be filled with the backdrop
+	R 3. No comma after last genre, actor, producer in sidebar
+	R 4. Feedback for add to watchlist and seenlist 
+	G 5. Rating in stars
+	G 6. Add To Seenlist not working
+	G 7. Add to Watchlist not working
 
 I. Seenlist
-	1. Pagination not working
-	3. Change rating option?
 
 J. Watchlist
 	1. Sort-by not working (Recent, most recommeneded)
-	2. Pagination not working
-	3. There should be an option to move to seenlist along with rating
+	G 3. There should be an option to move to seenlist along with rating
 
 H. Profile
-	1. Change password functionality
-	2. Profile Pic
+	G 1. Change password functionality
+	R 2. Profile Pic
 
 5. Recommend
 6. movie rating predict

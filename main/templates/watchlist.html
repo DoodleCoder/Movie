@@ -54,13 +54,13 @@
 				</div>
 				<div class="flex-wrap-movielist user-fav-list">
 					{% for w in watchMovies %}
-					{% if w.name %}
+					{% if w.movie.name %}
 					<div class="movie-item-style-2">
-						<img src="{{w.pic}}" alt="{{w.name}}" style="width: 25%;">
+						<img src="{{w.movie.pic}}" alt="{{w.movie.name}}" style="width: 25%;">
 						<div class="mv-item-infor">
-							<h6><a href="/movie/{{w.m_id}}/">{{w.name}}<span>({{w.date}})</span></a></h6>
-							<p class="rate"><i class="ion-android-star"></i><span>{{w.d_rating}}</span> /10</p>
-							<p class="describe">{{w.overview}}</p>
+							<h6><a href="/movie/{{w.m_id}}/">{{w.movie.name}}<span>({{w.movie.date}})</span></a></h6>
+							<p class="rate"><i class="ion-android-star"></i><span>{{w.movie.d_rating}}</span> /10</p>
+							<p class="describe">{{w.movie.overview}}</p>
 							<p class="rate">We predict you will rate this movie a <i class="ion-android-star"></i><span>4</span> /10</p>
 							<br>
 							<p class="redbtn" style="text-align: center;">Move to Seenlist</a>
