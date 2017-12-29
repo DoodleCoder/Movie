@@ -83,25 +83,18 @@ H. TV Single
 
 I. Seenlist
 	1. Mention that the rating displayed is the user's rating
-	2. "Found 1608 Movies" should be changed
-	3. Sort-by not working
-	4. Remove button to switch from movie grid to movie list
-	5. Pagination not working
-	6. Movies per page not working
-	7. Change rating option?
-	8. If blank, there should be some message
-	9. Change "User's Profile" to "User's Seenlist"
+	2. Pagination not working
+	3. Movies per page not working
+	4. Change rating option?
+	5. Work on displaying movies
 
 J. Watchlist
 	1. Mention next to the movie our predicted rating for the movie 	
-	2. "Found 1608 Movies" should be changed
-	3. Sort-by not working
-	4. Remove button to switch from movie grid to movie list
-	5. Pagination not working
-	6. If blank, there should be some message
-	7. There should be an option to move to seenlist along with rating
-	8. Shows per page not working
-	9. Change "User's Profile" to "User's Watchlist"
+	2. Sort-by not working
+	3. Pagination not working
+	4. There should be an option to move to seenlist along with rating
+	5. Shows per page not working
+	6. Work on displaying movies
 
 H. Profile
 	1. Change password functionality
