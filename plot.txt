@@ -37,50 +37,40 @@ E. TV-List
 	7. Search for show side bar not working
 
 F. Search 
+	8. Some without ratings, should be mentioned not rated
+
+F. Search
 
 G. Movie Single
 	1. There is a black background, that should be filled with the backdrop
 	2. "Add to Favourite" changed to "Add to Watchlist"  (Add to Watchlist is no longer a clickable, i have put a temp href which reloads the page)
 	3. No comma after last genre, actor, producer in sidebar
-	4. When clicked on a plot-keyword, all the movies having that plot keyword should be shown (format should be same as search page) or just remove this section
-	5. top gray colour is not consistent (should be like the gray on the homepage)
-	6. Related Movies - Director and stars are not populated, along with rating, runtime and releasedate
-	7. Feedback for add to watchlist and seenlist 
-	8. Rating in stars
-	9. Fix "Full Cast Crew"
+	4. top gray colour is not consistent (should be like the gray on the homepage)
+	5. Feedback for add to watchlist and seenlist 
+	6. Rating in stars
+	7. Fix "Full Cast Crew"
 
 H. TV Single
 	1. There is a background, that should be filled with the backdrop
 	2. View all seasons, View all cast not working
 	3. No comma after last genre, actor, producer in sidebar
-	4. When clicked on a plot-keyword, all the shows having that plot keyword should be shown (format should be same as search page) or just remove this section
-	5. Related shows - Director and stars are not populated, along with rating, runtime and releasedate
-	6. Feedback for add to watchlist and seenlist 
-	7. Rating in stars
-	8. Add To Seenlist not working
-	9. Add to Watchlist not working
+	4. Feedback for add to watchlist and seenlist 
+	5. Rating in stars
+	6. Add To Seenlist not working
+	7. Add to Watchlist not working
 
 I. Seenlist
-	1. Mention that the rating displayed is the user's rating
-	2. Pagination not working
-	3. Movies per page not working
-	4. Change rating option?
-	5. Work on displaying movies
+	1. Pagination not working
+	3. Change rating option?
 
 J. Watchlist
-	1. Mention next to the movie our predicted rating for the movie 	
-	2. Sort-by not working
-	3. Pagination not working
-	4. There should be an option to move to seenlist along with rating
-	5. Shows per page not working
-	6. Work on displaying movies
+	1. Sort-by not working (Recent, most recommeneded)
+	2. Pagination not working
+	3. There should be an option to move to seenlist along with rating
 
 H. Profile
 	1. Change password functionality
 	2. Profile Pic
-	3. Remove "Change password" from side bar, or have another page for it
-	4. Log out button not working
-	5. Align "User's Profile" to the breadcrumbs
 
 5. Recommend
 6. movie rating predict
