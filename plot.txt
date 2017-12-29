@@ -30,34 +30,13 @@ C. Homepage
 	-1. Automatic carousel for current movies and tv shows (not recommended)
 	-2. Some without ratings, should be mentioned not rated
 
-D. Movie-List ------------
-	-1. Gray should be lightend
-	2. When 'sort by' is changed to some other attribute, that attribute should be mentioned in the field instead of default 'Popular'
-	3. Change "Found 1608 Movies"
-	-->4. In 'sort by rating' all movies show 0/10 rating
+D. Movie-List
 	5. Search for movie side bar not working
-	-6. Movies per page not working
-	-7. Some without ratings, should be mentioned not rated
 
-E. TV-List --------------
-	1. The sort by options are different than movie
-	2. No submit button
-	3. Remove button to convert from movie grid to movie list
-	4. Pagination not done
-	5. Gray should be lightend
-	6. Change "Found 1608 Movies"
+E. TV-List
 	7. Search for show side bar not working
-	8. Shows per page not working
-	9. Some without ratings, should be mentioned not rated
 
-F. Search ---------------
-	1. If there are no upcoming movies than that section should not be there
-	2. Upcoming movies have not been moved to upcoming section
-	3. Some dont have images, there should be a default image
-	4. Some without ratings, should be mentioned not rated
-	5. Some without overview, should be mentioned no review
-	6. Popularity should be converted to %
-	7. Some searches result in "BAD REQUEST"
+F. Search 
 
 G. Movie Single
 	1. There is a black background, that should be filled with the backdrop

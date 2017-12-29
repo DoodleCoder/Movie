@@ -3,7 +3,7 @@
 {% block content %}
 <style type="text/css">
 	body {
-		background-color:  #dcdcdc !important;
+		background: url(../images/uploads/ft-bg.jpg) no-repeat;
 	}
 </style>
 
@@ -53,7 +53,11 @@
 						<div class="row">
 							<div class="col-md-3">
 								{% if t == 'movie' %}
+									{% if m.poster_path %}
 									<a href="/moviesingle/{{m.id}}/"><img src="https://image.tmdb.org/t/p/w500{{m.poster_path}}" alt="{{m.original_title}}" style="max-height: 100%"></a>
+									{% else %}
+									<a href="/moviesingle/{{m.id}}/"><img src="{% static 'images/notfound1.jpeg' %}" alt="{{m.original_title}}" style="width: 100%;max-height: 100%"></a>
+									{% endif %}
 								{% else %}
 									<a href="/show/{{m.id}}/"><img src="https://image.tmdb.org/t/p/w500{{m.poster_path}}" alt="{{m.name}}" style="max-height: 100%"></a>
 								{% endif %}
@@ -71,7 +75,7 @@
 									{% endif %}
 									<p class="rate"><i class="ion-android-star"></i><span>{{m.vote_average}}</span> /10</p>
 									<p class="describe">{{m.overview}}</p>
-									<p class="run-time"> Popularity:{{m.popularity}}<span></span>.<span>
+									<p class="run-time"> 
 									{% if t == 'movie' %}
 										Release: {{m.release_date}}
 									{% else %}
