@@ -74,7 +74,7 @@
 							</a>
 							<ul class="dropdown-menu level1">			
 								<li><a href="/movielist/1/">MOVIE</a></li>
-								<li><a href="/tvlist/">TV</a></li>
+								<li><a href="/tvlist/1">TV</a></li>
 							</ul>
 						</li>
 						<li class="dropdown first">
@@ -111,11 +111,11 @@
 						</li>
 					</ul>
 					<ul class="nav navbar-nav flex-child-menu menu-right">
+						{% if request.user.username %}
 						<li class="">
 							<a href="/seenlist/">seenlist</a>
 						</li>                
 						<li><a href="/watchlist/">Watchlist</a></li>
-						{% if request.user.username %}
 						<li class="btn"><a href="/logout/">log out</a></li>
 						{% else %}
 						<li class="btn"><a href="/login/">log in</a></li>
@@ -140,9 +140,10 @@
 	</div>
 </header>
 <!-- END | Header -->
-
+<body>
 {% block content %}
 {% endblock %}
+</body>
 <!--end of latest new v1 section-->
 <!-- footer section-->
 <footer class="ht-footer">

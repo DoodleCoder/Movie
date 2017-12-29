@@ -31,7 +31,7 @@ class Watchlist(models.Model):
 	movie = models.ForeignKey(Movie)
 	user = models.ForeignKey(User, default='')
 	def __str__(self):
-		return str(self.user.username)
+		return str(self.user.username)+'-'+str(self.movie.name)
 
 class Seenlist(models.Model):
 	movie = models.ForeignKey(Movie)

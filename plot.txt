@@ -31,25 +31,15 @@ C. Homepage
 	-2. Some without ratings, should be mentioned not rated
 
 D. Movie-List
-	-1. Gray should be lightend
-	2. When 'sort by' is changed to some other attribute, that attribute should be mentioned in the field instead of default 'Popular'
-	3. Change "Found 1608 Movies"
-	-->4. In 'sort by rating' all movies show 0/10 rating
 	5. Search for movie side bar not working
-	-6. Some without ratings, should be mentioned not rated
 
 E. TV-List
-	1. The sort by options are different than movie
-	2. No submit button
-	3. Remove button to convert from movie grid to movie list
-	4. Pagination not done
-	5. Gray should be lightend
-	6. Change "Found 1608 Movies"
 	7. Search for show side bar not working
+
+F. Search 
 	8. Some without ratings, should be mentioned not rated
 
 F. Search
-
 
 G. Movie Single
 	R 1. There is a black background, that should be filled with the backdrop
