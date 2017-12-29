@@ -31,13 +31,7 @@
 							<li><a href="/profile/">Profile</a></li>
 							<li class="active"><a href="userfavoritelist.html">Seen movies</a></li>
 							<li><a href="/watchlist/">Watchlist</a></li>
-						</ul>
-					</div>
-					<div class="user-fav">
-						<p>Others</p>
-						<ul>
-							<li><a href="#">Change password</a></li>
-							<li><a href="#">Log out</a></li>
+							<li><a href="/logout/">Log out</a></li>
 						</ul>
 					</div>
 				</div>
@@ -57,20 +51,14 @@
 						<img src="{{w.movie.pic}}" alt="{{w.movie.name}}" style="width: 25%;">
 						<div class="mv-item-infor">
 							<h6><a href="/movie/{{w.movie.m_id}}/">{{w.movie.name}}<span>({{w.movie.date}})</span></a></h6>
-							<p class="rate"><i class="ion-android-star"></i><span>{{w.rate}}</span> /10</p>
+							<p class="rate"><i class="ion-android-star"></i><span>{{w.rate}}</span> /10 (You have rated this movie)</p>
 							<p class="describe">{{w.movie.overview}}</p>
 						</div>
 					</div>
 					{% endif %}
 					{% endfor %}
 				</div>		
-				<div class="topbar-filter">
-					<label>Movies per page:</label>
-					<select>
-						<option value="range">5 Movies</option>
-						<option value="saab">10 Movies</option>
-					</select>
-					
+				<div class="topbar-filter">					
 					<div class="pagination2">
 						<span>Page 1 of 2:</span>
 						<a class="active" href="#">1</a>
