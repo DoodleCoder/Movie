@@ -89,18 +89,18 @@
 	<div class="container">
 		<div class="row ipad-width2">
 			<div class="col-md-4 col-sm-12 col-xs-12">
-				<div class="movie-img sticky-sb">
-					<!-- <img src="https://image.tmdb.org/t/p/w500{{detail.backdrop_path}}" alt=""> -->
-					<div class="movie-btn">	
+				<div class="movie-img">
+					<img src="https://image.tmdb.org/t/p/w500{{detail.poster_path}}" alt="">
+					<!-- <div class="movie-btn">	
 						<div class="btn-transform transform-vertical red">
 							<div><a href="#" class="item redbtn"> <i class="ion-play"></i>Watch Trailer</a></div>
-							<!-- <div><a href="#" class="item item-2 redbtn fancybox-media hvr-grow"><i class="ion-play"></i></a></div> -->
+							<div><a href="#" class="item item-2 redbtn fancybox-media hvr-grow"><i class="ion-play"></i></a></div>
 						</div>
 						<div class="btn-transform transform-vertical">
-							<div><a id="seen" class="item yellowbtn" onclick="f( {{detail.id}} );")> <i class="ion-card"></i>Have seen before</a></div>
+							<div><a id="seen" class="item yellowbtn" onclick="f( {{detail.id}} );")> <i class="ion-eye"></i>Have seen before</a></div>
 							
 						</div>
-					</div>
+					</div> -->
 				</div>
 			</div>
 			<div class="col-md-8 col-sm-12 col-xs-12">
@@ -108,10 +108,13 @@
 					<h1 class="bd-hd">{{detail.original_title}}<span> {{date}}</span></h1>
 					<div class="social-btn">
 						<div><a href="#" onclick="w( {{ detail.id }} );" id="watch" class="parent-btn"><i class="ion-heart"></i> Add to Watchlist</a></div>
+						<div><a href="#" onclick="f( {{detail.id}} );"" id="watch" class="parent-btn"><i class="ion-eye"></i> Have Seen Before</a></div>
 						<div>
 							<a class="parent-btn" style="font-size: 14px"><i class="ion-star"></i>{{detail.vote_average}}/10</a>
 						</div>		
 					</div>
+					<div><a href="#" class="item redbtn"> <i class="ion-play"></i>Watch Trailer</a></div>
+					<br>	
 					<div class="movie-tabs">
 						<div class="tabs">
 							<ul class="tab-links tabs-mv">

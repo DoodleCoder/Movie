@@ -121,11 +121,11 @@ $(function(){
 	//slider for movie and tv show home 2
 	multiItem2.slick({
 		infinite: true,
-		slidesToShow: 6,
-		slidesToScroll: 6,
+		slidesToShow: 5,
+		slidesToScroll: 5,
 		arrows: false,
-		// autoplay: true ,
-		// autoplaySpeed: 2000,
+		autoplay: true ,
+		autoplaySpeed: 3000,
 		dots: true,
 		responsive: [
 	    {
@@ -156,12 +156,12 @@ $(function(){
 	//slider movie and tv show home 1, 3
 	multiItem.slick({
 		infinite: true,
-		slidesToShow: 6,
-		slidesToScroll: 6,
+		slidesToShow: 5,
+		slidesToScroll: 5,
 		arrows: false,
 		draggable:true,
-		// autoplay: true,
-		// autoplaySpeed: 2000,
+		autoplay: true,
+		autoplaySpeed: 3000,
 		dots: true,
 		responsive: [
 	    {
