@@ -88,10 +88,24 @@
 					<ul class="nav navbar-nav flex-child-menu menu-right">
 						{% if request.user.username %}
 						<li><a href="/profile/">profile</a></li>
-						<li class="">
-							<a href="/seenlist/">seenlist</a>
-						</li>                
-						<li><a href="/watchlist/">Watchlist</a></li>
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							Seenlist<i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+							<ul class="dropdown-menu level1">			
+								<li><a href="/movieseenlist/">MOVIE</a></li>
+								<li><a href="/tvseenlist/">TV</a></li>
+							</ul>
+						</li>               
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							Watchlist<i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+							<ul class="dropdown-menu level1">			
+								<li><a href="/moviewatchlist/">MOVIE</a></li>
+								<li><a href="/tvwatchlist/">TV</a></li>
+							</ul>
+						</li>
 						<li class="btn"><a href="/logout/">log out</a></li>
 						{% else %}
 						<li class="btn"><a href="/login/">log in</a></li>

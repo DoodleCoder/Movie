@@ -9,7 +9,7 @@
 					<h1 style="margin-right: 10%">{{request.user.first_name}}’s Seenlist</h1>
 					<ul class="breadcumb">
 						<li class="active"><a href="#">Home</a></li>
-						<li> <span class="ion-ios-arrow-right"></span>Seen movies</li>
+						<li> <span class="ion-ios-arrow-right"></span>Seen Shows</li>
 					</ul>
 				</div>
 			</div>
@@ -29,10 +29,10 @@
 						<p>Account Details</p>
 						<ul>
 							<li><a href="/profile/">Profile</a></li>
-							<li class="active"><a href="#">Seenlist - Movies</a></li>
+							<li><a href="/movieseenlist/">Seenlist - Movies</a></li>
 							<li><a href="/moviewatchlist/">Watchlist - Movies</a></li>
-							<li><a href="/tvseenlist/">Seenlist - TV</a></li>
-							<li><a href="/tvwatchlist/">Watchlist - TV</a></li>
+							<li class="active"><a href="#">Seenlist - TV</a></li>
+							<li ><a href="/tvwatchlist/">Watchlist - TV</a></li>
 							<li><a href="/logout/">Log out</a></li>
 						</ul>
 					</div>
@@ -40,21 +40,21 @@
 			</div>
 			
 			<div class="col-md-9 col-sm-12 col-xs-12">
-				{% ifequal seenMovies|length 0 %}
+				{% ifequal seenTV|length 0 %}
 			<h2>You have not added anything to your Seenlist!</h2>
 			{% else %}
 				<div class="topbar-filter user">
-					<p>Found <span>{{seenMovies|length}} movies</span> in total</p>
+					<p>Found <span>{{seenTV|length}} shows</span> in total</p>
 				</div>
 				<div class="flex-wrap-movielist user-fav-list">
-					{% for w in seenMovies %}
-					{% if w.movie.name %}
+					{% for w in seenTV %}
+					{% if w.tv.name %}
 					<div class="movie-item-style-2">
-						<img src="{{w.movie.pic}}" alt="{{w.movie.name}}" style="width: 25%;">
+						<img src="{{w.tv.pic}}" alt="{{w.tv.name}}" style="width: 25%;">
 						<div class="mv-item-infor">
-							<h6><a href="/movie/{{w.movie.m_id}}/">{{w.movie.name}}<span>({{w.movie.date}})</span></a></h6>
+							<h6><a href="/show/{{w.tv.tv_id}}/">{{w.tv.name}}<span>({{w.tv.date}})</span></a></h6>
 							<p class="rate"><i class="ion-android-star"></i><span>{{w.rate}}</span> /10 (You have rated this movie)</p>
-							<p class="describe">{{w.movie.overview}}</p>
+							<p class="describe">{{w.tv.overview}}</p>
 						</div>
 					</div>
 					{% endif %}

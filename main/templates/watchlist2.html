@@ -16,7 +16,7 @@
 	    });
 	    data={'u_rate':value}
 	    $.ajax({
-			url: '/add_seenlist/'+id+'/',
+			url: '/add_seenlist2/'+id+'/',
 			type: 'POST',
 			dataType: 'json',
 			data: JSON.stringify(data),
@@ -51,7 +51,7 @@
 					<h1 style="margin-right: 10%">{{request.user.first_name}}’s Watchlist</h1>
 					<ul class="breadcumb">
 						<li class="active"><a href="#">Home</a></li>
-						<li> <span class="ion-ios-arrow-right"></span>Watchlist</li>
+						<li> <span class="ion-ios-arrow-right"></span>Watchlist TV</li>
 					</ul>
 				</div>
 			</div>
@@ -72,22 +72,23 @@
 						<ul>
 							<li><a href="/profile/">Profile</a></li>
 							<li><a href="/movieseenlist/">Seenlist - Movies</a></li>
-							<li class="active"><a href="#">Watchlist - Movies</a></li>
+							<li><a href="/moviewatchlist/">Watchlist - Movies</a></li>
 							<li><a href="/tvseenlist/">Seenlist - TV</a></li>
-							<li><a href="/tvwatchlist/">Watchlist - TV</a></li>
+							<li class="active"><a href="#">Watchlist - TV</a></li>
 							<li><a href="/logout/">Log out</a></li>
+
 						</ul>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-9 col-sm-12 col-xs-12">
-				{% ifequal watchMovies|length 0 %}
+				{% ifequal watchTV|length 0 %}
 				<h2>You have not added anything to your Watchlist!</h2>
 				{% else %}
 				<div class="topbar-filter">
-					<p>Found <span>{{watchMovies|length}} movies</span> in total</p>
+					<p>Found <span>{{watchTV|length}} shows</span> in total</p>
 					<label style="">Sort by:</label>
-					<form method="POST" action="/moviewatchlist/">
+					<form method="POST" action="/tvwatchlist/">
 					{% csrf_token %}
 						<div class="col-md-9">
 							<select name="filter" id='filter'>
@@ -101,17 +102,17 @@
 					</form>
 				</div>
 				<div class="flex-wrap-movielist user-fav-list">
-					{% for w in watchMovies %}
-					{% if w.movie.name %}
+					{% for w in watchTV %}
+					{% if w.tv.name %}
 					<div class="movie-item-style-2">
-						<img src="{{w.movie.pic}}" alt="{{w.movie.name}}" style="width: 25%;">
+						<img src="{{w.tv.pic}}" alt="{{w.tv.name}}" style="width: 25%;">
 						<div class="mv-item-infor">
-							<h6><a href="/movie/{{w.m_id}}/">{{w.movie.name}}<span>({{w.movie.date}})</span></a></h6>
-							<p class="rate"><i class="ion-android-star"></i><span>{{w.movie.d_rating}}</span> /10</p>
-							<p class="describe">{{w.movie.overview}}</p>
-							<p class="rate">We predict you will rate this movie a <i class="ion-android-star"></i><span>4</span> /10</p>
+							<h6><a href="/show/{{w.m_id}}/">{{w.tv.name}}<span>({{w.tv.date}})</span></a></h6>
+							<p class="rate"><i class="ion-android-star"></i><span>{{w.tv.d_rating}}</span> /10</p>
+							<p class="describe">{{w.tv.overview}}</p>
+							<p class="rate">We predict you will rate this tv a <i class="ion-android-star"></i><span>4</span> /10</p>
 							<br>
-							<a onclick="f( {{w.movie.m_id}} )" class="redbtn" style="text-align: center; width:30%">Move to Seenlist</a>
+							<a onclick="f( {{w.tv.tv_id}} )" class="redbtn" style="text-align: center; width:30%">Move to Seenlist</a>
 						</div>
 					</div>
 

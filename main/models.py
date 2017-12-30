@@ -30,18 +30,49 @@ class Movie(models.Model):
 class Watchlist(models.Model):
 	movie = models.ForeignKey(Movie)
 	user = models.ForeignKey(User, default='')
+	time_added = models.DateTimeField(auto_now_add=True)
 	def __str__(self):
 		return str(self.user.username)+'-'+str(self.movie.name)
 
 class Seenlist(models.Model):
 	movie = models.ForeignKey(Movie)
 	user = models.ForeignKey(User, default='')
+	time_added = models.DateTimeField(auto_now_add=True)
 	rate = models.IntegerField(default=0)
 	def __str__(self):
-		return str(self.user.username)
+		return str(self.user.username)+'-'+str(self.movie.name)
 
 class Genre(models.Model):
 	user = models.ForeignKey(User)
 	name = models.CharField(max_length=1000) 
 	def __str__(self):
 		return str(self.name)
+
+
+class TV(models.Model):
+	user = models.ForeignKey(User)
+	name = models.CharField(max_length=1000)
+	tv_id = models.IntegerField()
+	w_add = models.IntegerField(default=0)
+	s_add = models.IntegerField(default=0)
+	d_rating = models.IntegerField(default=0)
+	date = models.CharField(max_length=9999)
+	overview = models.TextField()
+	pic = models.CharField(max_length=9999)
+	def __str__(self):
+		return str(self.name)
+
+class WatchlistTV(models.Model):
+	tv = models.ForeignKey(TV)
+	user = models.ForeignKey(User, default='')
+	time_added = models.DateTimeField(auto_now_add=True)
+	def __str__(self):
+		return str(self.user.username)+'-'+str(self.tv.name)
+
+class SeenlistTV(models.Model):
+	tv = models.ForeignKey(TV)
+	user = models.ForeignKey(User, default='')
+	time_added = models.DateTimeField(auto_now_add=True)
+	rate = models.IntegerField(default=0)
+	def __str__(self):
+		return str(self.user.username)+'-'+str(self.tv.name)

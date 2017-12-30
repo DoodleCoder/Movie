@@ -1,40 +1,25 @@
 LEFT:
 
 A. Base:
-
 B. Login/Register
 	-1. Page should be dark blue background with gray dots
+	2. ERROR - IntegrityError at /register/ - NOT NULL constraint failed: main_seenlist.movie_id
 
 C. Homepage
 	-1. Automatic carousel for current movies and tv shows (not recommended)
 	-2. Some without ratings, should be mentioned not rated
 
 D. Movie-List
-	5. Search for movie side bar not working
-
 E. TV-List
-	7. Search for show side bar not working
-
 F. Search 
-	8. Some without ratings, should be mentioned not rated
-
 G. Movie Single
 	R 3. No comma after last genre, actor, producer in sidebar
-	G 6. Rating in stars
 
 H. TV Single
 	R 3. No comma after last genre, actor, producer in sidebar
-	R 4. Feedback for add to watchlist and seenlist 
-	G 5. Rating in stars
-	G 6. Add To Seenlist not working
-	G 7. Add to Watchlist not working
 
 I. Seenlist
-
 J. Watchlist
-	1. Sort-by not working (Recent, most recommeneded)
-	G 3. There should be an option to move to seenlist along with rating
-
 H. Profile
 	G 1. Change password functionality
 	R 2. Profile Pic

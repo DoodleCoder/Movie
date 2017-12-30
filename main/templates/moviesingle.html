@@ -21,8 +21,6 @@
 			dataType: 'json',
 			data: JSON.stringify(data),
 			success: function(data) {
-				console.log(data);
-				$('#seen').innerHTML = 'Added to Seenlist';
 			}
 		});
 	});
@@ -31,9 +29,7 @@
 <script>
 	function w(id)
 	{
-		swal("The movie has been saved to your watchlist", {
-			icon:"success",
-		})
+		
 		$.ajax({
 			url: '/add_watchlist/'+id+'/',
 			type: 'POST',
@@ -41,7 +37,11 @@
 			data: {},
 			success: function(data) {
 				console.log(data);
-				$('#watch').innerHTML = 'Added to Watchlist';
+				swal(data.success, 
+					{
+						icon:"success",
+					}
+				)
 			}
 		});
 	}
@@ -127,7 +127,7 @@
 						            		<p>{{detail.overview}}</p>
 											<div class="title-hd-sm">
 												<h4>cast</h4>
-												<a href="#" class="time">Full Cast & Crew  <i class="ion-ios-arrow-right"></i></a>
+												<a href="#cast" class="time">Full Cast & Crew  <i class="ion-ios-arrow-right"></i></a>
 											</div>
 											<!-- movie cast -->
 											<div class="mvcast-item">

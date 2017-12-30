@@ -2,12 +2,12 @@
 from __future__ import unicode_literals
 from django.http import HttpResponse, JsonResponse
 import json
-import urllib.request
+import urllib
 from operator import itemgetter
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.cache import cache
 from django.contrib.auth.models import User
-from .models import Profile, Genre, Movie, Watchlist, Seenlist
+from .models import Profile, Genre, Movie, Watchlist, Seenlist, TV, WatchlistTV, SeenlistTV
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
@@ -17,7 +17,7 @@ from dateutil.parser import parse
 api = '4a95b57fbcd4eea6c3e07a72ee861599'
 lang = 'en-US'
 genreURL = 'https://api.themoviedb.org/3/genre/movie/list?api_key='+api+'&language='+lang
-response0 = urllib.request.urlopen(genreURL)
+response0 = urllib.urlopen(genreURL)
 genre = json.loads(response0.read())
 genre = genre['genres']
 gid=[28,12,16,35,80,99,18,10751,14,36,27,10402,9648,10749,878,10770,53,10752,37]
@@ -151,7 +151,7 @@ def index(request):
 	if not popmovie:
 		popmovie= []
 		popurl = 'https://api.themoviedb.org/3/movie/popular?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(popurl)
+		response0 = urllib.urlopen(popurl)
 		pop = json.loads(response0.read())
 		for i in pop['results']:
 			i['genres']=[]
@@ -169,7 +169,7 @@ def index(request):
 	if not nowmovie:
 		nowmovie=[]
 		nowurl= 'https://api.themoviedb.org/3/movie/now_playing?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(nowurl)
+		response0 = urllib.urlopen(nowurl)
 		now = json.loads(response0.read())
 		for i in now['results']:
 			i['genres']=[]
@@ -186,7 +186,7 @@ def index(request):
 	if not topmovie:
 		topmovie=[]
 		topurl= 'https://api.themoviedb.org/3/movie/top_rated?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(topurl)
+		response0 = urllib.urlopen(topurl)
 		top = json.loads(response0.read())
 		for i in top['results']:
 			i['genres']=[]
@@ -203,7 +203,7 @@ def index(request):
 	if not upmovie:
 		upmovie=[]
 		upurl= 'https://api.themoviedb.org/3/movie/upcoming?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(upurl)
+		response0 = urllib.urlopen(upurl)
 		up = json.loads(response0.read())
 		for i in up['results']:
 			i['genres']=[]
@@ -226,7 +226,7 @@ def index(request):
 	if not airtodayshow:
 		airtodayshow= []
 		airtodayurl = 'https://api.themoviedb.org/3/tv/airing_today?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(airtodayurl)
+		response0 = urllib.urlopen(airtodayurl)
 		airtoday = json.loads(response0.read())
 		for i in airtoday['results']:
 			i['genres']=[]
@@ -243,7 +243,7 @@ def index(request):
 	if not airshow:
 		airshow=[]
 		airurl= 'https://api.themoviedb.org/3/tv/on_the_air?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(airurl)
+		response0 = urllib.urlopen(airurl)
 		air = json.loads(response0.read())
 		for i in air['results']:
 			i['genres']=[]
@@ -260,7 +260,7 @@ def index(request):
 	if not popshow:
 		popshow=[]
 		popurl= 'https://api.themoviedb.org/3/tv/popular?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(popurl)
+		response0 = urllib.urlopen(popurl)
 		pop = json.loads(response0.read())
 		for i in pop['results']:
 			i['genres']=[]
@@ -277,7 +277,7 @@ def index(request):
 	if not topshow:
 		topshow=[]
 		topurl= 'https://api.themoviedb.org/3/tv/top_rated?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(topurl)
+		response0 = urllib.urlopen(topurl)
 		top = json.loads(response0.read())
 		for i in top['results']:
 			i['genres']=[]
@@ -432,7 +432,6 @@ def tvlist(request,page_no):
 	else:
 		return redirect('/login/')
 
-
 def movielist(request,page_no):
 	pageNo=int(page_no)
 	g=''
@@ -442,7 +441,7 @@ def movielist(request,page_no):
 			popmovie= []
 			for i in range(1,11):			
 				popurl = 'https://api.themoviedb.org/3/movie/popular?api_key='+api+'&language='+lang+'&page='+str(i) 
-				response0 = urllib.request.urlopen(popurl) 	
+				response0 = urllib.urlopen(popurl) 	
 				pop = json.loads(response0.read())	
 				for i in pop['results']:
 					i['genres']=[]
@@ -562,7 +561,7 @@ def movie(request, movie_id):
 	mov = cache.get('movie-'+str(movie_id))
 	if not mov:
 		movurl = 'https://api.themoviedb.org/3/movie/'+movie_id+'?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(movurl)
+		response0 = urllib.urlopen(movurl)
 		mov = json.loads(response0.read())
 		cache.set('movie-'+str(movie_id), mov)
 		print('NEW ENTRY')
@@ -583,7 +582,7 @@ def movie(request, movie_id):
 	movcred = cache.get('movie-'+str(movie_id)+'-cred')
 	if not movcred:
 		movcredurl= 'https://api.themoviedb.org/3/movie/'+movie_id+'/credits?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(movcredurl)
+		response0 = urllib.urlopen(movcredurl)
 		movcred = json.loads(response0.read())
 		cache.set('movie-'+str(movie_id)+'-cred', movcred)
 		print('NEW ENTRY')
@@ -604,7 +603,7 @@ def movie(request, movie_id):
 	movsim = cache.get('movie-'+str(movie_id)+'-sim')
 	if not movsim:
 		movsimurl='https://api.themoviedb.org/3/movie/'+movie_id+'/similar?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(movsimurl)
+		response0 = urllib.urlopen(movsimurl)
 		movsim = json.loads(response0.read())
 		movsim=movsim['results']
 		cache.set('movie-'+str(movie_id)+'-sim', movsim)
@@ -615,7 +614,7 @@ def movie(request, movie_id):
 	movrev = cache.get('movie-'+str(movie_id)+'-review')
 	if not movrev:
 		movrevurl='https://api.themoviedb.org/3/movie/'+movie_id+'/reviews?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(movrevurl)
+		response0 = urllib.urlopen(movrevurl)
 		movrev = json.loads(response0.read())
 		movrev=movrev['results']
 		cache.set('movie-'+str(movie_id)+'-review', movrev)
@@ -660,7 +659,7 @@ def show(request, show_id):
 	showdet = cache.get('tv-'+str(show_id))
 	if not showdet:
 		showurl = 'https://api.themoviedb.org/3/tv/'+show_id+'?api_key='+api+'&language='+lang
-		response0 = urllib.request.urlopen(showurl)
+		response0 = urllib.urlopen(showurl)
 		showdet = json.loads(response0.read())
 		cache.set('tv-'+str(show_id), showdet)
 		print('NEW ENTRY')
@@ -688,7 +687,7 @@ def show(request, show_id):
 	showsim = cache.get('tv-'+str(show_id)+'-sim')
 	if not showsim:
 		showsimurl= 'https://api.themoviedb.org/3/tv/'+show_id+'/similar?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(showsimurl)
+		response0 = urllib.urlopen(showsimurl)
 		showsim = json.loads(response0.read())
 		showsim=showsim['results']
 		cache.set('tv-'+str(show_id)+'-sim', showsim)
@@ -699,7 +698,7 @@ def show(request, show_id):
 	showcred = cache.get('tv-'+str(show_id)+'-cred')
 	if not showcred:
 		showcredurl= 'https://api.themoviedb.org/3/tv/'+show_id+'/credits?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(showcredurl)
+		response0 = urllib.urlopen(showcredurl)
 		showcred = json.loads(response0.read())
 		cache.set('tv-'+str(show_id)+'-cred',showcred)
 		print('NEW ENTRY')
@@ -722,7 +721,7 @@ def show(request, show_id):
 	keywords=[]
 	if not showkey:
 		showkeyurl='https://api.themoviedb.org/3/tv/'+show_id+'/keywords?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.request.urlopen(showkeyurl)
+		response0 = urllib.urlopen(showkeyurl)
 		showkey = json.loads(response0.read())
 		keywords=showkey['results']
 		cache.set('tv-'+str(show_id)+'-keywords', showkey)
@@ -747,6 +746,15 @@ def show(request, show_id):
 		'seasons':seasons[1:],
 		'seasondates':seasondates[1:],
 	}
+	tv = TV.objects.get_or_create(
+			user=request.user,
+			name=showdet['name'],
+			tv_id=show_id,
+			d_rating = showdet['vote_average'],
+			pic='https://image.tmdb.org/t/p/w500'+showdet['poster_path'],
+			overview=showdet['overview'],
+			date=reldate
+		)
 	return render(request, 'seriessingle.html', context)
 
 @csrf_exempt
@@ -821,15 +829,15 @@ def add_watchlist(request, movie_id):
 				)
 			w.save();
 			return JsonResponse({
-				'success': 'true'
+				'success': 'Added to Watchlist'
 				})
 		else:
 			return JsonResponse({
-				'success': 'false-already in seenlist'
+				'success': 'Already in Seenlist'
 				})
 	else:
 		return JsonResponse({
-			'success' : 'false-already in watchlist'
+			'success' : 'Already in Watchlist'
 			})
 
 @csrf_exempt
@@ -841,6 +849,7 @@ def add_seenlist(request, movie_id):
 	fp = open('ratings.txt','a')
 	fp.write(str(user.id)+'|'+str(m.m_id)+'|'+str(rate)+'\n')
 	fp.close()
+	wp=0
 	seen=Seenlist.objects.filter(user=user)
 	flag=0
 	for s in seen:
@@ -853,6 +862,7 @@ def add_seenlist(request, movie_id):
 		for watch in watched:
 			if(watch.movie==m):
 				flag=1
+				wp = watch
 				break;
 		if(flag==0):
 			s = Seenlist.objects.create(
@@ -862,31 +872,51 @@ def add_seenlist(request, movie_id):
 				)
 			s.save();
 			return JsonResponse({
-					'success': 'true'
+					'success': 'Added to Seenlist'
 					})
 		else:
+			s = Seenlist.objects.create(
+					user=user,
+					movie=m,
+					rate=rate,
+				)
+			s.save()
+			Watchlist.objects.get(id=wp.id).delete()
 			return JsonResponse({
-				'success': 'false-already in watchlist'
+				'success': 'Added to Seenlist'
 				})
 	else:
 		return JsonResponse({
-				'success': 'false-already in seenlist'
+				'success': 'Already in Seenlist'
 			})
 
 def seen(request):
-	seens=Seenlist.objects.filter(user=request.user)
+	seens=Seenlist.objects.filter(user=request.user).order_by('-time_added')
 	context={
 		'seenMovies':seens,
 	}
 	return render(request, 'seenlist.html', context)
 
 def watch(request):
-	watch=Watchlist.objects.filter(user=request.user)
-	context={
-		'watchMovies':watch,
-	}
-	print(context)
-	return render(request, 'watchlist.html', context)
+	watch=Watchlist.objects.filter(user=request.user).order_by('-time_added')
+	rate = Watchlist.objects.filter(user=request.user).order_by('-movie__d_rating')
+	if request.method == 'POST':
+		t = request.POST['filter']
+		print(watch)
+		context={
+			't': t,
+		}
+		if t == '1':
+			context['watchMovies'] = watch
+		else:
+			context['watchMovies'] = rate
+		# print(context)
+		return render(request, 'watchlist.html', context)
+	else:
+		context = {
+			'watchMovies':watch
+		}
+		return render(request, 'watchlist.html', context)
 
 def profile(request):
 	pro=Profile.objects.get(user=request.user)
@@ -914,3 +944,114 @@ def profile(request):
 	}
 	return render(request, 'profile.html', context)		
 
+@csrf_exempt
+def add_watchlist2(request, tv_id):
+	user = request.user
+	m = TV.objects.get(tv_id=tv_id, user=request.user)
+	print(m)
+	watched=WatchlistTV.objects.filter(user=user)
+	flag=0
+	for watch in watched:
+		if(watch.tv==m):
+			flag=1
+			break 
+	if(flag==0):
+		seens=SeenlistTV.objects.filter(user=user)
+		flag=0
+		for seen in seens:
+			if(seen.tv==m):
+				flag=1
+				break
+		if(flag==0):
+			w = WatchlistTV.objects.create(
+					user=user,
+					tv=m,
+				)
+			w.save();
+			return JsonResponse({
+				'success': 'Added to Watchlist'
+				})
+		else:
+			return JsonResponse({
+				'success': 'Already in Seenlist'
+				})
+	else:
+		return JsonResponse({
+			'success' : 'Already in Watchlist'
+			})
+
+@csrf_exempt
+def add_seenlist2(request, tv_id):
+	t = json.loads(request.body.decode('utf-8'))
+	rate = t['u_rate']
+	user = request.user
+	m = TV.objects.get(tv_id=tv_id)
+	# fp = open('ratings.txt','a')
+	# fp.write(str(user.id)+'|'+str(m.m_id)+'|'+str(rate)+'\n')
+	# fp.close()
+	wp=0
+	seen=SeenlistTV.objects.filter(user=user)
+	flag=0
+	for s in seen:
+		if(s.tv==m):
+			flag=1
+			break
+	if(flag==0):
+		watched=WatchlistTV.objects.filter(user=user)
+		flag=0
+		for watch in watched:
+			if(watch.tv==m):
+				flag=1
+				wp = watch
+				break;
+		if(flag==0):
+			s = SeenlistTV.objects.create(
+					user=user,
+					tv=m,
+					rate=rate,
+				)
+			s.save();
+			return JsonResponse({
+					'success': 'Added to Seenlist'
+					})
+		else:
+			s = SeenlistTV.objects.create(
+					user=user,
+					tv=m,
+					rate=rate,
+				)
+			s.save()
+			WatchlistTV.objects.get(id=wp.id).delete()
+			return JsonResponse({
+				'success': 'Added to Seenlist'
+				})
+	else:
+		return JsonResponse({
+				'success': 'Already in Seenlist'
+			})
+
+def seen2(request):
+	seens=SeenlistTV.objects.filter(user=request.user).order_by('-time_added')
+	context={
+		'seenTV':seens,
+	}
+	return render(request, 'seenlist2.html', context)
+
+def watch2(request):
+	watch=WatchlistTV.objects.filter(user=request.user).order_by('-time_added')
+	rate = WatchlistTV.objects.filter(user=request.user).order_by('-tv__d_rating')
+	if request.method == 'POST':
+		t = request.POST['filter']
+		context={
+			't': t,
+		}
+		if t == '1':
+			context['watchTV'] = watch
+		else:
+			context['watchTV'] = rate
+		return render(request, 'watchlist2.html', context)
+	else:
+		context = {
+			'watchTV':watch
+		}
+		return render(request, 'watchlist2.html', context)

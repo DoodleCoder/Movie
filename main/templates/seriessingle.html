@@ -1,6 +1,51 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+	function f(id){
+		swal({
+	  title: "You have seen this movie",
+	  text: "How much would you rate it",
+	  content: "input",
+	  buttons: true,
+	})
+	.then((value) => {
+	    swal(`You rated ${value}`, {
+	      icon: "success",
+	    });
+	    data={'u_rate':value}
+	    $.ajax({
+			url: '/add_seenlist2/'+id+'/',
+			type: 'POST',
+			dataType: 'json',
+			data: JSON.stringify(data),
+			success: function(data) {
+			}
+		});
+	});
+	}
+</script>
+<script>
+	function w(id)
+	{
+		
+		$.ajax({
+			url: '/add_watchlist2/'+id+'/',
+			type: 'POST',
+			dataType: 'json',
+			data: {},
+			success: function(data) {
+				console.log(data);
+				swal(data.success, 
+					{
+						icon:"success",
+					}
+				)
+			}
+		});
+	}
+</script>
 <div class="hero sr-single-hero sr-single">
 	<div class="container">
 		<div class="row">
@@ -22,12 +67,12 @@
 					<img src="https://image.tmdb.org/t/p/w500{{detail.backdrop_path}}" alt="">
 					<div class="movie-btn">	
 						<div class="btn-transform transform-vertical red">
-							<div><a href="#" class="item item-1 redbtn"> <i class="ion-play"></i> Watch Trailer</a></div>
-							<div><a href="https://www.youtube.com/embed/o-0hcF97wy0" class="item item-2 redbtn fancybox-media hvr-grow"><i class="ion-play"></i></a></div>
+							<div><a href="#" class="item redbtn"> <i class="ion-play"></i>Watch Trailer</a></div>
+							<!-- <div><a href="#" class="item item-2 redbtn fancybox-media hvr-grow"><i class="ion-play"></i></a></div> -->
 						</div>
 						<div class="btn-transform transform-vertical">
-							<div><a href="#" class="item item-1 yellowbtn"> <i class="ion-card"></i> Buy ticket</a></div>
-							<div><a href="#" class="item item-2 yellowbtn"><i class="ion-card"></i></a></div>
+							<div><a id="seen" class="item yellowbtn" onclick="f( {{detail.id}} );")> <i class="ion-card"></i>Have seen before</a></div>
+							
 						</div>
 					</div>
 				</div>
@@ -36,10 +81,10 @@
 				<div class="movie-single-ct main-content">
 					<h1 class="bd-hd">{{detail.name}}<span> {{date}} - {{enddate}}</span></h1>
 					<div class="social-btn">
-						<a href="#" class="parent-btn"><i class="ion-heart"></i> Add to Watchlist</a>
+						<div><a href="#" onclick="w( {{ detail.id }} );" id="watch" class="parent-btn"><i class="ion-heart"></i> Add to Watchlist</a></div>
 						<div>
 							<a class="parent-btn" style="font-size: 14px"><i class="ion-star"></i>{{detail.vote_average}}/10</a>
-						</div>	
+						</div>		
 					</div>
 					<div class="movie-tabs">
 						<div class="tabs">

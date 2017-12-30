@@ -7,6 +7,9 @@ from django.contrib import admin
 
 admin.site.register(Profile)
 admin.site.register(Movie)
+admin.site.register(TV)
 admin.site.register(Watchlist)
+admin.site.register(WatchlistTV)
+admin.site.register(SeenlistTV)
 admin.site.register(Seenlist)
 admin.site.register(Genre)
