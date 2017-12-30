@@ -129,12 +129,6 @@ def register(request):
 					lastName=lastName,
 					username=username,
 				)
-			seenlist = Seenlist.objects.create(
-					user=user
-				)
-			watchlist = Watchlist.objects.create(
-					user=user
-				)
 			return redirect('/index/')
 	else:
 		return render(request, 'register.html')
@@ -145,9 +139,6 @@ def logout_site(request):
 
 def index(request):
 	popmovie = cache.get('popmovie-index')
-	nowmovie = cache.get('nowmovie')
-	topmovie = cache.get('topmovie')
-	upmovie = cache.get('upmovie')
 	if not popmovie:
 		popmovie= []
 		popurl = 'https://api.themoviedb.org/3/movie/popular?api_key='+api+'&language='+lang+'&page=1'
@@ -165,7 +156,7 @@ def index(request):
 		print('old entry')
 
 
-
+	nowmovie = cache.get('nowmovie')
 	if not nowmovie:
 		nowmovie=[]
 		nowurl= 'https://api.themoviedb.org/3/movie/now_playing?api_key='+api+'&language='+lang+'&page=1'
@@ -183,6 +174,7 @@ def index(request):
 		print('old entry')
 
 
+	topmovie = cache.get('topmovie')
 	if not topmovie:
 		topmovie=[]
 		topurl= 'https://api.themoviedb.org/3/movie/top_rated?api_key='+api+'&language='+lang+'&page=1'
@@ -200,6 +192,7 @@ def index(request):
 		print('old entry')
 
 
+	upmovie = cache.get('upmovie')
 	if not upmovie:
 		upmovie=[]
 		upurl= 'https://api.themoviedb.org/3/movie/upcoming?api_key='+api+'&language='+lang+'&page=1'
@@ -219,10 +212,6 @@ def index(request):
 
 
 	airtodayshow = cache.get('lateshow')
-	airshow = cache.get('airshow')
-	popshow = cache.get('popshow')
-	topshow = cache.get('topshow')
-	
 	if not airtodayshow:
 		airtodayshow= []
 		airtodayurl = 'https://api.themoviedb.org/3/tv/airing_today?api_key='+api+'&language='+lang+'&page=1'
@@ -240,6 +229,7 @@ def index(request):
 		print('old entry')
 
 
+	airshow = cache.get('airshow')
 	if not airshow:
 		airshow=[]
 		airurl= 'https://api.themoviedb.org/3/tv/on_the_air?api_key='+api+'&language='+lang+'&page=1'
@@ -257,6 +247,7 @@ def index(request):
 		print('old entry')
 
 
+	popshow = cache.get('popshow')
 	if not popshow:
 		popshow=[]
 		popurl= 'https://api.themoviedb.org/3/tv/popular?api_key='+api+'&language='+lang+'&page=1'
@@ -274,6 +265,7 @@ def index(request):
 		print('old entry')
 
 
+	topshow = cache.get('topshow')
 	if not topshow:
 		topshow=[]
 		topurl= 'https://api.themoviedb.org/3/tv/top_rated?api_key='+api+'&language='+lang+'&page=1'
@@ -385,7 +377,6 @@ def tvlist(request,page_no):
 			for i in poplist:
 				if name.lower() in i['name'].lower():
 					ans.append(i)
-			# print(poplist[0]['name'])
 			ans2 = []
 			
 			if g != '[]' or g!= '':
@@ -396,11 +387,9 @@ def tvlist(request,page_no):
 							b+=1
 					if b == len(g):
 						ans2.append(i)
-				# print(g)
 			else:
 				g = ''
 				ans2 = ans
-			# print(ans2)
 			results = []
 			if r=='6-10':
 				for i in ans2:
@@ -640,7 +629,6 @@ def movie(request, movie_id):
 		'uvwxyz':non_ratingsss,
 	}
 	m = Movie.objects.get_or_create(
-			user=request.user,
 			name=mov['title'],
 			m_id=movie_id,
 			d_rating = mov['vote_average'],
@@ -747,7 +735,6 @@ def show(request, show_id):
 		'seasondates':seasondates[1:],
 	}
 	tv = TV.objects.get_or_create(
-			user=request.user,
 			name=showdet['name'],
 			tv_id=show_id,
 			d_rating = showdet['vote_average'],
@@ -807,7 +794,7 @@ def search(request):
 def add_watchlist(request, movie_id):
 
 	user = request.user
-	m = Movie.objects.get(m_id=movie_id, user=request.user)
+	m = Movie.objects.get(m_id=movie_id)
 	print(m)
 	watched=Watchlist.objects.filter(user=user)
 	flag=0
@@ -902,7 +889,6 @@ def watch(request):
 	rate = Watchlist.objects.filter(user=request.user).order_by('-movie__d_rating')
 	if request.method == 'POST':
 		t = request.POST['filter']
-		print(watch)
 		context={
 			't': t,
 		}
@@ -910,7 +896,6 @@ def watch(request):
 			context['watchMovies'] = watch
 		else:
 			context['watchMovies'] = rate
-		# print(context)
 		return render(request, 'watchlist.html', context)
 	else:
 		context = {
@@ -945,7 +930,8 @@ def profile(request):
 			if p1 == p2:
 				user.set_password(p1)
 				user.save()
-				msg='Successfully Changed Password'
+				logout(request)
+				return redirect('/login/')
 			else:
 				msg='Passwords Do No Match'
 		else:
@@ -959,8 +945,7 @@ def profile(request):
 @csrf_exempt
 def add_watchlist2(request, tv_id):
 	user = request.user
-	m = TV.objects.get(tv_id=tv_id, user=request.user)
-	print(m)
+	m = TV.objects.get(tv_id=tv_id)
 	watched=WatchlistTV.objects.filter(user=user)
 	flag=0
 	for watch in watched:
@@ -998,9 +983,9 @@ def add_seenlist2(request, tv_id):
 	rate = t['u_rate']
 	user = request.user
 	m = TV.objects.get(tv_id=tv_id)
-	# fp = open('ratings.txt','a')
-	# fp.write(str(user.id)+'|'+str(m.m_id)+'|'+str(rate)+'\n')
-	# fp.close()
+	fp = open('ratings2.txt','a')
+	fp.write(str(user.id)+'|'+str(m.tv_id)+'|'+str(rate)+'\n')
+	fp.close()
 	wp=0
 	seen=SeenlistTV.objects.filter(user=user)
 	flag=0
