@@ -3,21 +3,13 @@ LEFT:
 A. Base:
 B. Login/Register
 	-1. Page should be dark blue background with gray dots
-	2. ERROR - IntegrityError at /register/ - NOT NULL constraint failed: main_seenlist.movie_id
 
 C. Homepage
-	-1. Automatic carousel for current movies and tv shows (not recommended)
-	-2. Some without ratings, should be mentioned not rated
-
 D. Movie-List
 E. TV-List
 F. Search 
 G. Movie Single
-	R 3. No comma after last genre, actor, producer in sidebar
-
 H. TV Single
-	R 3. No comma after last genre, actor, producer in sidebar
-
 I. Seenlist
 J. Watchlist
 H. Profile

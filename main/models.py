@@ -15,11 +15,8 @@ class Profile(models.Model):
 		return str(self.id) + '-' + self.user.username + ' Profile'
 
 class Movie(models.Model):
-	user = models.ForeignKey(User)
 	name = models.CharField(max_length=1000)
 	m_id = models.IntegerField()
-	w_add = models.IntegerField(default=0)
-	s_add = models.IntegerField(default=0)
 	d_rating = models.IntegerField(default=0)
 	date = models.CharField(max_length=9999)
 	overview = models.TextField()
@@ -50,11 +47,8 @@ class Genre(models.Model):
 
 
 class TV(models.Model):
-	user = models.ForeignKey(User)
 	name = models.CharField(max_length=1000)
 	tv_id = models.IntegerField()
-	w_add = models.IntegerField(default=0)
-	s_add = models.IntegerField(default=0)
 	d_rating = models.IntegerField(default=0)
 	date = models.CharField(max_length=9999)
 	overview = models.TextField()
