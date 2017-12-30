@@ -40,6 +40,7 @@
 			</div>
 			<div class="col-md-9 col-sm-12 col-xs-12">
 				<div class="form-style-1 user-pro" action="#">
+					<h4 style="color: white;">{{msg}}</h4>
 					<form action="#" method="post" class="user">
 						{% csrf_token %}
 						<h4>Profile details</h4>
@@ -65,33 +66,28 @@
 						</div>
 						<div class="row">
 							<div class="col-md-2">
-								<input class="submit" type="submit" value="save">
+								<input class="submit" name="change_data" type="submit" value="save">
 							</div>
 						</div>	
 					</form>
-					<form action="#" class="password">
+					<form action="#" method="POST" class="password">
+						{% csrf_token %}
 						<h4>02. Change password</h4>
 						<div class="row">
 							<div class="col-md-6 form-it">
-								<label>Old Password</label>
-								<input type="text" placeholder="**********">
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-6 form-it">
 								<label>New Password</label>
-								<input type="text" placeholder="***************">
+								<input type="text" name="pass1" placeholder="***************">
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-6 form-it">
 								<label>Confirm New Password</label>
-								<input type="text" placeholder="*************** ">
+								<input type="text" name="pass2" placeholder="*************** ">
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-2">
-								<input class="submit" type="submit" value="change">
+								<input class="submit" name="change_pass" type="submit" value="change">
 							</div>
 						</div>	
 					</form>

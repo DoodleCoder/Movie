@@ -920,27 +920,39 @@ def watch(request):
 
 def profile(request):
 	pro=Profile.objects.get(user=request.user)
-	print(pro)
 	user=User.objects.get(id=request.user.id)
+	msg = ''
 	if request.method == 'POST':
-		print('hi')
-		username=request.POST['username']
-		fname=request.POST['fname']
-		lname=request.POST['lname']
-		country=request.POST['country']
+		if 'change_data' in request.POST:
+			username=request.POST['username']
+			fname=request.POST['fname']
+			lname=request.POST['lname']
+			country=request.POST['country']
 
-		pro.username=username
-		pro.firstName=fname
-		pro.lastName=lname
-		pro.country=country
-		pro.save()
-		user.first_name=fname
-		user.last_name=lname
-		user.username=username
-		user.save()
-
+			pro.username=username
+			pro.firstName=fname
+			pro.lastName=lname
+			pro.country=country
+			pro.save()
+			user.first_name=fname
+			user.last_name=lname
+			user.username=username
+			user.save()
+			msg = 'Successfully Updated Data'
+		elif 'change_pass' in request.POST:
+			p1 = request.POST['pass1']
+			p2 = request.POST['pass2']
+			if p1 == p2:
+				user.set_password(p1)
+				user.save()
+				msg='Successfully Changed Password'
+			else:
+				msg='Passwords Do No Match'
+		else:
+			print('f off')
 	context={
-		'profile': pro
+		'profile': pro,
+		'msg' : msg,
 	}
 	return render(request, 'profile.html', context)		
 

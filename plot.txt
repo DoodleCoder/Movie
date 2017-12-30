@@ -21,7 +21,6 @@ H. TV Single
 I. Seenlist
 J. Watchlist
 H. Profile
-	G 1. Change password functionality
 	R 2. Profile Pic
 
 5. Recommend
