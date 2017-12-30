@@ -160,8 +160,8 @@ $(function(){
 		slidesToScroll: 5,
 		arrows: false,
 		draggable:true,
-		// autoplay: true,
-		// autoplaySpeed: 3000,
+		autoplay: true,
+		autoplaySpeed: 3000,
 		dots: true,
 		responsive: [
 	    {
