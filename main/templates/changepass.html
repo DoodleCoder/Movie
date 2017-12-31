@@ -24,18 +24,18 @@
 			<div class="col-md-3 col-sm-12 col-xs-12">
 				<div class="user-information">
 					<div class="user-img">
-						<a href="#"><img src="../../static/media/{{profile.profilePic}}" alt="" style="width: 50%; margin-bottom: 0px;"><br></a>
-
+						<a href="#"><img src="../../static/media/{{profile.profilePic}}" alt=""><br></a>
+						<a href="#" class="redbtn">Change avatar</a>
 					</div>
 					<div class="user-fav">
 						<!-- <p>Account Details</p> -->
 						<ul>
-							<li class="active"><a href="#">Profile</a></li>
+							<li><a href="/profile/">Profile</a></li>
 							<li><a href="/movieseenlist/">Seenlist - Movies</a></li>
 							<li><a href="/moviewatchlist/">Watchlist - Movies</a></li>
 							<li><a href="/tvseenlist/">Seenlist - TV</a></li>
 							<li><a href="/tvwatchlist/">Watchlist - TV</a></li>
-							<li><a href="/changepassword/">Change Password</li>
+							<li class="active"><a href="#">Change Password</a></li>
 							<li><a href="/logout/">Log out</a></li>
 						</ul>
 					</div>
@@ -43,40 +43,26 @@
 			</div>
 			<div class="col-md-9 col-sm-12 col-xs-12">
 				<div class="form-style-1 user-pro" action="#">
-					<!-- <h4 style="color: white;">{{msg}}</h4> -->
-					<h4>Profile details</h4>
-					<div class="row">
-						<div class="col-md-9">
-							<label>Username: <span>{{request.user}}</span></label>
-							<!-- <input type="text" name= "username" value="{{request.user}}"> -->
-						</div>
-						
-					</div>
-					<div class="row">
-						<div class="col-md-9">
-							<label>First Name: <span>{{request.user.first_name}}</span></label>
-						</div>
-						<div class="col-md-9">
-							<label>Last Name: <span>{{request.user.last_name}}</span></label>
-						</div>
-						<div class="col-md-9">
-							<label>Number of Movies in Seenlist: <span>{{seen}}</span></label>
-						</div>
-						<div class="col-md-9">
-							<label>Number of Movies in Watchlist: <span>{{watch}}</span></label>
-						</div>
-					</div>
-					<br>	
-					<br>
-					<form method='post' action='#' enctype="multipart/form-data">
-						{% csrf_token %}	
-						<h4>Change Profile Picture</h4>
-						<input type="file" name="myfile" style="background-color: #0b1a2a">
+					<form action="#" method="POST" class="password">
+						{% csrf_token %}
+						<h4>Change password</h4>
 						<div class="row">
-							<div class="col-md-2">
-								<input class="submit" name="change_pic" type="submit" value="save" onclick="pic()">
+							<div class="col-md-6 form-it">
+								<label>New Password</label>
+								<input type="password" name="pass1">
 							</div>
 						</div>
+						<div class="row">
+							<div class="col-md-6 form-it">
+								<label>Confirm New Password</label>
+								<input type="password" name="pass2" >
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-2">
+								<input class="submit" name="change_pass" type="submit" value="change" onclick="pass()">
+							</div>
+						</div>	
 					</form>
 				</div>
 			</div>
@@ -84,14 +70,17 @@
 	</div>
 </div>
 <script type="text/javascript">
-	var v = 'Successfully Updated Profile Picture'
+	var v = 'Successfully Changed Password'
 	if {{msg}} == v
 		swal({
-		  text: "Successfully Uploaded New Profile Picture",
-		  icon: "success",
-		})	
+		text: "Successfully	Changed Password"
+		icon:'sucess',
+	})	
 </script>
 <script>
-	
+	swal({
+		text: "Successfully	changed password"
+		icon:'sucess',
+	})
 </script>
 {% endblock %}
