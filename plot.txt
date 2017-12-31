@@ -1,5 +1,5 @@
 LEFT:
-
+--------> Handle pages with blank context (seenlist,)
 A. Base:
 B. Login/Register
 	-1. Page should be dark blue background with gray dots
@@ -13,7 +13,6 @@ H. TV Single
 I. Seenlist
 J. Watchlist
 H. Profile
-	G 1. Change password functionality
 	R 2. Profile Pic
 
 5. Recommend
@@ -23,5 +22,5 @@ H. Profile
 STEPS FOR ML:
 ---> 1. get movie data - 1/0 for each genre
 ---> 2. get user data
-3. get rating data - user VS movie VS rating
+--->3. get rating data - user VS movie VS rating
 4. Kmeans
