@@ -89,7 +89,7 @@
 	<div class="container">
 		<div class="row ipad-width2">
 			<div class="col-md-4 col-sm-12 col-xs-12">
-				<div class="movie-img">
+				<div class="movie-img sticky-sb">
 					<img src="https://image.tmdb.org/t/p/w500{{detail.poster_path}}" alt="">
 					<!-- <div class="movie-btn">	
 						<div class="btn-transform transform-vertical red">
@@ -113,7 +113,9 @@
 							<a class="parent-btn" style="font-size: 16px"><i class="ion-star"></i>{{detail.vote_average}}/10</a>
 						</div>		
 					</div>
-					<div><a href="#" class="item redbtn"> <i class="ion-play"></i>Watch Trailer</a></div>
+					{% ifnotequal trailers|length 0 %}
+					<div><a href="https://www.youtube.com/embed/{{trailers.key}}" class="item item-2 redbtn fancybox-media hvr-grow"><i class="ion-play"></i>Watch Trailer</a></div>
+					{% endifnotequal %}
 					<br>	
 					<div class="movie-tabs">
 						<div class="tabs">

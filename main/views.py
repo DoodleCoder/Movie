@@ -613,7 +613,14 @@ def movie(request, movie_id):
 	else:
 		print('old entry')
 
-
+	movtraiurl='https://api.themoviedb.org/3/movie/'+movie_id+'/videos?api_key='+api+'&language='+lang+'&page=1'
+	response0 = urllib.request.urlopen(movtraiurl)
+	movtrai = json.loads(response0.read())
+	movtrai=movtrai['results']
+	trailers=[]
+	for m in movtrai:
+		if(m['type']=='Trailer'):
+			trailers.append(m)
 
 	context={
 		'detail':mov,
@@ -629,6 +636,7 @@ def movie(request, movie_id):
 		'reviews':movrev,
 		'abcdef':ratingsss,
 		'uvwxyz':non_ratingsss,
+		'trailers':trailers[0],
 	}
 	m = Movie.objects.get_or_create(
 			name=mov['title'],
