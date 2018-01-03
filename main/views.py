@@ -13,6 +13,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from dateutil.parser import parse
+from django.core.files.storage import FileSystemStorage
+
 
 api = '4a95b57fbcd4eea6c3e07a72ee861599'
 lang = 'en-US'
@@ -611,7 +613,14 @@ def movie(request, movie_id):
 	else:
 		print('old entry')
 
-
+	movtraiurl='https://api.themoviedb.org/3/movie/'+movie_id+'/videos?api_key='+api+'&language='+lang+'&page=1'
+	response0 = urllib.request.urlopen(movtraiurl)
+	movtrai = json.loads(response0.read())
+	movtrai=movtrai['results']
+	trailers=[]
+	for m in movtrai:
+		if(m['type']=='Trailer'):
+			trailers.append(m)
 
 	context={
 		'detail':mov,
@@ -627,6 +636,7 @@ def movie(request, movie_id):
 		'reviews':movrev,
 		'abcdef':ratingsss,
 		'uvwxyz':non_ratingsss,
+		'trailers':trailers[0],
 	}
 	m = Movie.objects.get_or_create(
 			name=mov['title'],
@@ -907,38 +917,24 @@ def profile(request):
 	pro=Profile.objects.get(user=request.user)
 	user=User.objects.get(id=request.user.id)
 	msg = ''
+	watch=Watchlist.objects.filter(user=request.user)
+	seen=Seenlist.objects.filter(user=request.user)
+	watch=len(watch)
+	seen=len(seen)
 	if request.method == 'POST':
-		if 'change_data' in request.POST:
-			username=request.POST['username']
-			fname=request.POST['fname']
-			lname=request.POST['lname']
-			country=request.POST['country']
-
-			pro.username=username
-			pro.firstName=fname
-			pro.lastName=lname
-			pro.country=country
+		if 'change_pic' in request.POST:
+			if request.FILES:
+					myfile = request.FILES['myfile']
+					fs = FileSystemStorage()
+					filename = fs.save(myfile.name, myfile)
+					pro.profilePic=filename
 			pro.save()
-			user.first_name=fname
-			user.last_name=lname
-			user.username=username
-			user.save()
-			msg = 'Successfully Updated Data'
-		elif 'change_pass' in request.POST:
-			p1 = request.POST['pass1']
-			p2 = request.POST['pass2']
-			if p1 == p2:
-				user.set_password(p1)
-				user.save()
-				logout(request)
-				return redirect('/login/')
-			else:
-				msg='Passwords Do No Match'
-		else:
-			print('f off')
+			msg = 'Successfully Updated Profile Picture'
 	context={
 		'profile': pro,
 		'msg' : msg,
+		'seen':seen,
+		'watch':watch,
 	}
 	return render(request, 'profile.html', context)		
 
@@ -1052,3 +1048,25 @@ def watch2(request):
 			'watchTV':watch
 		}
 		return render(request, 'watchlist2.html', context)
+
+
+def changepass(request):
+	msg=''
+	user=User.objects.get(id=request.user.id)
+	pro=Profile.objects.get(user=user)
+	if request.method=='POST':
+		p1 = request.POST['pass1']
+		p2 = request.POST['pass2']
+		if p1 == p2:
+			user.set_password(p1)
+			user.save()
+			logout(request)
+			msg="Successfully Changted Password"
+			return redirect('/login/')
+		else:
+			msg='Passwords Do No Match'
+	context={
+		'msg' : msg,
+		'profile':pro,
+	}
+	return render(request, 'changepass.html', context)

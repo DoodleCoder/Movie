@@ -11,6 +11,7 @@ H. TV Single
 I. Seenlist
 J. Watchlist
 H. Profile
+	1. Sweet Alert for Change Profile Pic, Change Password
 5. Recommend
 6. movie rating predict
 

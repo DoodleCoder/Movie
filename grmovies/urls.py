@@ -39,6 +39,8 @@ urlpatterns = [
     url(r'^tvseenlist/$', views.seen2),
     url(r'^tvwatchlist/$', views.watch2),
     url(r'^profile/$', views.profile),
+    url(r'^changepassword/$', views.changepass),
+
 
 
 

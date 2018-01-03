@@ -11,6 +11,7 @@ class Profile(models.Model):
 	lastName = models.CharField(max_length=100, default='')
 	username = models.CharField(max_length=100, default='')
 	country = models.CharField(max_length=100, default='')
+	profilePic=models.ImageField(upload_to='', default='avatar.png', max_length=1000)
 	def __str__(self):
 		return str(self.id) + '-' + self.user.username + ' Profile'
 
