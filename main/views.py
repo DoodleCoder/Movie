@@ -614,7 +614,7 @@ def movie(request, movie_id):
 		print('old entry')
 
 	movtraiurl='https://api.themoviedb.org/3/movie/'+movie_id+'/videos?api_key='+api+'&language='+lang+'&page=1'
-	response0 = urllib.request.urlopen(movtraiurl)
+	response0 = urllib.urlopen(movtraiurl)
 	movtrai = json.loads(response0.read())
 	movtrai=movtrai['results']
 	trailers=[]
