@@ -25,7 +25,7 @@ SECRET_KEY = '-7p$fntx(77i2cob7cgund$m*ap@kbhq+v7m3=h^m&&1&+w@z3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['powerful-ravine-48177.herokuapp.com']
 MEDIA_URL = '/main/static/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'main/static/media')
 
