@@ -16,19 +16,15 @@ d = Dataset()
 d.load_items("allmovies.txt", item)
 d.load_ratings("ratings.txt", rating)
 # d.load_ratings("data/u.test", rating_test)
-# print(rating)
-# for i in rating:
-# 	print(i)
-print(item)
 
 # n_users = len(user)
-# n_items = len(item)
+n_items = len(item)
 
-# # The utility matrix stores the rating for each user-item pair in the
-# # matrix form.
-# utility = np.zeros((n_users, n_items))
-# for r in rating:
-#     utility[r.user_id - 1][r.item_id - 1] = r.rating
+# The utility matrix stores the rating for each user-item pair in the
+# matrix form.
+utility = np.zeros((n_users, n_items))
+for r in rating:
+    utility[r.user_id - 1][r.item_id - 1] = r.rating
 
 # print utility
 

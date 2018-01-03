@@ -2,7 +2,8 @@ import re
 
 class Item:
     def __init__(self, id, title, action, adventure, animation, comedy, crime, documentary, \
-    drama, family, fantasy, history, horror, musical, mystery ,romance, sci_fi, tv_movie, thriller, war, western):
+    drama, family, fantasy, history, horror, musical, mystery ,romance, sci_fi, tv_movie, \
+    thriller, war, western):
         self.id = int(id)
         self.title = title
         self.action = int(action)
