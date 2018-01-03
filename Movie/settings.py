@@ -51,7 +51,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'grmovies.urls'
+ROOT_URLCONF = 'Movie.urls'
 
 TEMPLATES = [
     {
@@ -69,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'grmovies.wsgi.application'
+WSGI_APPLICATION = 'Movie.wsgi.application'
 
 
 # Database
