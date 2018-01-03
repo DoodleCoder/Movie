@@ -549,210 +549,216 @@ def movielist(request,page_no):
 		return redirect('/login/')
 
 def movie(request, movie_id):
-	mov = cache.get('movie-'+str(movie_id))
-	if not mov:
-		movurl = 'https://api.themoviedb.org/3/movie/'+movie_id+'?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.urlopen(movurl)
-		mov = json.loads(response0.read())
-		cache.set('movie-'+str(movie_id), mov)
-		print('NEW ENTRY')
-	else:
-		print('old entry')
-	date=mov['release_date']
-	reldate=parse(date).strftime('%B %d, %Y')
-	print(reldate)
-	dateyear=date[:4]
+	if request.user.is_authenticated():	
+		mov = cache.get('movie-'+str(movie_id))
+		if not mov:
+			movurl = 'https://api.themoviedb.org/3/movie/'+movie_id+'?api_key='+api+'&language='+lang+'&page=1'
+			response0 = urllib.urlopen(movurl)
+			mov = json.loads(response0.read())
+			cache.set('movie-'+str(movie_id), mov)
+			print('NEW ENTRY')
+		else:
+			print('old entry')
+		date=mov['release_date']
+		reldate=parse(date).strftime('%B %d, %Y')
+		print(reldate)
+		dateyear=date[:4]
 
-	r = int(mov['vote_average'])
-	q = int(10-r)
-	ratingsss = [i for i in range(r)]
-	# print(ratingsss)
-	non_ratingsss = [i for i in range(q)]
+		r = int(mov['vote_average'])
+		q = int(10-r)
+		ratingsss = [i for i in range(r)]
+		# print(ratingsss)
+		non_ratingsss = [i for i in range(q)]
 
 
-	movcred = cache.get('movie-'+str(movie_id)+'-cred')
-	if not movcred:
-		movcredurl= 'https://api.themoviedb.org/3/movie/'+movie_id+'/credits?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.urlopen(movcredurl)
-		movcred = json.loads(response0.read())
-		cache.set('movie-'+str(movie_id)+'-cred', movcred)
-		print('NEW ENTRY')
-	else:
-		print('old entry')		
-	cast=movcred['cast']
-	crew=movcred['crew']
-	writers=[]
-	producers=[]
-	for c in crew:
-		if(c['job']=='Director'):
-			director=c
-		elif(c['department']=='Writing'):
-			writers.append(c)
-		elif(c['department']=='Production'):
-			producers.append(c)
+		movcred = cache.get('movie-'+str(movie_id)+'-cred')
+		if not movcred:
+			movcredurl= 'https://api.themoviedb.org/3/movie/'+movie_id+'/credits?api_key='+api+'&language='+lang+'&page=1'
+			response0 = urllib.urlopen(movcredurl)
+			movcred = json.loads(response0.read())
+			cache.set('movie-'+str(movie_id)+'-cred', movcred)
+			print('NEW ENTRY')
+		else:
+			print('old entry')		
+		cast=movcred['cast']
+		crew=movcred['crew']
+		writers=[]
+		producers=[]
+		for c in crew:
+			if(c['job']=='Director'):
+				director=c
+			elif(c['department']=='Writing'):
+				writers.append(c)
+			elif(c['department']=='Production'):
+				producers.append(c)
 
-	movsim = cache.get('movie-'+str(movie_id)+'-sim')
-	if not movsim:
-		movsimurl='https://api.themoviedb.org/3/movie/'+movie_id+'/similar?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.urlopen(movsimurl)
-		movsim = json.loads(response0.read())
-		movsim=movsim['results']
-		cache.set('movie-'+str(movie_id)+'-sim', movsim)
-		print('NEW ENTRY')
-	else:
-		print('old entry')
+		movsim = cache.get('movie-'+str(movie_id)+'-sim')
+		if not movsim:
+			movsimurl='https://api.themoviedb.org/3/movie/'+movie_id+'/similar?api_key='+api+'&language='+lang+'&page=1'
+			response0 = urllib.urlopen(movsimurl)
+			movsim = json.loads(response0.read())
+			movsim=movsim['results']
+			cache.set('movie-'+str(movie_id)+'-sim', movsim)
+			print('NEW ENTRY')
+		else:
+			print('old entry')
 
-	movrev = cache.get('movie-'+str(movie_id)+'-review')
-	if not movrev:
-		movrevurl='https://api.themoviedb.org/3/movie/'+movie_id+'/reviews?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.urlopen(movrevurl)
-		movrev = json.loads(response0.read())
-		movrev=movrev['results']
-		cache.set('movie-'+str(movie_id)+'-review', movrev)
-		print('NEW ENTRY')
-	else:
-		print('old entry')
+		movrev = cache.get('movie-'+str(movie_id)+'-review')
+		if not movrev:
+			movrevurl='https://api.themoviedb.org/3/movie/'+movie_id+'/reviews?api_key='+api+'&language='+lang+'&page=1'
+			response0 = urllib.urlopen(movrevurl)
+			movrev = json.loads(response0.read())
+			movrev=movrev['results']
+			cache.set('movie-'+str(movie_id)+'-review', movrev)
+			print('NEW ENTRY')
+		else:
+			print('old entry')
 
-	movtraiurl='https://api.themoviedb.org/3/movie/'+movie_id+'/videos?api_key='+api+'&language='+lang+'&page=1'
-	response0 = urllib.urlopen(movtraiurl)
-	movtrai = json.loads(response0.read())
-	movtrai=movtrai['results']
-	trailers=[]
-	for m in movtrai:
-		if(m['type']=='Trailer'):
-			trailers.append(m)
+		movtraiurl='https://api.themoviedb.org/3/movie/'+movie_id+'/videos?api_key='+api+'&language='+lang+'&page=1'
+		response0 = urllib.urlopen(movtraiurl)
+		movtrai = json.loads(response0.read())
+		movtrai=movtrai['results']
+		trailers=[]
+		for m in movtrai:
+			if(m['type']=='Trailer'):
+				trailers.append(m)
 
-	context={
-		'detail':mov,
-		'date':dateyear,
-		'reldate':reldate,
-		'cast':cast[:15],
-		'casto':cast[:7],
-		'crew':crew,
-		'director':director,
-		'writers':writers,
-		'producers':producers,
-		'movsim':movsim,
-		'reviews':movrev,
-		'abcdef':ratingsss,
-		'uvwxyz':non_ratingsss,
-		'trailers':trailers[0],
-	}
-	m = Movie.objects.get_or_create(
-			name=mov['title'],
-			m_id=movie_id,
-			d_rating = mov['vote_average'],
-			pic='https://image.tmdb.org/t/p/w500'+mov['poster_path'],
-			overview=mov['overview'],
-			date=mov['release_date'][:4]
-		)
-	for g in mov['genres']:
-			gen = Genre.objects.get_or_create(
-				user=request.user,
-				name=g['name']
+		context={
+			'detail':mov,
+			'date':dateyear,
+			'reldate':reldate,
+			'cast':cast[:15],
+			'casto':cast[:7],
+			'crew':crew,
+			'director':director,
+			'writers':writers,
+			'producers':producers,
+			'movsim':movsim,
+			'reviews':movrev,
+			'abcdef':ratingsss,
+			'uvwxyz':non_ratingsss,
+			'trailers':trailers[0],
+		}
+		m = Movie.objects.get_or_create(
+				name=mov['title'],
+				m_id=movie_id,
+				d_rating = mov['vote_average'],
+				pic='https://image.tmdb.org/t/p/w500'+mov['poster_path'],
+				overview=mov['overview'],
+				date=mov['release_date'][:4]
 			)
-	return render(request, 'moviesingle.html',context)
+		for g in mov['genres']:
+				gen = Genre.objects.get_or_create(
+					user=request.user,
+					name=g['name']
+				)
+		return render(request, 'moviesingle.html',context)
+	else:
+		return redirect('/login/')
 
 def show(request, show_id):
-	showdet = cache.get('tv-'+str(show_id))
-	if not showdet:
-		showurl = 'https://api.themoviedb.org/3/tv/'+show_id+'?api_key='+api+'&language='+lang
-		response0 = urllib.urlopen(showurl)
-		showdet = json.loads(response0.read())
-		cache.set('tv-'+str(show_id), showdet)
-		print('NEW ENTRY')
-	else:
-		print('old entry')
+	if request.user.is_authenticated():	
+		showdet = cache.get('tv-'+str(show_id))
+		if not showdet:
+			showurl = 'https://api.themoviedb.org/3/tv/'+show_id+'?api_key='+api+'&language='+lang
+			response0 = urllib.urlopen(showurl)
+			showdet = json.loads(response0.read())
+			cache.set('tv-'+str(show_id), showdet)
+			print('NEW ENTRY')
+		else:
+			print('old entry')
 
-	date=showdet['first_air_date']
-	reldate=parse(date).strftime('%B %d, %Y')
-	dateyear=date[:4]
-	if(showdet['in_production']):
-		enddate='current'
-	else:
-		enddate=showdet['last_air_date']
-		enddate=enddate[:4]
-	seasons=showdet['seasons']
-	curr=seasons[-1]
-	currairdate=parse(curr['air_date']).strftime('%B %d, %Y')
-	currlastdate=parse(showdet['last_air_date']).strftime('%B %d, %Y')
-	seasons=showdet['seasons']
-	seasondates=[]
-	for s in seasons:
-		# date=parse(seasons['air_date']).strftime('%B %d, %Y')
-		seasondates.append(date)
+		date=showdet['first_air_date']
+		reldate=parse(date).strftime('%B %d, %Y')
+		dateyear=date[:4]
+		if(showdet['in_production']):
+			enddate='current'
+		else:
+			enddate=showdet['last_air_date']
+			enddate=enddate[:4]
+		seasons=showdet['seasons']
+		curr=seasons[-1]
+		currairdate=parse(curr['air_date']).strftime('%B %d, %Y')
+		currlastdate=parse(showdet['last_air_date']).strftime('%B %d, %Y')
+		seasons=showdet['seasons']
+		seasondates=[]
+		for s in seasons:
+			# date=parse(seasons['air_date']).strftime('%B %d, %Y')
+			seasondates.append(date)
 
-	showsim = cache.get('tv-'+str(show_id)+'-sim')
-	if not showsim:
-		showsimurl= 'https://api.themoviedb.org/3/tv/'+show_id+'/similar?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.urlopen(showsimurl)
-		showsim = json.loads(response0.read())
-		showsim=showsim['results']
-		cache.set('tv-'+str(show_id)+'-sim', showsim)
-		print('NEW ENTRY')
-	else:
-		print('old entry')
+		showsim = cache.get('tv-'+str(show_id)+'-sim')
+		if not showsim:
+			showsimurl= 'https://api.themoviedb.org/3/tv/'+show_id+'/similar?api_key='+api+'&language='+lang+'&page=1'
+			response0 = urllib.urlopen(showsimurl)
+			showsim = json.loads(response0.read())
+			showsim=showsim['results']
+			cache.set('tv-'+str(show_id)+'-sim', showsim)
+			print('NEW ENTRY')
+		else:
+			print('old entry')
 
-	showcred = cache.get('tv-'+str(show_id)+'-cred')
-	if not showcred:
-		showcredurl= 'https://api.themoviedb.org/3/tv/'+show_id+'/credits?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.urlopen(showcredurl)
-		showcred = json.loads(response0.read())
-		cache.set('tv-'+str(show_id)+'-cred',showcred)
-		print('NEW ENTRY')
-	else:
-		print('old entry')
-	cast=showcred['cast']
-	crew=showcred['crew']
-	writers=[]
-	producers=[]
-	director=""
-	for c in crew:
-		if(c['job']=='Director'):
-			director=c
-		elif(c['department']=='Writing'):
-			writers.append(c)
-		elif(c['department']=='Production'):
-			producers.append(c)
+		showcred = cache.get('tv-'+str(show_id)+'-cred')
+		if not showcred:
+			showcredurl= 'https://api.themoviedb.org/3/tv/'+show_id+'/credits?api_key='+api+'&language='+lang+'&page=1'
+			response0 = urllib.urlopen(showcredurl)
+			showcred = json.loads(response0.read())
+			cache.set('tv-'+str(show_id)+'-cred',showcred)
+			print('NEW ENTRY')
+		else:
+			print('old entry')
+		cast=showcred['cast']
+		crew=showcred['crew']
+		writers=[]
+		producers=[]
+		director=""
+		for c in crew:
+			if(c['job']=='Director'):
+				director=c
+			elif(c['department']=='Writing'):
+				writers.append(c)
+			elif(c['department']=='Production'):
+				producers.append(c)
 
-	showkey = cache.get('tv-'+str(show_id)+'-keywords')
-	keywords=[]
-	if not showkey:
-		showkeyurl='https://api.themoviedb.org/3/tv/'+show_id+'/keywords?api_key='+api+'&language='+lang+'&page=1'
-		response0 = urllib.urlopen(showkeyurl)
-		showkey = json.loads(response0.read())
-		keywords=showkey['results']
-		cache.set('tv-'+str(show_id)+'-keywords', showkey)
-		print('NEW ENTRY')
-	else:
-		print('old entry')
+		showkey = cache.get('tv-'+str(show_id)+'-keywords')
+		keywords=[]
+		if not showkey:
+			showkeyurl='https://api.themoviedb.org/3/tv/'+show_id+'/keywords?api_key='+api+'&language='+lang+'&page=1'
+			response0 = urllib.urlopen(showkeyurl)
+			showkey = json.loads(response0.read())
+			keywords=showkey['results']
+			cache.set('tv-'+str(show_id)+'-keywords', showkey)
+			print('NEW ENTRY')
+		else:
+			print('old entry')
 
-	context={
-		'detail':showdet,
-		'showsim':showsim,
-		'director':director,
-		'writers':writers,
-		'producers':producers,
-		'cast':cast,
-		'date': dateyear,
-		'enddate': enddate,
-		'curr':curr,
-		'keywords':keywords,
-		'reldate':reldate,
-		'currairdate':currairdate,
-		'currlastdate':currlastdate,
-		'seasons':seasons[1:],
-		'seasondates':seasondates[1:],
-	}
-	tv = TV.objects.get_or_create(
-			name=showdet['name'],
-			tv_id=show_id,
-			d_rating = showdet['vote_average'],
-			pic='https://image.tmdb.org/t/p/w500'+showdet['poster_path'],
-			overview=showdet['overview'],
-			date=reldate
-		)
-	return render(request, 'seriessingle.html', context)
+		context={
+			'detail':showdet,
+			'showsim':showsim,
+			'director':director,
+			'writers':writers,
+			'producers':producers,
+			'cast':cast,
+			'date': dateyear,
+			'enddate': enddate,
+			'curr':curr,
+			'keywords':keywords,
+			'reldate':reldate,
+			'currairdate':currairdate,
+			'currlastdate':currlastdate,
+			'seasons':seasons[1:],
+			'seasondates':seasondates[1:],
+		}
+		tv = TV.objects.get_or_create(
+				name=showdet['name'],
+				tv_id=show_id,
+				d_rating = showdet['vote_average'],
+				pic='https://image.tmdb.org/t/p/w500'+showdet['poster_path'],
+				overview=showdet['overview'],
+				date=reldate
+			)
+		return render(request, 'seriessingle.html', context)
+	else:
+		return redirect('/login/')
 
 @csrf_exempt
 def search(request):
@@ -802,271 +808,298 @@ def search(request):
 
 @csrf_exempt
 def add_watchlist(request, movie_id):
-
-	user = request.user
-	m = Movie.objects.get(m_id=movie_id)
-	print(m)
-	watched=Watchlist.objects.filter(user=user)
-	flag=0
-	for watch in watched:
-		if(watch.movie==m):
-			flag=1
-			break 
-	if(flag==0):
-		seens=Seenlist.objects.filter(user=user)
-		flag=0
-		for seen in seens:
-			if(seen.movie==m):
-				flag=1
-				break
-		if(flag==0):
-			w = Watchlist.objects.create(
-					user=user,
-					movie=m,
-				)
-			w.save();
-			return JsonResponse({
-				'success': 'Added to Watchlist'
-				})
-		else:
-			return JsonResponse({
-				'success': 'Already in Seenlist'
-				})
-	else:
-		return JsonResponse({
-			'success' : 'Already in Watchlist'
-			})
-
-@csrf_exempt
-def add_seenlist(request, movie_id):
-	t = json.loads(request.body.decode('utf-8'))
-	rate = t['u_rate']
-	user = request.user
-	m = Movie.objects.get(m_id=movie_id)
-	fp = open('ratings.txt','a')
-	fp.write(str(user.id)+'|'+str(m.m_id)+'|'+str(rate)+'\n')
-	fp.close()
-	wp=0
-	seen=Seenlist.objects.filter(user=user)
-	flag=0
-	for s in seen:
-		if(s.movie==m):
-			flag=1
-			break
-	if(flag==0):
+	if request.user.is_authenticated():	
+		user = request.user
+		m = Movie.objects.get(m_id=movie_id)
+		print(m)
 		watched=Watchlist.objects.filter(user=user)
 		flag=0
 		for watch in watched:
 			if(watch.movie==m):
 				flag=1
-				wp = watch
-				break;
+				break 
 		if(flag==0):
-			s = Seenlist.objects.create(
-					user=user,
-					movie=m,
-					rate=rate,
-				)
-			s.save();
-			return JsonResponse({
-					'success': 'Added to Seenlist'
+			seens=Seenlist.objects.filter(user=user)
+			flag=0
+			for seen in seens:
+				if(seen.movie==m):
+					flag=1
+					break
+			if(flag==0):
+				w = Watchlist.objects.create(
+						user=user,
+						movie=m,
+					)
+				w.save();
+				return JsonResponse({
+					'success': 'Added to Watchlist'
+					})
+			else:
+				return JsonResponse({
+					'success': 'Already in Seenlist'
 					})
 		else:
-			s = Seenlist.objects.create(
-					user=user,
-					movie=m,
-					rate=rate,
-				)
-			s.save()
-			Watchlist.objects.get(id=wp.id).delete()
 			return JsonResponse({
-				'success': 'Added to Seenlist'
+				'success' : 'Already in Watchlist'
 				})
 	else:
-		return JsonResponse({
-				'success': 'Already in Seenlist'
-			})
-
-def seen(request):
-	seens=Seenlist.objects.filter(user=request.user).order_by('-time_added')
-	context={
-		'seenMovies':seens,
-	}
-	return render(request, 'seenlist.html', context)
-
-def watch(request):
-	watch=Watchlist.objects.filter(user=request.user).order_by('-time_added')
-	rate = Watchlist.objects.filter(user=request.user).order_by('-movie__d_rating')
-	if request.method == 'POST':
-		t = request.POST['filter']
-		context={
-			't': t,
-		}
-		if t == '1':
-			context['watchMovies'] = watch
-		else:
-			context['watchMovies'] = rate
-		return render(request, 'watchlist.html', context)
-	else:
-		context = {
-			'watchMovies':watch
-		}
-		return render(request, 'watchlist.html', context)
-
-def profile(request):
-	pro=Profile.objects.get(user=request.user)
-	user=User.objects.get(id=request.user.id)
-	msg = ''
-	watch=Watchlist.objects.filter(user=request.user)
-	seen=Seenlist.objects.filter(user=request.user)
-	watch=len(watch)
-	seen=len(seen)
-	if request.method == 'POST':
-		if 'change_pic' in request.POST:
-			if request.FILES:
-					myfile = request.FILES['myfile']
-					fs = FileSystemStorage()
-					filename = fs.save(myfile.name, myfile)
-					pro.profilePic=filename
-			pro.save()
-			msg = 'Successfully Updated Profile Picture'
-	context={
-		'profile': pro,
-		'msg' : msg,
-		'seen':seen,
-		'watch':watch,
-	}
-	return render(request, 'profile.html', context)		
+		return('/login/')
 
 @csrf_exempt
-def add_watchlist2(request, tv_id):
-	user = request.user
-	m = TV.objects.get(tv_id=tv_id)
-	watched=WatchlistTV.objects.filter(user=user)
-	flag=0
-	for watch in watched:
-		if(watch.tv==m):
-			flag=1
-			break 
-	if(flag==0):
-		seens=SeenlistTV.objects.filter(user=user)
+def add_seenlist(request, movie_id):
+	if request.user.is_authenticated():	
+		t = json.loads(request.body.decode('utf-8'))
+		rate = t['u_rate']
+		user = request.user
+		m = Movie.objects.get(m_id=movie_id)
+		fp = open('ratings.txt','a')
+		fp.write(str(user.id)+'|'+str(m.m_id)+'|'+str(rate)+'\n')
+		fp.close()
+		wp=0
+		seen=Seenlist.objects.filter(user=user)
 		flag=0
-		for seen in seens:
-			if(seen.tv==m):
+		for s in seen:
+			if(s.movie==m):
 				flag=1
 				break
 		if(flag==0):
-			w = WatchlistTV.objects.create(
-					user=user,
-					tv=m,
-				)
-			w.save();
-			return JsonResponse({
-				'success': 'Added to Watchlist'
-				})
+			watched=Watchlist.objects.filter(user=user)
+			flag=0
+			for watch in watched:
+				if(watch.movie==m):
+					flag=1
+					wp = watch
+					break;
+			if(flag==0):
+				s = Seenlist.objects.create(
+						user=user,
+						movie=m,
+						rate=rate,
+					)
+				s.save();
+				return JsonResponse({
+						'success': 'Added to Seenlist'
+						})
+			else:
+				s = Seenlist.objects.create(
+						user=user,
+						movie=m,
+						rate=rate,
+					)
+				s.save()
+				Watchlist.objects.get(id=wp.id).delete()
+				return JsonResponse({
+					'success': 'Added to Seenlist'
+					})
 		else:
 			return JsonResponse({
-				'success': 'Already in Seenlist'
+					'success': 'Already in Seenlist'
 				})
 	else:
-		return JsonResponse({
-			'success' : 'Already in Watchlist'
-			})
+		return redirect('/login/')
+
+def seen(request):
+	if request.user.is_authenticated():	
+		seens=Seenlist.objects.filter(user=request.user).order_by('-time_added')
+		context={
+			'seenMovies':seens,
+		}
+		return render(request, 'seenlist.html', context)
+	else:
+		return redirect('/login/')
+
+def watch(request):
+	if request.user.is_authenticated():	
+		watch=Watchlist.objects.filter(user=request.user).order_by('-time_added')
+		rate = Watchlist.objects.filter(user=request.user).order_by('-movie__d_rating')
+		if request.method == 'POST':
+			t = request.POST['filter']
+			context={
+				't': t,
+			}
+			if t == '1':
+				context['watchMovies'] = watch
+			else:
+				context['watchMovies'] = rate
+			return render(request, 'watchlist.html', context)
+		else:
+			context = {
+				'watchMovies':watch
+			}
+			return render(request, 'watchlist.html', context)
+	else:
+		return redirect('/login/')
+
+def profile(request):
+	if request.user.is_authenticated():	
+		pro=Profile.objects.get(user=request.user)
+		user=User.objects.get(id=request.user.id)
+		msg = ''
+		watch=Watchlist.objects.filter(user=request.user)
+		seen=Seenlist.objects.filter(user=request.user)
+		watch=len(watch)
+		seen=len(seen)
+		if request.method == 'POST':
+			if 'change_pic' in request.POST:
+				if request.FILES:
+						myfile = request.FILES['myfile']
+						fs = FileSystemStorage()
+						filename = fs.save(myfile.name, myfile)
+						pro.profilePic=filename
+				pro.save()
+				msg = 'Successfully Updated Profile Picture'
+		context={
+			'profile': pro,
+			'msg' : msg,
+			'seen':seen,
+			'watch':watch,
+		}
+		return render(request, 'profile.html', context)		
+	else:
+		return('/login/')
 
 @csrf_exempt
-def add_seenlist2(request, tv_id):
-	t = json.loads(request.body.decode('utf-8'))
-	rate = t['u_rate']
-	user = request.user
-	m = TV.objects.get(tv_id=tv_id)
-	fp = open('ratings2.txt','a')
-	fp.write(str(user.id)+'|'+str(m.tv_id)+'|'+str(rate)+'\n')
-	fp.close()
-	wp=0
-	seen=SeenlistTV.objects.filter(user=user)
-	flag=0
-	for s in seen:
-		if(s.tv==m):
-			flag=1
-			break
-	if(flag==0):
+def add_watchlist2(request, tv_id):
+	if request.user.is_authenticated():	
+		user = request.user
+		m = TV.objects.get(tv_id=tv_id)
 		watched=WatchlistTV.objects.filter(user=user)
 		flag=0
 		for watch in watched:
 			if(watch.tv==m):
 				flag=1
-				wp = watch
-				break;
+				break 
 		if(flag==0):
-			s = SeenlistTV.objects.create(
-					user=user,
-					tv=m,
-					rate=rate,
-				)
-			s.save();
+			seens=SeenlistTV.objects.filter(user=user)
+			flag=0
+			for seen in seens:
+				if(seen.tv==m):
+					flag=1
+					break
+			if(flag==0):
+				w = WatchlistTV.objects.create(
+						user=user,
+						tv=m,
+					)
+				w.save();
+				return JsonResponse({
+					'success': 'Added to Watchlist'
+					})
+			else:
+				return JsonResponse({
+					'success': 'Already in Seenlist'
+					})
+		else:
 			return JsonResponse({
+				'success' : 'Already in Watchlist'
+				})
+	else:
+		return redirect('/login/')
+
+@csrf_exempt
+def add_seenlist2(request, tv_id):
+	if request.user.is_authenticated():	
+		t = json.loads(request.body.decode('utf-8'))
+		rate = t['u_rate']
+		user = request.user
+		m = TV.objects.get(tv_id=tv_id)
+		fp = open('ratings2.txt','a')
+		fp.write(str(user.id)+'|'+str(m.tv_id)+'|'+str(rate)+'\n')
+		fp.close()
+		wp=0
+		seen=SeenlistTV.objects.filter(user=user)
+		flag=0
+		for s in seen:
+			if(s.tv==m):
+				flag=1
+				break
+		if(flag==0):
+			watched=WatchlistTV.objects.filter(user=user)
+			flag=0
+			for watch in watched:
+				if(watch.tv==m):
+					flag=1
+					wp = watch
+					break;
+			if(flag==0):
+				s = SeenlistTV.objects.create(
+						user=user,
+						tv=m,
+						rate=rate,
+					)
+				s.save();
+				return JsonResponse({
+						'success': 'Added to Seenlist'
+						})
+			else:
+				s = SeenlistTV.objects.create(
+						user=user,
+						tv=m,
+						rate=rate,
+					)
+				s.save()
+				WatchlistTV.objects.get(id=wp.id).delete()
+				return JsonResponse({
 					'success': 'Added to Seenlist'
 					})
 		else:
-			s = SeenlistTV.objects.create(
-					user=user,
-					tv=m,
-					rate=rate,
-				)
-			s.save()
-			WatchlistTV.objects.get(id=wp.id).delete()
 			return JsonResponse({
-				'success': 'Added to Seenlist'
+					'success': 'Already in Seenlist'
 				})
 	else:
-		return JsonResponse({
-				'success': 'Already in Seenlist'
-			})
+		return redirect('/login/')
 
 def seen2(request):
-	seens=SeenlistTV.objects.filter(user=request.user).order_by('-time_added')
-	context={
-		'seenTV':seens,
-	}
-	return render(request, 'seenlist2.html', context)
-
-def watch2(request):
-	watch=WatchlistTV.objects.filter(user=request.user).order_by('-time_added')
-	rate = WatchlistTV.objects.filter(user=request.user).order_by('-tv__d_rating')
-	if request.method == 'POST':
-		t = request.POST['filter']
+	if request.user.is_authenticated():	
+		seens=SeenlistTV.objects.filter(user=request.user).order_by('-time_added')
 		context={
-			't': t,
+			'seenTV':seens,
 		}
-		if t == '1':
-			context['watchTV'] = watch
-		else:
-			context['watchTV'] = rate
-		return render(request, 'watchlist2.html', context)
+		return render(request, 'seenlist2.html', context)
 	else:
-		context = {
-			'watchTV':watch
-		}
-		return render(request, 'watchlist2.html', context)
-
+		return redirect('/login/')	
+def watch2(request):
+	if request.user.is_authenticated():	
+		watch=WatchlistTV.objects.filter(user=request.user).order_by('-time_added')
+		rate = WatchlistTV.objects.filter(user=request.user).order_by('-tv__d_rating')
+		if request.method == 'POST':
+			t = request.POST['filter']
+			context={
+				't': t,
+			}
+			if t == '1':
+				context['watchTV'] = watch
+			else:
+				context['watchTV'] = rate
+			return render(request, 'watchlist2.html', context)
+		else:
+			context = {
+				'watchTV':watch
+			}
+			return render(request, 'watchlist2.html', context)
+	else:
+		return redirect('/login/')	
 
 def changepass(request):
-	msg=''
-	user=User.objects.get(id=request.user.id)
-	pro=Profile.objects.get(user=user)
-	if request.method=='POST':
-		p1 = request.POST['pass1']
-		p2 = request.POST['pass2']
-		if p1 == p2:
-			user.set_password(p1)
-			user.save()
-			logout(request)
-			msg="Successfully Changted Password"
-			return redirect('/login/')
-		else:
-			msg='Passwords Do No Match'
-	context={
-		'msg' : msg,
-		'profile':pro,
-	}
-	return render(request, 'changepass.html', context)
+	if request.user.is_authenticated():	
+		msg=''
+		user=User.objects.get(id=request.user.id)
+		pro=Profile.objects.get(user=user)
+		if request.method=='POST':
+			p1 = request.POST['pass1']
+			p2 = request.POST['pass2']
+			if p1 == p2:
+				user.set_password(p1)
+				user.save()
+				logout(request)
+				msg="Successfully Changted Password"
+				return redirect('/login/')
+			else:
+				msg='Passwords Do No Match'
+		context={
+			'msg' : msg,
+			'profile':pro,
+		}
+		return render(request, 'changepass.html', context)
+	else:
+		return redirect('/login/')	
