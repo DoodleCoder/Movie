@@ -5,12 +5,10 @@ import re
 
 # Read data/README to get more info on these data structures
 class User:
-    def __init__(self, id, age, sex, occupation, zip):
+    def __init__(self, id, username, first_name):
         self.id = int(id)
-        self.age = int(age)
-        self.sex = sex
-        self.occupation = occupation
-        self.zip = zip
+        self.username = username
+        self.first_name = first_name
         self.avg_r = 0.0
 
 # Read data/README to get more info on these data structures
@@ -58,9 +56,9 @@ class Dataset:
         text = f.read()
         entries = re.split("\n+", text)
         for entry in entries:
-            e = entry.split('|', 5)
-            if len(e) == 5:
-                u.append(User(e[0], e[1], e[2], e[3], e[4]))
+            e = entry.split('|', 3)
+            if len(e) == 3:
+                u.append(User(e[0], e[1], e[2]))
         f.close()
 
     def load_items(self, file, i):
