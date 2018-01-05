@@ -173,47 +173,41 @@ def guess(user_id, i_id, top_n):
     for i in range(0, n_users):
         if i+1 != user_id:
             similarity.append(pcs_matrix[user_id-1][i])
+            # a list of pearsons correlation of that user to other users
+
     temp = norm()
     temp = np.delete(temp, user_id-1, 0)
-    top = [x for (y,x) in sorted(zip(similarity,temp), key=lambda pair: pair[0], reverse=True)]
+	# the whole normalized matrix without the user row whose id = user_id-1
+    	# temp = [
+	# 	[inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf],
+	# 	[inf,0.7875,inf,inf,0.93035714,inf,1.93035714,-3.86964286,2.43035714,0.93035714,inf,inf,inf,inf,inf,inf,inf,-4.06964286,0.93035714],
+	# 	[inf,-4.4,inf,0.6,1.6,inf,inf,0.6,inf,inf,inf,inf,inf,inf,inf,inf,inf,1.6,inf]
+	# ]
+	# similarity = [0.0, 0.62014003913348725, -0.46598256662291143]
+    combine = zip(similarity,temp)
+    sorted_by_similarity = sorted(combine, key=lambda pair:pair[0], reverse=True)
+    top = [x for (y,x) in sorted_by_similarity]
+    # top =  [ [inf, 0.7875, inf, inf, 0.93035714, inf, 1.93035714, -3.86964286, 2.43035714, 0.93035714, inf, inf, inf, inf, inf, inf, inf, -4.06964286, 0.93035714], 
+	# 		 [inf, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf, inf], 
+	#		 [inf, -4.4, inf, 0.6, 1.6, inf, inf, 0.6, inf, inf, inf, inf, inf, inf, inf, inf, inf, 1.6, inf]
+	# 		 ]
+	# in the ith cluster, what is the average rate
     s = 0
     c = 0
     for i in range(0, top_n):
         if top[i][i_id-1] != float('Inf'):
             s += top[i][i_id-1]
             c += 1
-    g = user[user_id-1].avg_r if c == 0 else s/float(c) + user[user_id-1].avg_r
-    if g < 1.0:
-        return 1.0
-    elif g > 5.0:
-        return 5.0
+    if c ==0:
+        g = user[user_id-1].avg_r
     else:
-        return g
+        g = s/float(c) + user[user_id-1].avg_r
+    return g
+	
+utility_copy = np.copy(utility_clustered)
+for i in range(0, n_users):
+    for j in range(0, 19):
+        if utility_copy[i][j] == 0:
+            utility_copy[i][j] = guess(i+1, j+1, 1)
 
-# utility_copy = np.copy(utility_clustered)
-# for i in range(0, n_users):
-#     for j in range(0, 19):
-#         if utility_copy[i][j] == 0:
-#             sys.stdout.write("\rGuessing [User:Rating] = [%d:%d]" % (i, j))
-#             sys.stdout.flush()
-#             time.sleep(0.00005)
-#             utility_copy[i][j] = guess(i+1, j+1, 150)
-# print "\rGuessing [User:Rating] = [%d:%d]" % (i, j)
-
-# print utility_copy
-
-# pickle.dump( utility_copy, open("utility_matrix.pkl", "wb"))
-
-# # Predict ratings for u.test and find the mean squared error
-# y_true = []
-# y_pred = []
-# f = open('test.txt', 'w')
-# for i in range(0, n_users):
-#     for j in range(0, n_items):
-#         if test[i][j] > 0:
-#             f.write("%d, %d, %.4f\n" % (i+1, j+1, utility_copy[i][cluster.labels_[j]-1]))
-#             y_true.append(test[i][j])
-#             y_pred.append(utility_copy[i][cluster.labels_[j]-1])
-# f.close()
-
-# print "Mean Squared Error: %f" % mean_squared_error(y_true, y_pred)
+pickle.dump( utility_copy, open("utility_matrix.pkl", "wb"))

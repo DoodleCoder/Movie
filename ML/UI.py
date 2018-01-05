@@ -21,6 +21,7 @@ n_users = len(user)
 n_items = len(item)
 
 utility_matrix = pickle.load( open("utility_matrix.pkl", "rb") )
+
 print utility_matrix
 # Find the average rating for each user and stores it in the user's object
 for i in range(0, n_users):
