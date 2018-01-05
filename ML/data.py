@@ -34,14 +34,13 @@ class Item:
         self.war = int(war)
         self.western = int(western)
 
-# Read data/README to get more info on these data structures
 class Rating:
-    def __init__(self, user_id, item_id, rating):
+    def __init__(self, user_id, id, item_id, rating):
         self.user_id = int(user_id)
-        self.item_id = int(item_id)
+        self.item_id = int(id)
+        self.id = int(item_id)
         self.rating = int(rating)
 
-# The dataset class helps you to load files and create User, Item and Rating objects
 class Dataset:
     def load_users(self, file, u):
         f = open(file, "r")
@@ -58,8 +57,8 @@ class Dataset:
         text = f.read()
         entries = re.split("\n+", text)
         for entry in entries:
-            e = entry.split('|', 22)
-            if len(e) == 22:
+            e = entry.split('|', 23)
+            if len(e) == 23:
                 i.append(Item(e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9], e[10], \
                 e[11], e[12], e[13], e[14], e[15], e[16], e[17], e[18], e[19], e[20], e[21]))
         f.close()
@@ -69,7 +68,7 @@ class Dataset:
         text = f.read()
         entries = re.split("\n+", text)
         for entry in entries:
-            e = entry.split('|', 3)
-            if len(e) == 3:
-                r.append(Rating(e[0], e[1], e[2]))
+            e = entry.split('|', 4)
+            if len(e) == 4:
+                r.append(Rating(e[0], e[1], e[2], e[3]))
         f.close()
