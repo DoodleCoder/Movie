@@ -227,7 +227,13 @@ utility_copy = np.copy(utility_clustered)
 for i in range(0, n_users):
     for j in range(0, 19):
         if utility_copy[i][j] == 0:
-            utility_copy[i][j] = guess(i+1, j+1, 1)
+            t = guess(i+1, j+1, 1)
+            if t < 1:
+                utility_copy[i][j] = 1
+            elif t > 10:
+                utility_copy[i][j] = 10
+            else:
+                utility_copy[i][j] = t 
 
 # utility_copy = 
 # [
@@ -250,5 +256,5 @@ for i in range(0, n_users):
 #          7.4       ,  7.4       ,  8.        ,  7.4       ,  7.4       ,
 #          7.4       ,  7.4       ,  7.4       ,  7.4       ,  7.4       ,
 #          7.4       ,  7.4       ,  9.        ,  7.4       ]]
-
+# print(utility_copy)
 pickle.dump( utility_copy, open(os.path.expanduser(os.path.join('~/Desktop/Movie/main/utility_matrix.pkl')), "wb"))

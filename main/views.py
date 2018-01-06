@@ -16,6 +16,13 @@ from django.db.models import Q
 from dateutil.parser import parse
 from django.core.files.storage import FileSystemStorage
 import os.path
+from sklearn.cluster import KMeans
+import numpy as np
+import pickle
+import random
+import sys
+import time
+
 
 api = '4a95b57fbcd4eea6c3e07a72ee861599'
 lang = 'en-US'
@@ -26,8 +33,29 @@ genre = genre['genres']
 gid=[28,12,16,35,80,99,18,10751,14,36,27,10402,9648,10749,878,10770,53,10752,37]
 gname = ['Action','Adventure','Animation','Comedy','Crime','Documentary','Drama','Family','Fantasy','History','Horror','Music','Mystery','Romance','Science Fiction','TV Movie','Thriller','War','Western']
 idsss=[i for i in range(19)]
-utility_matrix = pickle.load( open("utility_matrix.pkl", "rb") )
-print(utility_matrix)
+utility_matrix = pickle.load( open(os.path.expanduser(os.path.join('~/Desktop/Movie/main/utility_matrix.pkl')), "rb") )
+like_genres = []
+for i in utility_matrix:
+	combine = zip(i,gid,gname)
+	sorted_by_ratings = sorted(combine, key=lambda pair:pair[0], reverse=True)
+	top_5_genres = [x for (z,y,x) in sorted_by_ratings[:5]]
+	top_5_genres_ids = [y for (z,y,x) in sorted_by_ratings[:5]]
+	like_genres.append(top_5_genres_ids)
+
+def recommend(like_genres, user_id):
+	movies = pickle.load( open(os.path.expanduser(os.path.join('~/Desktop/Movie/main/allmovies.pkl')), "rb") )
+	all_movie_genres = []
+	c = []
+	for i in movies:
+		all_movie_genres.append(i['genre_ids'])
+	# print(all_movie_genres[:5])
+	for i in all_movie_genres:
+		c.append(len(list(set(i).intersection(set(like_genres[user_id-1])))))
+	# print(c)
+	combine = zip(c,movies)
+	sort_rec_by_closest_genre = sorted(combine, key=lambda pair: pair[0], reverse=True)
+	rec = [y for (x,y) in sort_rec_by_closest_genre[:12]]
+	return rec
 
 def populate_users():
 	uuu = User.objects.all()
@@ -85,6 +113,7 @@ def populate_movies():
 				popmovie.append(i)
 		cache.set('popmovie', popmovie, 18000) 
 	c=popmovie
+	pickle.dump( popmovie, open(os.path.expanduser(os.path.join('~/Desktop/Movie/main/allmovies.pkl')), "wb"))
 	counter = 1
 	fp = open(os.path.expanduser(os.path.join('~/Desktop/Movie/ML/allmovies.txt')), 'w')
 	for i in c:
@@ -249,7 +278,24 @@ def index(request):
 	else:
 		print('old entry')
 
-
+	#########################################################################################################
+	if request.user.id:
+		recc = cache.get('recc-'+str(request.user.id))
+		if not recc:
+			recc = recommend(like_genres,request.user.id)
+			cache.set('recc-'+str(request.user.id), recc, 18000)
+			print('NEW ENTRY')
+		else:
+			print('old entry')
+	else:
+		recc = []
+		for i in topmovie[0]:
+			recc.append(i)
+		for i in popmovie[0]:
+			recc.append(i)
+		# print(len(recc))
+		recc = random.sample(recc,12)
+	#########################################################################################################
 
 	airtodayshow = cache.get('lateshow')
 	if not airtodayshow:
@@ -318,7 +364,13 @@ def index(request):
 					i['genres'].append(j['name'])	
 		topshow.append(top['results'][:10])
 		cache.set('topshow', topshow, 18000)  #18000 here is the number of seconds until the caache clears this data	
-	print(len(popmovie))
+	
+	tvrecc = []
+	for i in topshow[0]:
+		tvrecc.append(i)
+	for i in popshow[0]:
+		tvrecc.append(i)
+	tvrecc = random.sample(tvrecc,12)
 	context={
 		'pop': popmovie,
 		'now': nowmovie,
@@ -328,6 +380,8 @@ def index(request):
 		'air': airshow,
 		'popular': popshow,
 		'toprate': topshow,
+		'recc' : recc[:12],
+		'tvrecc' : tvrecc[:12],
 	}
 	return render(request, 'index.html', context)
 
