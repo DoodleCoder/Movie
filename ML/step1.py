@@ -6,6 +6,7 @@ import re
 import pickle
 import numpy as np
 from sklearn.cluster import KMeans
+import os.path
 from sklearn.metrics import mean_squared_error
 
 user = []
@@ -101,7 +102,7 @@ utility_clustered = np.array(utility_clustered)
 
 # Find the average rating for each user and stores it in the user's object
 
-for i in range(1, n_users):
+for i in range(0, n_users):
     x = utility_clustered[i]
     num = sum(a for a in x if a > 0)
     den = sum(a > 0 for a in x)
@@ -250,6 +251,4 @@ for i in range(0, n_users):
 #          7.4       ,  7.4       ,  7.4       ,  7.4       ,  7.4       ,
 #          7.4       ,  7.4       ,  9.        ,  7.4       ]]
 
-
-
-pickle.dump( utility_copy, open("utility_matrix.pkl", "wb"))
+pickle.dump( utility_copy, open(os.path.expanduser(os.path.join('~/Desktop/Movie/main/utility_matrix.pkl')), "wb"))

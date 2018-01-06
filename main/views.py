@@ -26,7 +26,8 @@ genre = genre['genres']
 gid=[28,12,16,35,80,99,18,10751,14,36,27,10402,9648,10749,878,10770,53,10752,37]
 gname = ['Action','Adventure','Animation','Comedy','Crime','Documentary','Drama','Family','Fantasy','History','Horror','Music','Mystery','Romance','Science Fiction','TV Movie','Thriller','War','Western']
 idsss=[i for i in range(19)]
-
+utility_matrix = pickle.load( open("utility_matrix.pkl", "rb") )
+print(utility_matrix)
 
 def populate_users():
 	uuu = User.objects.all()
