@@ -1,5 +1,0 @@
-1|admin|Ria
-2|viewer1@gmail.com|Viewer
-3|viewer2@gmail.com|Viewer
-4|viewer3@gmail.com|Viewer
-5|viewer4@gmail.com|Viewer

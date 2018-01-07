@@ -33,16 +33,41 @@ genre = genre['genres']
 gid=[28,12,16,35,80,99,18,10751,14,36,27,10402,9648,10749,878,10770,53,10752,37]
 gname = ['Action','Adventure','Animation','Comedy','Crime','Documentary','Drama','Family','Fantasy','History','Horror','Music','Mystery','Romance','Science Fiction','TV Movie','Thriller','War','Western']
 idsss=[i for i in range(19)]
-utility_matrix = pickle.load( open(os.path.expanduser(os.path.join('~/Desktop/Movie/main/utility_matrix.pkl')), "rb") )
-like_genres = []
-for i in utility_matrix:
-	combine = zip(i,gid,gname)
-	sorted_by_ratings = sorted(combine, key=lambda pair:pair[0], reverse=True)
-	top_5_genres = [x for (z,y,x) in sorted_by_ratings[:5]]
-	top_5_genres_ids = [y for (z,y,x) in sorted_by_ratings[:5]]
-	like_genres.append(top_5_genres_ids)
 
-def recommend(like_genres, user_id):
+def initialize_matrix():
+	users_all = User.objects.all()
+	n_users = len(users_all)
+	matrix = [[0 for i in range(19)] for j in range(n_users)]
+	# print(matrix)
+	for u in users_all:
+		seenAll = Seenlist.objects.filter(user=u)
+		for s in seenAll:
+			r = s.rate/float(10)
+			m = s.movie
+			genresss = []
+			ge = [0 for i in range(19)]
+			movies = pickle.load( open(os.path.expanduser(os.path.join('~/Desktop/Movie/main/allmovies.pkl')), "rb") )
+			for movie in movies:
+				if movie['id'] == m.m_id:
+					l = movie['genre_ids']
+					for k in range(19):
+						if gid[k] in l:
+							ge[k] = 1
+						else: 
+							ge[k]=0
+				g = [ge[i]*r for i in range(19)]
+			for j in range(19):
+				matrix[u.id-1][j] = matrix[u.id-1][j] + g[j]
+	pickle.dump( matrix, open(os.path.expanduser(os.path.join('~/Desktop/Movie/main/matrix.pkl')), "wb"))
+
+def recommend(user_id):
+	matrix = pickle.load( open(os.path.expanduser(os.path.join('~/Desktop/Movie/main/matrix.pkl')), "rb") )
+	user_row = matrix[user_id-1]
+	combine = zip(user_row,gid,gname)
+	sort_dec = sorted(combine, key=lambda pair:pair[0], reverse= True)
+	top_3_genres = [y for (x,y,z) in sort_dec]
+	top_3_genres = top_3_genres[:3]
+
 	movies = pickle.load( open(os.path.expanduser(os.path.join('~/Desktop/Movie/main/allmovies.pkl')), "rb") )
 	all_movie_genres = []
 	c = []
@@ -50,19 +75,12 @@ def recommend(like_genres, user_id):
 		all_movie_genres.append(i['genre_ids'])
 	# print(all_movie_genres[:5])
 	for i in all_movie_genres:
-		c.append(len(list(set(i).intersection(set(like_genres[user_id-1])))))
+		c.append(len(list(set(i).intersection(set(top_3_genres)))))
 	# print(c)
 	combine = zip(c,movies)
 	sort_rec_by_closest_genre = sorted(combine, key=lambda pair: pair[0], reverse=True)
 	rec = [y for (x,y) in sort_rec_by_closest_genre[:12]]
 	return rec
-
-def populate_users():
-	uuu = User.objects.all()
-	fp = open(os.path.expanduser(os.path.join('~/Desktop/Movie/ML/users.txt')),'w')
-	for uu in uuu:
-		fp.write(str(uu.id) + '|' + str(uu.username) + '|' + str(uu.first_name) + '\n')
-	fp.close()
 
 def populate_movies():
 	popmovie = cache.get('popmovie')	
@@ -115,7 +133,7 @@ def populate_movies():
 	c=popmovie
 	pickle.dump( popmovie, open(os.path.expanduser(os.path.join('~/Desktop/Movie/main/allmovies.pkl')), "wb"))
 	counter = 1
-	fp = open(os.path.expanduser(os.path.join('~/Desktop/Movie/ML/allmovies.txt')), 'w')
+	fp = open(os.path.expanduser(os.path.join('~/Desktop/Movie/main/allmovies.txt')), 'w')
 	for i in c:
 		try:
 			fp.write(str(counter) + '|' + str(i['id'])+'|'+(i['title'])+'|')
@@ -132,26 +150,6 @@ def populate_movies():
 			fp.write(str(i)+'|')
 		fp.write('\n')
 		counter += 1
-	fp.close()
-
-def populate_ratings():
-	fp = open(os.path.expanduser(os.path.join('~/Desktop/Movie/ML/ratings.txt')),'w')
-	usersAll = User.objects.all()
-	for u in usersAll:
-		seenAll = Seenlist.objects.filter(user=u)
-		for s in seenAll:
-			fp.write(str(u.id)+'|')
-			f1 = open(os.path.expanduser(os.path.join('~/Desktop/Movie/ML/allmovies.txt')),'r')
-			t1 = f1.read()
-			lines = re.split('\n+', t1)
-			array = []
-			for i in lines[:-1]:
-				array.append(str(i.split('|')[0])+'|'+str(i.split('|')[1]))
-			for j in array:
-				if str(s.movie.m_id) in j:
-					real_id = (str(j.split('|')[0]))
-					fp.write( real_id + '|' + str(s.movie.m_id) + '|' + str(s.rate) + '\n')
-				# print(s.movie.name,s.rate)
 	fp.close()
 
 def login_site(request):
@@ -174,6 +172,7 @@ def login_site(request):
 		return render(request,'login.html', context)
 
 def register(request):
+	matrix = pickle.load( open(os.path.expanduser(os.path.join('~/Desktop/Movie/main/matrix.pkl')), "rb") )
 	if request.method == 'POST':
 		firstName = request.POST['fname']
 		lastName = request.POST['lname']
@@ -195,9 +194,11 @@ def register(request):
 					lastName=lastName,
 					username=username,
 				)
-			fp = open(os.path.expanduser(os.path.join('~/Desktop/Movie/ML/users.txt')),'a')
-			fp.write(str(user.id) + '|' + str(user.username) + '|' + str(user.first_name) + '\n')
-			fp.close()
+			print(matrix)
+			ge = [0 for i in range(19)]
+			matrix.append(ge)
+			pickle.dump( matrix, open(os.path.expanduser(os.path.join('~/Desktop/Movie/main/matrix.pkl')), "wb"))
+			print(matrix)
 			return redirect('/index/')
 	else:
 		return render(request, 'register.html')
@@ -282,7 +283,7 @@ def index(request):
 	if request.user.id:
 		recc = cache.get('recc-'+str(request.user.id))
 		if not recc:
-			recc = recommend(like_genres,request.user.id)
+			recc = recommend(request.user.id)
 			cache.set('recc-'+str(request.user.id), recc, 18000)
 			print('NEW ENTRY')
 		else:
@@ -939,24 +940,30 @@ def add_watchlist(request, movie_id):
 
 @csrf_exempt
 def add_seenlist(request, movie_id):
+	matrix = pickle.load( open(os.path.expanduser(os.path.join('~/Desktop/Movie/main/matrix.pkl')), "rb") )
 	if request.user.is_authenticated():	
 		t = json.loads(request.body.decode('utf-8'))
 		rate = t['u_rate']
+		r = float(rate)/float(10)
 		user = request.user
 		m = Movie.objects.get(m_id=movie_id)
-		fp = open(os.path.expanduser(os.path.join('~/Desktop/Movie/ML/ratings.txt')),'a')
-		f1 = open(os.path.expanduser(os.path.join('~/Desktop/Movie/ML/allmovies.txt')),'r')
-		t1 = f1.read()
-		lines = re.split('\n+', t1)
-		array = []
-		for i in lines[:-1]:
-		    array.append(str(i.split('|')[0])+'|'+str(i.split('|')[1]))
-
-		for j in array:
-			if str(m.m_id) in j:
-				real_id = (str(j.split('|')[0]))
-				fp.write(str(user.id)+'|'+ real_id + '|' + str(m.m_id) + '|' + str(rate) + '\n')
-		fp.close()
+		print(matrix)
+		print('\n')
+		ge = [0 for i in range(19)]
+		movies = pickle.load( open(os.path.expanduser(os.path.join('~/Desktop/Movie/main/allmovies.pkl')), "rb") )
+		for movie in movies:
+			if movie['id'] == m.m_id:
+				l = movie['genre_ids']
+				for k in range(19):
+					if gid[k] in l:
+						ge[k] = 1
+					else: 
+						ge[k]=0
+			g = [ge[i]*r for i in range(19)]
+		for j in range(19):
+			matrix[user.id-1][j] = matrix[user.id-1][j] + g[j]
+		pickle.dump( matrix, open(os.path.expanduser(os.path.join('~/Desktop/Movie/main/matrix.pkl')), "wb"))
+		print(matrix)				
 		wp=0
 		seen=Seenlist.objects.filter(user=user)
 		flag=0
@@ -1105,7 +1112,7 @@ def add_seenlist2(request, tv_id):
 		rate = t['u_rate']
 		user = request.user
 		m = TV.objects.get(tv_id=tv_id)
-		fp = open(os.path.expanduser(os.path.join('~/Desktop/Movie/ML/ratings2.txt')),'a')
+		fp = open(os.path.expanduser(os.path.join('~/Desktop/Movie/main/ratings2.txt')),'a')
 		fp.write(str(user.id)+'|'+str(m.tv_id)+'|'+str(rate)+'\n')
 		fp.close()
 		wp=0
@@ -1206,3 +1213,6 @@ def changepass(request):
 		return render(request, 'changepass.html', context)
 	else:
 		return redirect('/login/')	
+
+
+initialize_matrix()
