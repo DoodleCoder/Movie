@@ -34,7 +34,7 @@ gid=[28,12,16,35,80,99,18,10751,14,36,27,10402,9648,10749,878,10770,53,10752,37]
 gname = ['Action','Adventure','Animation','Comedy','Crime','Documentary','Drama','Family','Fantasy','History','Horror','Music','Mystery','Romance','Science Fiction','TV Movie','Thriller','War','Western']
 idsss=[i for i in range(19)]
 
-def initialize_matrix():
+def initialize_matrix1():
 	users_all = User.objects.all()
 	n_users = len(users_all)
 	matrix = [[0 for i in range(19)] for j in range(n_users)]
@@ -79,9 +79,18 @@ def recommend(user_id):
 	# print(c)
 	combine = zip(c,movies)
 	sort_rec_by_closest_genre = sorted(combine, key=lambda pair: pair[0], reverse=True)
-	rec = [y for (x,y) in sort_rec_by_closest_genre[:12]]
-	return rec
+	rec = [y for (x,y) in sort_rec_by_closest_genre]
+	rec = rec[:50]
+	seen = Seenlist.objects.filter(user=user_id)
+	recc = []
+	for s in seen:
+		check_id = s.movie.m_id
+		for r in rec:
+			if check_id != r['id']:
+				recc.append(r)				
+	return recc
 
+# recommend(2)
 def populate_movies():
 	popmovie = cache.get('popmovie')	
 	if not popmovie:					
@@ -1214,5 +1223,3 @@ def changepass(request):
 	else:
 		return redirect('/login/')	
 
-
-initialize_matrix()
